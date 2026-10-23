@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts (Plus Jakarta Sans) -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <script>
@@ -20,7 +20,7 @@
                             100: '#FFF9E6',
                             300: '#FFE599',
                             400: '#F5C242',
-                            500: '#D4AF37', /* Classic Gold */
+                            500: '#D4AF37',
                             600: '#AA820A',
                             700: '#806000',
                         },
@@ -38,7 +38,6 @@
                     backgroundImage: {
                         'gold-gradient': 'linear-gradient(135deg, #FFE599 0%, #D4AF37 50%, #AA820A 100%)',
                         'gold-metallic': 'linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%)',
-                        'dark-glass': 'linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%)',
                     }
                 }
             }
@@ -46,13 +45,11 @@
     </script>
 
     <style>
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 5px; height: 5px; }
         ::-webkit-scrollbar-track { background: rgba(11, 15, 25, 0.8); }
         ::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.3); border-radius: 999px; }
         ::-webkit-scrollbar-thumb:hover { background: rgba(212, 175, 55, 0.6); }
 
-        /* Metallic Text Effect */
         .text-gold-metallic {
             background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 30%, #B38728 60%, #FBF5B7 80%, #AA771C 100%);
             -webkit-background-clip: text;
@@ -71,7 +68,6 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        /* Voice Wave Animation */
         @keyframes wave {
             0%, 100% { height: 6px; }
             50% { height: 32px; }
@@ -89,7 +85,7 @@
     <!-- APP CONTAINER -->
     <div id="app" class="h-full w-full flex flex-col bg-dark-950 relative">
 
-        <!-- AUTH SCREEN (LOGIN / REGISTER MODAL OVERLAY) -->
+        <!-- AUTH SCREEN (LOGIN / REGISTER) -->
         <div id="auth-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark-950/95 backdrop-blur-2xl">
             <div class="glass-panel w-full max-w-md p-8 rounded-3xl border-gold-glow relative overflow-hidden shadow-2xl">
                 <div class="absolute -top-24 -left-24 w-48 h-48 bg-gold-500/20 rounded-full blur-3xl"></div>
@@ -112,10 +108,10 @@
                 <!-- Form Login -->
                 <form id="form-login" onsubmit="handleAuth(event, 'login')" class="space-y-4 relative z-10">
                     <div>
-                        <label class="text-xs font-semibold text-slate-300 mb-1 block">Số điện thoại / Mã ZinID</label>
+                        <label class="text-xs font-semibold text-slate-300 mb-1 block">Số điện thoại</label>
                         <div class="relative">
                             <i class="fa-solid fa-phone absolute left-3.5 top-3 text-slate-500 text-xs"></i>
-                            <input type="text" id="login-phone" required placeholder="Nhập SĐT..." class="w-full bg-slate-950/90 border border-slate-800 rounded-xl py-2.5 pl-10 pr-4 text-xs text-slate-100 focus:outline-none focus:border-gold-500 transition-colors">
+                            <input type="tel" id="login-phone" required placeholder="0912345678" class="w-full bg-slate-950/90 border border-slate-800 rounded-xl py-2.5 pl-10 pr-4 text-xs text-slate-100 focus:outline-none focus:border-gold-500 transition-colors">
                         </div>
                     </div>
                     <div>
@@ -137,8 +133,8 @@
                         <input type="text" id="reg-name" required placeholder="Nguyễn Văn A" class="w-full bg-slate-950/90 border border-slate-800 rounded-xl py-2.5 px-3.5 text-xs text-slate-100 focus:outline-none focus:border-gold-500 transition-colors">
                     </div>
                     <div>
-                        <label class="text-xs font-semibold text-slate-300 mb-1 block">Số điện thoại (Dùng làm SĐT ZinCall)</label>
-                        <input type="text" id="reg-phone" required placeholder="0901234567" class="w-full bg-slate-950/90 border border-slate-800 rounded-xl py-2.5 px-3.5 text-xs text-slate-100 focus:outline-none focus:border-gold-500 transition-colors">
+                        <label class="text-xs font-semibold text-slate-300 mb-1 block">Số điện thoại</label>
+                        <input type="tel" id="reg-phone" required placeholder="0912345678" class="w-full bg-slate-950/90 border border-slate-800 rounded-xl py-2.5 px-3.5 text-xs text-slate-100 focus:outline-none focus:border-gold-500 transition-colors">
                     </div>
                     <div>
                         <label class="text-xs font-semibold text-slate-300 mb-1 block">Mật khẩu</label>
@@ -148,6 +144,11 @@
                         Tạo Tài Khoản
                     </button>
                 </form>
+
+                <div class="mt-6 pt-4 border-t border-slate-800/80 flex justify-between items-center text-xs text-slate-400 relative z-10">
+                    <span>Dùng thử kết bạn nhanh:</span>
+                    <button onclick="createSampleAccounts()" class="text-gold-400 font-bold underline hover:text-gold-300">Tạo 2 SĐT Mẫu</button>
+                </div>
             </div>
         </div>
 
@@ -180,7 +181,6 @@
                 <div class="flex flex-col gap-4 items-center">
                     <button onclick="openProfileModal()" class="relative group" title="Hồ sơ & Đổi Avatar">
                         <div id="my-avatar-container" class="w-10 h-10 rounded-2xl overflow-hidden border-2 border-gold-500/50 group-hover:border-gold-400 transition-all flex items-center justify-center bg-slate-800 text-gold-400 font-bold text-base">
-                            <!-- Avatar image or fallback letter -->
                         </div>
                         <span class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-dark-900 rounded-full"></span>
                     </button>
@@ -190,7 +190,7 @@
                 </div>
             </aside>
 
-            <!-- 2. SIDEBAR LIST (CHATS & CONTACTS) -->
+            <!-- 2. SIDEBAR LIST -->
             <section class="w-80 md:w-96 bg-dark-900 border-r border-slate-800/80 flex flex-col z-10 shrink-0">
                 <div class="p-4 border-b border-slate-800/80 space-y-3">
                     <div class="flex items-center justify-between">
@@ -206,7 +206,6 @@
                     </div>
                 </div>
 
-                <!-- Chat / Contact List Content -->
                 <div id="chat-list" class="flex-1 overflow-y-auto p-2 space-y-1">
                     <!-- Dynamic rendering -->
                 </div>
@@ -214,12 +213,9 @@
 
             <!-- 3. CHAT WORKSPACE AREA -->
             <main id="chat-workspace" class="flex-1 flex flex-col bg-slate-950 relative">
-                
-                <!-- Chat Header -->
                 <header id="chat-header" class="h-16 border-b border-slate-800/80 px-6 flex items-center justify-between bg-dark-900/60 backdrop-blur-md z-10">
                     <div class="flex items-center gap-3">
                         <div id="active-chat-avatar-box" class="w-10 h-10 rounded-2xl border border-gold-500/30 overflow-hidden bg-slate-800 flex items-center justify-center font-bold text-gold-400 text-sm">
-                            <!-- Avatar or Letter -->
                         </div>
                         <div>
                             <h3 id="active-chat-name" class="font-bold text-slate-100 text-sm">Chọn một cuộc trò chuyện</h3>
@@ -238,7 +234,6 @@
                     </div>
                 </header>
 
-                <!-- Messages Stream -->
                 <div id="messages-container" class="flex-1 overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-dark-900/30 to-transparent">
                     <div id="empty-workspace-state" class="h-full flex flex-col items-center justify-center text-slate-600 gap-3">
                         <div class="w-16 h-16 rounded-full border border-slate-800 flex items-center justify-center text-2xl text-slate-700">
@@ -248,7 +243,6 @@
                     </div>
                 </div>
 
-                <!-- Input Footer -->
                 <div id="chat-input-area" class="p-4 border-t border-slate-800/80 bg-dark-900/80 backdrop-blur-md hidden">
                     <form onsubmit="handleSendMessage(event)" class="flex items-center gap-2">
                         <input id="chat-input" type="text" placeholder="Nhập tin nhắn bảo mật..." class="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-100 focus:outline-none focus:border-gold-500/50 transition-colors">
@@ -261,7 +255,7 @@
             </main>
         </div>
 
-        <!-- 4. PROFILE & AVATAR UPLOAD MODAL -->
+        <!-- 4. PROFILE MODAL -->
         <div id="profile-modal" class="fixed inset-0 z-50 hidden bg-dark-950/80 backdrop-blur-md flex items-center justify-center p-4">
             <div class="glass-panel w-full max-w-sm p-6 rounded-3xl border-gold-glow relative">
                 <div class="flex items-center justify-between mb-6">
@@ -270,10 +264,8 @@
                 </div>
 
                 <div class="flex flex-col items-center gap-4">
-                    <!-- Avatar Preview & Edit -->
                     <div class="relative group cursor-pointer" onclick="document.getElementById('avatar-file-input').click()">
                         <div id="profile-modal-avatar-box" class="w-24 h-24 rounded-3xl overflow-hidden border-2 border-gold-500/60 shadow-xl bg-slate-800 flex items-center justify-center text-3xl font-extrabold text-gold-400">
-                            <!-- Preview -->
                         </div>
                         <div class="absolute inset-0 bg-dark-950/60 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-gold-400 text-xs font-bold gap-1">
                             <i class="fa-solid fa-camera text-base"></i>
@@ -287,19 +279,8 @@
                         <p id="profile-modal-phone" class="text-xs text-slate-400">SĐT: ---</p>
                     </div>
 
-                    <div class="w-full bg-slate-900/80 p-3 rounded-2xl border border-slate-800/80 text-xs space-y-2 mt-2">
-                        <div class="flex justify-between text-slate-400">
-                            <span>Gói dịch vụ:</span>
-                            <span class="text-gold-400 font-bold">ZinCall VIP Membership</span>
-                        </div>
-                        <div class="flex justify-between text-slate-400">
-                            <span>Bảo mật:</span>
-                            <span class="text-emerald-400 font-bold">Mã Hóa Trực Tiếp</span>
-                        </div>
-                    </div>
-
                     <button onclick="document.getElementById('avatar-file-input').click()" class="w-full py-2.5 bg-slate-800 border border-gold-500/40 text-gold-400 font-bold text-xs rounded-xl hover:bg-slate-700 transition-colors mt-2">
-                        <i class="fa-solid fa-upload mr-1.5"></i> Tải Ảnh Đại Diện Mới
+                        <i class="fa-solid fa-upload mr-1.5"></i> Tải Ảnh Đại Diện Mới (Tự nén)
                     </button>
                 </div>
             </div>
@@ -320,12 +301,10 @@
 
             <div class="flex-1 flex flex-col items-center justify-center relative my-4">
                 <div id="video-container" class="relative w-full max-w-4xl h-[70vh] rounded-3xl overflow-hidden border-gold-glow bg-slate-950 flex items-center justify-center">
-                    
                     <video id="remote-video" autoplay playsinline class="w-full h-full object-cover"></video>
                     
                     <div id="remote-avatar-fallback" class="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-dark-900 to-dark-950">
                         <div id="call-remote-avatar-box" class="w-28 h-28 rounded-full overflow-hidden border-4 border-gold-500/40 shadow-2xl mb-4 bg-slate-800 flex items-center justify-center font-bold text-3xl text-gold-400">
-                            <!-- Avatar or Letter -->
                         </div>
                         <h2 id="call-remote-name" class="text-xl font-bold text-slate-100">---</h2>
                         <p id="call-status-text" class="text-xs text-gold-400 mt-1">Đang kết nối tín hiệu mã hóa...</p>
@@ -339,7 +318,6 @@
                         </div>
                     </div>
 
-                    <!-- PIP Preview -->
                     <div class="absolute bottom-4 right-4 w-32 h-44 sm:w-44 sm:h-60 rounded-2xl overflow-hidden border-2 border-gold-500/50 shadow-2xl bg-slate-900 z-20">
                         <video id="local-video" autoplay playsinline muted class="w-full h-full object-cover"></video>
                         <div id="local-video-off" class="absolute inset-0 bg-slate-900 flex flex-col items-center justify-center text-slate-500 hidden">
@@ -355,11 +333,9 @@
                 <button id="btn-toggle-mic" onclick="toggleMic()" class="w-14 h-14 rounded-2xl bg-slate-800 border border-slate-700 text-slate-200 hover:text-gold-400 flex items-center justify-center text-lg transition-all active:scale-95 shadow-lg">
                     <i class="fa-solid fa-microphone"></i>
                 </button>
-
                 <button id="btn-toggle-cam" onclick="toggleCam()" class="w-14 h-14 rounded-2xl bg-slate-800 border border-slate-700 text-slate-200 hover:text-gold-400 flex items-center justify-center text-lg transition-all active:scale-95 shadow-lg">
                     <i class="fa-solid fa-video"></i>
                 </button>
-
                 <button onclick="endCall()" class="w-16 h-16 rounded-2xl bg-gradient-to-r from-rose-600 to-red-700 text-white font-bold flex items-center justify-center text-xl transition-all active:scale-95 shadow-xl border border-red-500/40" title="Tắt máy">
                     <i class="fa-solid fa-phone-slash"></i>
                 </button>
@@ -375,9 +351,9 @@
                 </div>
                 <div class="space-y-4">
                     <div>
-                        <label class="text-xs text-slate-400 mb-1 block">Nhập chính xác Số điện thoại người dùng đã đăng ký</label>
+                        <label class="text-xs text-slate-400 mb-1 block">Nhập chính xác Số điện thoại người dùng</label>
                         <div class="flex gap-2">
-                            <input id="search-friend-input" type="text" placeholder="Nhập SĐT..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-100 focus:outline-none focus:border-gold-500">
+                            <input id="search-friend-input" type="tel" placeholder="Nhập SĐT..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-100 focus:outline-none focus:border-gold-500">
                             <button onclick="searchFriendByPhone()" class="px-4 py-2 bg-gold-gradient text-dark-950 font-bold text-xs rounded-xl hover:brightness-110">Tìm kiếm</button>
                         </div>
                     </div>
@@ -385,7 +361,6 @@
                     <div id="search-result" class="hidden p-3.5 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <div id="found-user-avatar-box" class="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 overflow-hidden flex items-center justify-center font-bold text-gold-400 text-xs">
-                                <!-- Avatar -->
                             </div>
                             <div>
                                 <p id="found-user-name" class="text-xs font-bold text-slate-100">---</p>
@@ -412,16 +387,14 @@
 
     <!-- APP LOGIC & PERSISTENCE -->
     <script>
-        /* Persistent Storage Keys */
         const STORAGE_USERS = 'zincall_users_db_v1';
         const STORAGE_SESSION = 'zincall_active_session_v1';
         const STORAGE_CHATS = 'zincall_chats_db_v1';
 
-        /* App State */
-        let dbUsers = {};         // { [phone]: { name, phone, password, avatar, friends: [phone] } }
-        let currentUser = null;   // Active logged user
-        let dbChats = {};         // { [chatKey]: [ { senderPhone, text, timestamp } ] }
-        let activeChatUser = null;// Selected friend object
+        let dbUsers = {}; 
+        let currentUser = null;
+        let dbChats = {}; 
+        let activeChatUser = null;
         
         let localStream = null;
         let callTimerInterval = null;
@@ -430,13 +403,11 @@
         let isCamOff = false;
         let searchedUser = null;
 
-        // Initialize App
         window.onload = () => {
             loadDatabase();
             checkAutoLogin();
         };
 
-        /* LocalStorage Persistence Layer */
         function loadDatabase() {
             try {
                 const rawUsers = localStorage.getItem(STORAGE_USERS);
@@ -477,7 +448,6 @@
             }
         }
 
-        /* Authentication Logic */
         function switchAuthTab(type) {
             const tabLogin = document.getElementById('tab-login');
             const tabRegister = document.getElementById('tab-register');
@@ -499,48 +469,78 @@
 
         function handleAuth(e, type) {
             e.preventDefault();
-            loadDatabase(); // Ensure fresh DB
+            loadDatabase();
 
             if (type === 'register') {
                 const name = document.getElementById('reg-name').value.trim();
                 const phone = document.getElementById('reg-phone').value.trim();
-                const password = document.getElementById('reg-password').value.trim();
+                const password = document.getElementById('reg-password').value;
+
+                if (!phone || phone.length < 9) {
+                    showToast('Số điện thoại không hợp lệ!');
+                    return;
+                }
 
                 if (dbUsers[phone]) {
                     showToast('Số điện thoại này đã được đăng ký!');
                     return;
                 }
 
-                dbUsers[phone] = {
+                const newUser = {
                     name,
                     phone,
                     password,
-                    avatar: null, // No default automatic avatar
-                    friends: []   // Empty friend list by default
+                    avatar: '',
+                    friends: []
                 };
 
+                dbUsers[phone] = newUser;
                 saveDatabase();
-                currentUser = dbUsers[phone];
-                saveSession(phone);
 
-                showToast('Đăng ký tài khoản mới thành công!');
+                currentUser = newUser;
+                saveSession(phone);
+                document.getElementById('auth-screen').classList.add('hidden');
+                updateUserProfileUI();
+                renderChatList();
+                showToast('Đăng ký tài khoản thành công!');
+
             } else {
                 const phone = document.getElementById('login-phone').value.trim();
-                const password = document.getElementById('login-password').value.trim();
+                const password = document.getElementById('login-password').value;
 
-                if (!dbUsers[phone] || dbUsers[phone].password !== password) {
+                const user = dbUsers[phone];
+                if (!user || user.password !== password) {
                     showToast('Số điện thoại hoặc mật khẩu không chính xác!');
                     return;
                 }
 
-                currentUser = dbUsers[phone];
+                currentUser = user;
                 saveSession(phone);
-                showToast(`Đăng nhập thành công! Chào ${currentUser.name}`);
+                document.getElementById('auth-screen').classList.add('hidden');
+                updateUserProfileUI();
+                renderChatList();
+                showToast(`Chào mừng, ${currentUser.name}!`);
             }
+        }
 
-            document.getElementById('auth-screen').classList.add('hidden');
-            updateUserProfileUI();
-            renderChatList();
+        function createSampleAccounts() {
+            loadDatabase();
+            dbUsers['0911111111'] = {
+                name: 'Đinh Nam (VIP)',
+                phone: '0911111111',
+                password: '123',
+                avatar: '',
+                friends: ['0922222222']
+            };
+            dbUsers['0922222222'] = {
+                name: 'Hoàng Linh',
+                phone: '0922222222',
+                password: '123',
+                avatar: '',
+                friends: ['0911111111']
+            };
+            saveDatabase();
+            alert('Đã tạo 2 SĐT thử nghiệm thành công:\n\n1) SĐT: 0911111111 | Mật khẩu: 123\n2) SĐT: 0922222222 | Mật khẩu: 123');
         }
 
         function logout() {
@@ -548,234 +548,126 @@
             currentUser = null;
             activeChatUser = null;
             document.getElementById('auth-screen').classList.remove('hidden');
-            document.getElementById('empty-workspace-state').classList.remove('hidden');
-            document.getElementById('chat-actions').classList.add('hidden');
-            document.getElementById('chat-input-area').classList.add('hidden');
-            showToast('Đã đăng xuất.');
+            showToast('Đã đăng xuất tài khoản.');
         }
 
-        /* Avatar Helper */
-        function renderAvatarBox(container, userObj) {
-            if (!container) return;
-            container.innerHTML = '';
-
-            if (userObj && userObj.avatar) {
-                const img = document.createElement('img');
-                img.src = userObj.avatar;
-                img.className = 'w-full h-full object-cover';
-                container.appendChild(img);
-            } else {
-                const initial = (userObj && userObj.name) ? userObj.name.charAt(0).toUpperCase() : '?';
-                const span = document.createElement('span');
-                span.innerText = initial;
-                container.appendChild(span);
-            }
-        }
-
-        function updateUserProfileUI() {
-            if (!currentUser) return;
-            const myAvatarBox = document.getElementById('my-avatar-container');
-            renderAvatarBox(myAvatarBox, currentUser);
-        }
-
-        /* Avatar Upload Logic */
-        function openProfileModal() {
-            if (!currentUser) return;
-            document.getElementById('profile-modal').classList.remove('hidden');
-            document.getElementById('profile-modal-name').innerText = currentUser.name;
-            document.getElementById('profile-modal-phone').innerText = `SĐT: ${currentUser.phone}`;
-            renderAvatarBox(document.getElementById('profile-modal-avatar-box'), currentUser);
-        }
-
-        function closeProfileModal() {
-            document.getElementById('profile-modal').classList.add('hidden');
-        }
-
-        function handleAvatarUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            if (file.size > 2 * 1024 * 1024) { // 2MB limit for localStorage safety
-                showToast('Kích thước ảnh nên nhỏ hơn 2MB!');
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const base64Img = e.target.result;
-                currentUser.avatar = base64Img;
-                dbUsers[currentUser.phone].avatar = base64Img;
-                saveDatabase();
-
-                updateUserProfileUI();
-                renderAvatarBox(document.getElementById('profile-modal-avatar-box'), currentUser);
-                renderChatList();
-                if (activeChatUser) selectChat(activeChatUser);
-                showToast('Cập nhật ảnh đại diện mới thành công!');
-            };
-            reader.readAsDataURL(file);
-        }
-
-        /* Search & Add Friend Logic */
-        function openAddFriendModal() {
-            document.getElementById('add-friend-modal').classList.remove('hidden');
-            document.getElementById('search-result').classList.add('hidden');
-            document.getElementById('search-empty-result').classList.add('hidden');
-            document.getElementById('search-friend-input').value = '';
-        }
-
-        function closeAddFriendModal() {
-            document.getElementById('add-friend-modal').classList.add('hidden');
-        }
-
-        function searchFriendByPhone() {
-            const phoneQuery = document.getElementById('search-friend-input').value.trim();
-            document.getElementById('search-result').classList.add('hidden');
-            document.getElementById('search-empty-result').classList.add('hidden');
-
-            if (!phoneQuery) return;
-
-            if (phoneQuery === currentUser.phone) {
-                showToast('Không thể tìm chính số điện thoại của bạn!');
-                return;
-            }
-
-            loadDatabase();
-            if (dbUsers[phoneQuery]) {
-                searchedUser = dbUsers[phoneQuery];
-                document.getElementById('search-result').classList.remove('hidden');
-                document.getElementById('found-user-name').innerText = searchedUser.name;
-                document.getElementById('found-user-phone').innerText = `SĐT: ${searchedUser.phone}`;
-                renderAvatarBox(document.getElementById('found-user-avatar-box'), searchedUser);
-
-                const isAlreadyFriend = currentUser.friends.includes(searchedUser.phone);
-                const btn = document.getElementById('btn-add-found-user');
-                if (isAlreadyFriend) {
-                    btn.innerText = 'Đã Bạn Bè';
-                    btn.className = "px-3 py-1.5 bg-slate-800 text-slate-400 border border-slate-700 rounded-lg text-xs font-bold cursor-default";
-                    btn.disabled = true;
-                } else {
-                    btn.innerText = 'Kết Bạn';
-                    btn.className = "px-3 py-1.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-lg text-xs font-bold hover:bg-emerald-500 hover:text-white transition-all";
-                    btn.disabled = false;
-                }
-            } else {
-                searchedUser = null;
-                document.getElementById('search-empty-result').classList.remove('hidden');
-            }
-        }
-
-        function addFoundUserAsFriend() {
-            if (!searchedUser || !currentUser) return;
-            
-            if (!currentUser.friends.includes(searchedUser.phone)) {
-                currentUser.friends.push(searchedUser.phone);
-                dbUsers[currentUser.phone].friends = currentUser.friends;
-
-                // Mutual friendship
-                if (!dbUsers[searchedUser.phone].friends.includes(currentUser.phone)) {
-                    dbUsers[searchedUser.phone].friends.push(currentUser.phone);
-                }
-
-                saveDatabase();
-                showToast(`Đã kết bạn với ${searchedUser.name}!`);
-                closeAddFriendModal();
-                renderChatList();
-                selectChat(searchedUser);
-            }
-        }
-
-        /* Render Contact / Chat List */
         function switchMainTab(tab) {
-            document.querySelectorAll('.nav-btn').forEach(b => {
-                b.classList.remove('text-gold-400', 'bg-slate-800/80', 'border', 'border-gold-500/30');
-                b.classList.add('text-slate-400');
-            });
-            const btn = document.getElementById(`nav-${tab}`);
-            if (btn) {
-                btn.classList.add('text-gold-400', 'bg-slate-800/80', 'border', 'border-gold-500/30');
-                btn.classList.remove('text-slate-400');
-            }
+            const btnChat = document.getElementById('nav-chat');
+            const btnContacts = document.getElementById('nav-contacts');
+            const title = document.getElementById('sidebar-title');
 
-            const sidebarTitle = document.getElementById('sidebar-title');
-            if (tab === 'chat') sidebarTitle.innerText = "Trò Chuyện VIP";
-            if (tab === 'contacts') sidebarTitle.innerText = "Danh Bạ Bạn Bè";
-            renderChatList();
+            if (tab === 'chat') {
+                btnChat.className = "nav-btn active relative p-3 rounded-2xl text-gold-400 bg-slate-800/80 border border-gold-500/35 transition-all hover:scale-110";
+                btnContacts.className = "nav-btn p-3 rounded-2xl text-slate-400 hover:text-gold-400 hover:bg-slate-800/50 transition-all hover:scale-110";
+                title.innerText = "Trò Chuyện";
+            } else {
+                btnContacts.className = "nav-btn active relative p-3 rounded-2xl text-gold-400 bg-slate-800/80 border border-gold-500/35 transition-all hover:scale-110";
+                btnChat.className = "nav-btn p-3 rounded-2xl text-slate-400 hover:text-gold-400 hover:bg-slate-800/50 transition-all hover:scale-110";
+                title.innerText = "Danh Bạ VIP";
+            }
+            renderChatList(tab);
         }
 
-        function renderChatList(filter = '') {
-            const listEl = document.getElementById('chat-list');
-            listEl.innerHTML = '';
+        function renderChatList(mode = 'chat') {
+            const listContainer = document.getElementById('chat-list');
+            listContainer.innerHTML = '';
 
             if (!currentUser || !currentUser.friends || currentUser.friends.length === 0) {
-                listEl.innerHTML = `
-                    <div class="p-6 text-center text-xs text-slate-500 space-y-2">
-                        <i class="fa-solid fa-user-group text-2xl text-slate-700 block mb-1"></i>
-                        <p>Danh sách bạn bè trống.</p>
-                        <p class="text-[10px] text-slate-600">Bấm nút (+) bên trên để tìm & kết bạn qua SĐT!</p>
+                listContainer.innerHTML = `
+                    <div class="p-6 text-center text-slate-500 text-xs">
+                        <p class="mb-2">Chưa có liên hệ nào.</p>
+                        <button onclick="openAddFriendModal()" class="text-gold-400 underline font-semibold">Thêm bạn mới ngay</button>
                     </div>
                 `;
                 return;
             }
 
-            const friendObjects = currentUser.friends
-                .map(phone => dbUsers[phone])
-                .filter(u => u && u.name.toLowerCase().includes(filter.toLowerCase()));
+            currentUser.friends.forEach(friendPhone => {
+                const friend = dbUsers[friendPhone];
+                if (!friend) return;
 
-            if (friendObjects.length === 0) {
-                listEl.innerHTML = `<div class="p-4 text-center text-xs text-slate-500">Không tìm thấy kết quả.</div>`;
-                return;
-            }
+                const isActive = activeChatUser && activeChatUser.phone === friend.phone;
+                const item = document.createElement('div');
+                item.className = `p-3 rounded-2xl cursor-pointer transition-all flex items-center gap-3 ${isActive ? 'bg-slate-800/90 border border-gold-500/30' : 'hover:bg-slate-900/60 border border-transparent'}`;
+                item.onclick = () => selectChatTarget(friend);
 
-            friendObjects.forEach(friend => {
-                const isSelected = activeChatUser && activeChatUser.phone === friend.phone;
-                const div = document.createElement('div');
-                div.onclick = () => selectChat(friend);
-                div.className = `p-3 rounded-2xl flex items-center gap-3 cursor-pointer transition-all ${isSelected ? 'bg-slate-800/90 border border-gold-500/30' : 'hover:bg-slate-800/40'}`;
-                
-                const avatarBox = document.createElement('div');
-                avatarBox.className = 'w-11 h-11 rounded-2xl border border-slate-700 bg-slate-800 overflow-hidden flex items-center justify-center font-bold text-gold-400 text-sm shrink-0';
-                renderAvatarBox(avatarBox, friend);
+                let avatarHTML = friend.avatar ? `<img src="${friend.avatar}" class="w-full h-full object-cover">` : `<span class="text-gold-400 font-bold text-sm">${friend.name.charAt(0).toUpperCase()}</span>`;
 
-                const chatKey = getChatKey(currentUser.phone, friend.phone);
-                const msgs = dbChats[chatKey] || [];
-                const lastMsg = msgs.length > 0 ? msgs[msgs.length - 1].text : 'Bắt đầu trò chuyện...';
-
-                div.appendChild(avatarBox);
-                div.innerHTML += `
+                item.innerHTML = `
+                    <div class="w-12 h-12 rounded-2xl bg-slate-800 border border-gold-500/20 overflow-hidden flex items-center justify-center shrink-0">
+                        ${avatarHTML}
+                    </div>
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center justify-between mb-0.5">
-                            <h4 class="text-xs font-bold text-slate-100 truncate">${friend.name}</h4>
-                            <span class="text-[9px] text-slate-500">${friend.phone}</span>
+                            <h4 class="font-bold text-xs text-slate-100 truncate">${friend.name}</h4>
+                            <span class="text-[9px] text-slate-500">ZinVIP</span>
                         </div>
-                        <p class="text-[11px] text-slate-400 truncate">${lastMsg}</p>
+                        <p class="text-[11px] text-slate-400 truncate">SĐT: ${friend.phone}</p>
                     </div>
                 `;
-                listEl.appendChild(div);
+                listContainer.appendChild(item);
             });
         }
 
-        function filterChatList(q) {
-            renderChatList(q);
+        function filterChatList(keyword) {
+            const listContainer = document.getElementById('chat-list');
+            listContainer.innerHTML = '';
+            if (!currentUser || !currentUser.friends) return;
+
+            const filtered = currentUser.friends.filter(phone => {
+                const f = dbUsers[phone];
+                return f && (f.name.toLowerCase().includes(keyword.toLowerCase()) || f.phone.includes(keyword));
+            });
+
+            if (filtered.length === 0) {
+                listContainer.innerHTML = `<div class="p-4 text-center text-slate-500 text-xs">Không tìm thấy kết quả phù hợp</div>`;
+                return;
+            }
+
+            filtered.forEach(friendPhone => {
+                const friend = dbUsers[friendPhone];
+                const isActive = activeChatUser && activeChatUser.phone === friend.phone;
+                const item = document.createElement('div');
+                item.className = `p-3 rounded-2xl cursor-pointer transition-all flex items-center gap-3 ${isActive ? 'bg-slate-800/90 border border-gold-500/30' : 'hover:bg-slate-900/60 border border-transparent'}`;
+                item.onclick = () => selectChatTarget(friend);
+
+                let avatarHTML = friend.avatar ? `<img src="${friend.avatar}" class="w-full h-full object-cover">` : `<span class="text-gold-400 font-bold text-sm">${friend.name.charAt(0).toUpperCase()}</span>`;
+
+                item.innerHTML = `
+                    <div class="w-12 h-12 rounded-2xl bg-slate-800 border border-gold-500/20 overflow-hidden flex items-center justify-center shrink-0">
+                        ${avatarHTML}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-bold text-xs text-slate-100 truncate">${friend.name}</h4>
+                        <p class="text-[11px] text-slate-400 truncate">SĐT: ${friend.phone}</p>
+                    </div>
+                `;
+                listContainer.appendChild(item);
+            });
         }
 
-        /* Select Chat & Messages Logic */
-        function getChatKey(phone1, phone2) {
-            return [phone1, phone2].sort().join('_');
-        }
-
-        function selectChat(friend) {
+        function selectChatTarget(friend) {
             activeChatUser = friend;
             document.getElementById('empty-workspace-state').classList.add('hidden');
-            document.getElementById('chat-actions').classList.remove('hidden');
             document.getElementById('chat-input-area').classList.remove('hidden');
+            document.getElementById('chat-actions').classList.remove('hidden');
 
             document.getElementById('active-chat-name').innerText = friend.name;
-            document.getElementById('active-chat-status').innerText = `SĐT: ${friend.phone}`;
+            document.getElementById('active-chat-status').innerText = `SĐT: ${friend.phone} • Trực tuyến`;
 
-            renderAvatarBox(document.getElementById('active-chat-avatar-box'), friend);
+            const avatarBox = document.getElementById('active-chat-avatar-box');
+            if (friend.avatar) {
+                avatarBox.innerHTML = `<img src="${friend.avatar}" class="w-full h-full object-cover">`;
+            } else {
+                avatarBox.innerText = friend.name.charAt(0).toUpperCase();
+            }
+
             renderChatList();
             renderMessages();
+        }
+
+        function getChatKey(p1, p2) {
+            return [p1, p2].sort().join('_');
         }
 
         function renderMessages() {
@@ -784,14 +676,14 @@
 
             if (!activeChatUser) return;
 
-            const chatKey = getChatKey(currentUser.phone, activeChatUser.phone);
-            const messages = dbChats[chatKey] || [];
+            const key = getChatKey(currentUser.phone, activeChatUser.phone);
+            const messages = dbChats[key] || [];
 
             if (messages.length === 0) {
                 container.innerHTML = `
-                    <div class="h-full flex flex-col items-center justify-center text-slate-600 text-xs gap-1">
-                        <i class="fa-solid fa-paper-plane text-lg text-slate-700 mb-1"></i>
-                        <p>Chưa có tin nhắn nào. Hãy gửi lời chào!</p>
+                    <div class="h-full flex flex-col items-center justify-center text-slate-600 gap-2">
+                        <i class="fa-solid fa-shield-halved text-3xl text-gold-500/40"></i>
+                        <p class="text-xs">Bắt đầu cuộc trò chuyện mã hóa với ${activeChatUser.name}</p>
                     </div>
                 `;
                 return;
@@ -799,15 +691,16 @@
 
             messages.forEach(msg => {
                 const isMe = msg.senderPhone === currentUser.phone;
-                const div = document.createElement('div');
-                div.className = `flex ${isMe ? 'justify-end' : 'justify-start'}`;
+                const msgEl = document.createElement('div');
+                msgEl.className = `flex ${isMe ? 'justify-end' : 'justify-start'}`;
 
-                div.innerHTML = `
-                    <div class="max-w-[70%] p-3 rounded-2xl text-xs leading-relaxed ${isMe ? 'bg-gold-gradient text-dark-950 font-semibold rounded-tr-none shadow-md shadow-gold-500/10' : 'bg-slate-800 text-slate-100 border border-slate-700/60 rounded-tl-none'}">
-                        ${msg.text}
+                msgEl.innerHTML = `
+                    <div class="max-w-[75%] md:max-w-[60%] px-4 py-3 rounded-2xl text-xs space-y-1 shadow-md ${isMe ? 'bg-gold-gradient text-dark-950 font-medium rounded-tr-none' : 'glass-panel text-slate-100 rounded-tl-none border border-white/5'}">
+                        <p class="leading-relaxed">${msg.text}</p>
+                        <span class="text-[9px] block text-right opacity-60">${new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                     </div>
                 `;
-                container.appendChild(div);
+                container.appendChild(msgEl);
             });
 
             container.scrollTop = container.scrollHeight;
@@ -819,53 +712,207 @@
             const text = input.value.trim();
             if (!text || !activeChatUser) return;
 
-            const chatKey = getChatKey(currentUser.phone, activeChatUser.phone);
-            if (!dbChats[chatKey]) dbChats[chatKey] = [];
+            const key = getChatKey(currentUser.phone, activeChatUser.phone);
+            if (!dbChats[key]) dbChats[key] = [];
 
-            dbChats[chatKey].push({
+            dbChats[key].push({
                 senderPhone: currentUser.phone,
-                text: text,
+                text,
                 timestamp: Date.now()
             });
 
             saveDatabase();
             input.value = '';
             renderMessages();
-            renderChatList();
         }
 
-        /* Calls System */
+        function updateUserProfileUI() {
+            const container = document.getElementById('my-avatar-container');
+            if (currentUser.avatar) {
+                container.innerHTML = `<img src="${currentUser.avatar}" class="w-full h-full object-cover">`;
+            } else {
+                container.innerText = currentUser.name.charAt(0).toUpperCase();
+            }
+        }
+
+        function openProfileModal() {
+            if (!currentUser) return;
+            document.getElementById('profile-modal-name').innerText = currentUser.name;
+            document.getElementById('profile-modal-phone').innerText = `SĐT: ${currentUser.phone}`;
+            
+            const box = document.getElementById('profile-modal-avatar-box');
+            if (currentUser.avatar) {
+                box.innerHTML = `<img src="${currentUser.avatar}" class="w-full h-full object-cover">`;
+            } else {
+                box.innerText = currentUser.name.charAt(0).toUpperCase();
+            }
+
+            document.getElementById('profile-modal').classList.remove('hidden');
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profile-modal').classList.add('hidden');
+        }
+
+        function handleAvatarUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const MAX_SIZE = 250;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_SIZE) {
+                            height *= MAX_SIZE / width;
+                            width = MAX_SIZE;
+                        }
+                    } else {
+                        if (height > MAX_SIZE) {
+                            width *= MAX_SIZE / height;
+                            height = MAX_SIZE;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.85);
+
+                    currentUser.avatar = compressedBase64;
+                    dbUsers[currentUser.phone] = currentUser;
+                    saveDatabase();
+
+                    updateUserProfileUI();
+                    openProfileModal();
+                    renderChatList();
+                    showToast('Cập nhật ảnh đại diện thành công!');
+                }
+                img.src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+
+        function openAddFriendModal() {
+            document.getElementById('search-friend-input').value = '';
+            document.getElementById('search-result').classList.add('hidden');
+            document.getElementById('search-empty-result').classList.add('hidden');
+            document.getElementById('add-friend-modal').classList.remove('hidden');
+        }
+
+        function closeAddFriendModal() {
+            document.getElementById('add-friend-modal').classList.add('hidden');
+        }
+
+        function searchFriendByPhone() {
+            const phone = document.getElementById('search-friend-input').value.trim();
+            loadDatabase();
+
+            const resBox = document.getElementById('search-result');
+            const emptyBox = document.getElementById('search-empty-result');
+
+            if (!phone || phone === currentUser.phone || !dbUsers[phone]) {
+                resBox.classList.add('hidden');
+                emptyBox.classList.remove('hidden');
+                return;
+            }
+
+            searchedUser = dbUsers[phone];
+            emptyBox.classList.add('hidden');
+            resBox.classList.remove('hidden');
+
+            document.getElementById('found-user-name').innerText = searchedUser.name;
+            document.getElementById('found-user-phone').innerText = `SĐT: ${searchedUser.phone}`;
+            
+            const avatarBox = document.getElementById('found-user-avatar-box');
+            if (searchedUser.avatar) {
+                avatarBox.innerHTML = `<img src="${searchedUser.avatar}" class="w-full h-full object-cover">`;
+            } else {
+                avatarBox.innerText = searchedUser.name.charAt(0).toUpperCase();
+            }
+
+            const btnAdd = document.getElementById('btn-add-found-user');
+            if (currentUser.friends && currentUser.friends.includes(searchedUser.phone)) {
+                btnAdd.innerText = "Đã là bạn";
+                btnAdd.disabled = true;
+                btnAdd.className = "px-3 py-1.5 bg-slate-800 text-slate-500 rounded-lg text-xs font-bold cursor-not-allowed";
+            } else {
+                btnAdd.innerText = "Kết Bạn";
+                btnAdd.disabled = false;
+                btnAdd.className = "px-3 py-1.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-lg text-xs font-bold hover:bg-emerald-500 hover:text-white transition-all";
+            }
+        }
+
+        function addFoundUserAsFriend() {
+            if (!searchedUser) return;
+
+            if (!currentUser.friends) currentUser.friends = [];
+            if (!currentUser.friends.includes(searchedUser.phone)) {
+                currentUser.friends.push(searchedUser.phone);
+            }
+
+            if (!searchedUser.friends) searchedUser.friends = [];
+            if (!searchedUser.friends.includes(currentUser.phone)) {
+                searchedUser.friends.push(currentUser.phone);
+            }
+
+            dbUsers[currentUser.phone] = currentUser;
+            dbUsers[searchedUser.phone] = searchedUser;
+            saveDatabase();
+
+            closeAddFriendModal();
+            renderChatList();
+            showToast(`Đã thêm ${searchedUser.name} vào danh bạ!`);
+            selectChatTarget(searchedUser);
+        }
+
         async function startCall(type) {
             if (!activeChatUser) return;
 
             document.getElementById('call-modal').classList.remove('hidden');
             document.getElementById('call-remote-name').innerText = activeChatUser.name;
-            renderAvatarBox(document.getElementById('call-remote-avatar-box'), activeChatUser);
-
-            const isVideo = type === 'video';
-            document.getElementById('remote-avatar-fallback').style.display = isVideo ? 'none' : 'flex';
-
-            try {
-                localStream = await navigator.mediaDevices.getUserMedia({
-                    video: isVideo,
-                    audio: true
-                });
-
-                document.getElementById('local-video').srcObject = localStream;
-                document.getElementById('remote-video').srcObject = localStream;
-            } catch (err) {
-                console.warn("MediaDevice notice:", err);
-                showToast("Đang kích hoạt chế độ cuộc gọi riêng tư!");
+            
+            const avatarBox = document.getElementById('call-remote-avatar-box');
+            if (activeChatUser.avatar) {
+                avatarBox.innerHTML = `<img src="${activeChatUser.avatar}" class="w-full h-full object-cover">`;
+            } else {
+                avatarBox.innerText = activeChatUser.name.charAt(0).toUpperCase();
             }
 
             callSeconds = 0;
-            clearInterval(callTimerInterval);
+            document.getElementById('call-timer').innerText = "00:00";
             callTimerInterval = setInterval(() => {
                 callSeconds++;
-                const mins = String(Math.floor(callSeconds / 60)).padStart(2, '0');
-                const secs = String(callSeconds % 60).padStart(2, '0');
-                document.getElementById('call-timer').innerText = `${mins}:${secs}`;
+                const m = Math.floor(callSeconds / 60).toString().padStart(2, '0');
+                const s = (callSeconds % 60).toString().padStart(2, '0');
+                document.getElementById('call-timer').innerText = `${m}:${s}`;
             }, 1000);
+
+            try {
+                localStream = await navigator.mediaDevices.getUserMedia({
+                    audio: true,
+                    video: type === 'video'
+                });
+
+                document.getElementById('local-video').srcObject = localStream;
+                if (type === 'video') {
+                    document.getElementById('remote-video').srcObject = localStream;
+                    document.getElementById('remote-avatar-fallback').classList.add('hidden');
+                } else {
+                    document.getElementById('remote-avatar-fallback').classList.remove('hidden');
+                }
+                document.getElementById('call-status-text').innerText = "Đã thiết lập kết nối mã hóa bảo mật";
+            } catch (err) {
+                console.warn("Media devices error:", err);
+                document.getElementById('call-status-text').innerText = "Cuộc gọi giả lập (Không tìm thấy Camera/Mic)";
+            }
         }
 
         function endCall() {
@@ -873,40 +920,40 @@
                 localStream.getTracks().forEach(track => track.stop());
                 localStream = null;
             }
-            clearInterval(callTimerInterval);
+            if (callTimerInterval) clearInterval(callTimerInterval);
             document.getElementById('call-modal').classList.add('hidden');
-            showToast('Cuộc gọi đã kết thúc.');
         }
 
         function toggleMic() {
+            if (!localStream) return;
             isMicMuted = !isMicMuted;
-            if (localStream) {
-                localStream.getAudioTracks().forEach(t => t.enabled = !isMicMuted);
-            }
+            localStream.getAudioTracks()[0].enabled = !isMicMuted;
             const btn = document.getElementById('btn-toggle-mic');
-            btn.className = `w-14 h-14 rounded-2xl flex items-center justify-center text-lg transition-all active:scale-95 shadow-lg ${isMicMuted ? 'bg-red-600 text-white' : 'bg-slate-800 border border-slate-700 text-slate-200'}`;
-            showToast(isMicMuted ? 'Đã tắt Micro' : 'Đã bật Micro');
+            btn.className = isMicMuted ? 
+                "w-14 h-14 rounded-2xl bg-rose-600/20 border border-rose-500/50 text-rose-400 flex items-center justify-center text-lg transition-all shadow-lg" : 
+                "w-14 h-14 rounded-2xl bg-slate-800 border border-slate-700 text-slate-200 hover:text-gold-400 flex items-center justify-center text-lg transition-all shadow-lg";
         }
 
         function toggleCam() {
+            if (!localStream) return;
             isCamOff = !isCamOff;
-            if (localStream) {
-                localStream.getVideoTracks().forEach(t => t.enabled = !isCamOff);
-            }
+            const videoTrack = localStream.getVideoTracks()[0];
+            if (videoTrack) videoTrack.enabled = !isCamOff;
+            
             document.getElementById('local-video-off').classList.toggle('hidden', !isCamOff);
             const btn = document.getElementById('btn-toggle-cam');
-            btn.className = `w-14 h-14 rounded-2xl flex items-center justify-center text-lg transition-all active:scale-95 shadow-lg ${isCamOff ? 'bg-red-600 text-white' : 'bg-slate-800 border border-slate-700 text-slate-200'}`;
-            showToast(isCamOff ? 'Đã tắt Camera' : 'Đã bật Camera');
+            btn.className = isCamOff ? 
+                "w-14 h-14 rounded-2xl bg-rose-600/20 border border-rose-500/50 text-rose-400 flex items-center justify-center text-lg transition-all shadow-lg" : 
+                "w-14 h-14 rounded-2xl bg-slate-800 border border-slate-700 text-slate-200 hover:text-gold-400 flex items-center justify-center text-lg transition-all shadow-lg";
         }
 
-        /* Toast Popup */
         function showToast(msg) {
             const toast = document.getElementById('toast');
             document.getElementById('toast-msg').innerText = msg;
             toast.classList.remove('translate-y-[-100px]', 'opacity-0');
             setTimeout(() => {
                 toast.classList.add('translate-y-[-100px]', 'opacity-0');
-            }, 3000);
+            }, 3500);
         }
     </script>
 </body>
