@@ -17,19 +17,15 @@
                 extend: {
                     colors: {
                         gold: {
-                            100: '#FFF9E6',
                             300: '#FFE599',
                             400: '#F5C242',
                             500: '#D4AF37',
                             600: '#AA820A',
-                            700: '#806000',
                         },
                         dark: {
                             950: '#06080C',
                             900: '#0B0F19',
                             800: '#141A28',
-                            700: '#1E2638',
-                            600: '#2A344A'
                         }
                     },
                     fontFamily: {
@@ -45,709 +41,342 @@
     </script>
 
     <style>
-        ::-webkit-scrollbar { width: 5px; height: 5px; }
-        ::-webkit-scrollbar-track { background: rgba(11, 15, 25, 0.8); }
-        ::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.3); border-radius: 999px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(212, 175, 55, 0.6); }
-
         .text-gold-metallic {
             background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 30%, #B38728 60%, #FBF5B7 80%, #AA771C 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-
+        .glass-panel {
+            background: rgba(20, 26, 40, 0.75);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
         .border-gold-glow {
             border: 1px solid rgba(212, 175, 55, 0.35);
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.12);
         }
-
-        .glass-panel {
-            background: rgba(20, 26, 40, 0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        @keyframes wave {
-            0%, 100% { height: 6px; }
-            50% { height: 32px; }
-        }
-        .animate-wave-1 { animation: wave 1.2s infinite ease-in-out; }
-        .animate-wave-2 { animation: wave 1.2s infinite ease-in-out 0.2s; }
-        .animate-wave-3 { animation: wave 1.2s infinite ease-in-out 0.4s; }
-        .animate-wave-4 { animation: wave 1.2s infinite ease-in-out 0.1s; }
-        .animate-wave-5 { animation: wave 1.2s infinite ease-in-out 0.3s; }
     </style>
 </head>
 
 <body class="h-full antialiased selection:bg-gold-500 selection:text-black overflow-hidden font-sans">
 
-    <!-- APP CONTAINER -->
     <div id="app" class="h-full w-full flex flex-col bg-dark-950 relative">
 
-        <!-- AUTH SCREEN (LOGIN / REGISTER) -->
+        <!-- AUTH SCREEN -->
         <div id="auth-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark-950/95 backdrop-blur-2xl">
-            <div class="glass-panel w-full max-w-md p-8 rounded-3xl border-gold-glow relative overflow-hidden shadow-2xl">
-                <div class="absolute -top-24 -left-24 w-48 h-48 bg-gold-500/20 rounded-full blur-3xl"></div>
-                <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-gold-500/10 rounded-full blur-3xl"></div>
-
-                <div class="text-center mb-8 relative z-10">
-                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-gold-600 via-gold-400 to-amber-200 text-dark-950 shadow-lg shadow-gold-500/20 mb-3 font-extrabold text-2xl tracking-tighter">
-                        Z
-                    </div>
-                    <h1 class="text-3xl font-black tracking-wider text-gold-metallic">ZinCall</h1>
+            <div class="glass-panel w-full max-w-md p-8 rounded-3xl border-gold-glow relative shadow-2xl">
+                <div class="text-center mb-8">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-gold-600 to-amber-200 text-dark-950 font-extrabold text-2xl mb-3">Z</div>
+                    <h1 class="text-3xl font-black text-gold-metallic">ZinCall GitHub</h1>
                     <p class="text-[11px] text-slate-400 mt-1 uppercase tracking-widest font-semibold">Luxury Executive Messenger</p>
                 </div>
 
-                <!-- Auth Tabs -->
-                <div class="flex bg-slate-900/90 p-1 rounded-xl mb-6 border border-white/5 relative z-10">
-                    <button id="tab-login" onclick="switchAuthTab('login')" class="flex-1 py-2 text-xs font-bold rounded-lg transition-all text-dark-950 bg-gold-gradient shadow-md">Đăng Nhập</button>
-                    <button id="tab-register" onclick="switchAuthTab('register')" class="flex-1 py-2 text-xs font-bold text-slate-400 rounded-lg transition-all hover:text-white">Đăng Ký Tài Khoản</button>
+                <div class="flex bg-slate-900 p-1 rounded-xl mb-6 border border-white/5">
+                    <button id="tab-login" onclick="switchAuthTab('login')" class="flex-1 py-2 text-xs font-bold rounded-lg text-dark-950 bg-gold-gradient">Đăng Nhập</button>
+                    <button id="tab-register" onclick="switchAuthTab('register')" class="flex-1 py-2 text-xs font-bold text-slate-400 rounded-lg">Đăng Ký</button>
                 </div>
 
-                <!-- Form Login -->
-                <form id="form-login" onsubmit="handleAuth(event, 'login')" class="space-y-4 relative z-10">
+                <form id="form-login" onsubmit="handleAuth(event, 'login')" class="space-y-4">
                     <div>
                         <label class="text-xs font-semibold text-slate-300 mb-1 block">Số điện thoại</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-phone absolute left-3.5 top-3 text-slate-500 text-xs"></i>
-                            <input type="tel" id="login-phone" required placeholder="0912345678" class="w-full bg-slate-950/90 border border-slate-800 rounded-xl py-2.5 pl-10 pr-4 text-xs text-slate-100 focus:outline-none focus:border-gold-500 transition-colors">
-                        </div>
+                        <input type="tel" id="login-phone" required placeholder="09xxxxxxxx" class="w-full bg-slate-950 border border-slate-800 rounded-xl py-2.5 px-4 text-xs text-slate-100 focus:outline-none focus:border-gold-500">
                     </div>
                     <div>
                         <label class="text-xs font-semibold text-slate-300 mb-1 block">Mật khẩu</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-lock absolute left-3.5 top-3 text-slate-500 text-xs"></i>
-                            <input type="password" id="login-password" required placeholder="••••••••" class="w-full bg-slate-950/90 border border-slate-800 rounded-xl py-2.5 pl-10 pr-4 text-xs text-slate-100 focus:outline-none focus:border-gold-500 transition-colors">
-                        </div>
+                        <input type="password" id="login-password" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl py-2.5 px-4 text-xs text-slate-100 focus:outline-none focus:border-gold-500">
                     </div>
-                    <button type="submit" class="w-full py-3 bg-gold-gradient text-dark-950 font-extrabold text-xs uppercase tracking-wider rounded-xl hover:brightness-110 transition-all shadow-lg shadow-gold-500/20 active:scale-[0.99]">
-                        Đăng Nhập ZinCall
-                    </button>
+                    <button type="submit" class="w-full py-3 bg-gold-gradient text-dark-950 font-extrabold text-xs uppercase rounded-xl hover:brightness-110">Đăng Nhập</button>
                 </form>
 
-                <!-- Form Register -->
-                <form id="form-register" onsubmit="handleAuth(event, 'register')" class="space-y-4 hidden relative z-10">
+                <form id="form-register" onsubmit="handleAuth(event, 'register')" class="space-y-4 hidden">
                     <div>
                         <label class="text-xs font-semibold text-slate-300 mb-1 block">Họ và Tên</label>
-                        <input type="text" id="reg-name" required placeholder="Nguyễn Văn A" class="w-full bg-slate-950/90 border border-slate-800 rounded-xl py-2.5 px-3.5 text-xs text-slate-100 focus:outline-none focus:border-gold-500 transition-colors">
+                        <input type="text" id="reg-name" required placeholder="Nguyễn Văn A" class="w-full bg-slate-950 border border-slate-800 rounded-xl py-2.5 px-3.5 text-xs text-slate-100 focus:outline-none focus:border-gold-500">
                     </div>
                     <div>
                         <label class="text-xs font-semibold text-slate-300 mb-1 block">Số điện thoại</label>
-                        <input type="tel" id="reg-phone" required placeholder="0912345678" class="w-full bg-slate-950/90 border border-slate-800 rounded-xl py-2.5 px-3.5 text-xs text-slate-100 focus:outline-none focus:border-gold-500 transition-colors">
+                        <input type="tel" id="reg-phone" required placeholder="09xxxxxxxx" class="w-full bg-slate-950 border border-slate-800 rounded-xl py-2.5 px-3.5 text-xs text-slate-100 focus:outline-none focus:border-gold-500">
                     </div>
                     <div>
                         <label class="text-xs font-semibold text-slate-300 mb-1 block">Mật khẩu</label>
-                        <input type="password" id="reg-password" required placeholder="••••••••" class="w-full bg-slate-950/90 border border-slate-800 rounded-xl py-2.5 px-3.5 text-xs text-slate-100 focus:outline-none focus:border-gold-500 transition-colors">
+                        <input type="password" id="reg-password" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl py-2.5 px-3.5 text-xs text-slate-100 focus:outline-none focus:border-gold-500">
                     </div>
-                    <button type="submit" class="w-full py-3 bg-gold-gradient text-dark-950 font-extrabold text-xs uppercase tracking-wider rounded-xl hover:brightness-110 transition-all shadow-lg shadow-gold-500/20 active:scale-[0.99]">
-                        Tạo Tài Khoản
-                    </button>
+                    <button type="submit" class="w-full py-3 bg-gold-gradient text-dark-950 font-extrabold text-xs uppercase rounded-xl hover:brightness-110">Tạo Tài Khoản</button>
                 </form>
 
-                <div class="mt-6 pt-4 border-t border-slate-800/80 flex justify-between items-center text-xs text-slate-400 relative z-10">
-                    <span>Thử nghiệm nhanh:</span>
-                    <button onclick="createSampleAccounts()" class="text-gold-400 font-bold underline hover:text-gold-300">Tạo 2 SĐT Thử Nghiệm</button>
+                <div class="mt-4 pt-3 border-t border-slate-800 text-center">
+                    <button onclick="createSampleData()" class="text-xs text-gold-400 underline font-semibold">Tự động tạo 2 SĐT mẫu để test ngay</button>
                 </div>
             </div>
         </div>
 
-        <!-- MAIN APP WORKSPACE -->
+        <!-- MAIN WORKSPACE -->
         <div class="flex-1 flex overflow-hidden">
-
-            <!-- 1. LEFT NAVIGATION BAR -->
-            <aside class="w-16 md:w-20 bg-dark-900 border-r border-slate-800/80 flex flex-col items-center py-5 justify-between z-20 shrink-0">
-                <div class="flex flex-col items-center gap-1 group cursor-pointer" onclick="showToast('ZinCall VIP Edition')">
-                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-gold-gradient p-[1px] shadow-lg shadow-gold-500/10 group-hover:scale-105 transition-transform">
-                        <div class="w-full h-full bg-dark-950 rounded-[15px] flex items-center justify-center text-gold-400 font-black text-xl">
-                            Z
-                        </div>
-                    </div>
-                    <span class="text-[9px] font-bold text-gold-metallic tracking-wider hidden md:block">ZinCall</span>
-                </div>
-
-                <nav class="flex flex-col gap-5 my-auto">
-                    <button onclick="switchMainTab('chat')" id="nav-chat" class="nav-btn active relative p-3 rounded-2xl text-gold-400 bg-slate-800/80 border border-gold-500/30 transition-all hover:scale-110">
-                        <i class="fa-solid fa-comment-dots text-lg"></i>
-                    </button>
-                    <button onclick="switchMainTab('contacts')" id="nav-contacts" class="nav-btn p-3 rounded-2xl text-slate-400 hover:text-gold-400 hover:bg-slate-800/50 transition-all hover:scale-110">
-                        <i class="fa-solid fa-address-book text-lg"></i>
-                    </button>
-                    <button onclick="openAddFriendModal()" class="p-3 rounded-2xl text-slate-400 hover:text-gold-400 hover:bg-slate-800/50 transition-all hover:scale-110" title="Thêm bạn mới">
-                        <i class="fa-solid fa-user-plus text-lg"></i>
-                    </button>
-                </nav>
-
-                <div class="flex flex-col gap-4 items-center">
-                    <button onclick="openProfileModal()" class="relative group" title="Hồ sơ & Đổi Avatar">
-                        <div id="my-avatar-container" class="w-10 h-10 rounded-2xl overflow-hidden border-2 border-gold-500/50 group-hover:border-gold-400 transition-all flex items-center justify-center bg-slate-800 text-gold-400 font-bold text-base">
-                        </div>
-                        <span class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-dark-900 rounded-full"></span>
-                    </button>
-                    <button onclick="logout()" class="text-slate-500 hover:text-rose-400 transition-colors p-2" title="Đăng xuất">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                    </button>
-                </div>
+            <aside class="w-16 md:w-20 bg-dark-900 border-r border-slate-800 flex flex-col items-center py-5 justify-between shrink-0">
+                <div class="w-10 h-10 rounded-2xl bg-gold-gradient flex items-center justify-center text-dark-950 font-black">Z</div>
+                <button onclick="logout()" class="text-slate-500 hover:text-rose-400 p-2" title="Đăng xuất"><i class="fa-solid fa-right-from-bracket"></i></button>
             </aside>
 
-            <!-- 2. SIDEBAR LIST -->
-            <section class="w-80 md:w-96 bg-dark-900 border-r border-slate-800/80 flex flex-col z-10 shrink-0">
-                <div class="p-4 border-b border-slate-800/80 space-y-3">
-                    <div class="flex items-center justify-between">
-                        <h2 id="sidebar-title" class="text-lg font-extrabold text-gold-metallic tracking-wide">Trò Chuyện</h2>
-                        <div class="flex items-center gap-2">
-                            <span id="my-phone-badge" class="text-[10px] bg-gold-500/10 border border-gold-500/30 text-gold-400 px-2 py-0.5 rounded-full font-mono"></span>
-                            <button onclick="openAddFriendModal()" class="w-8 h-8 rounded-xl bg-slate-800 border border-slate-700 hover:border-gold-500/50 text-gold-400 flex items-center justify-center transition-colors">
-                                <i class="fa-solid fa-user-plus text-xs"></i>
-                            </button>
-                        </div>
+            <section class="w-80 md:w-96 bg-dark-900 border-r border-slate-800 flex flex-col shrink-0">
+                <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+                    <div>
+                        <h2 class="text-lg font-extrabold text-gold-metallic">Trò Chuyện</h2>
+                        <span id="my-phone-badge" class="text-[10px] text-gold-400 font-mono"></span>
                     </div>
-
-                    <div class="relative">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-500 text-xs"></i>
-                        <input type="text" oninput="filterChatList(this.value)" placeholder="Tìm kiếm bạn bè..." class="w-full bg-dark-950 border border-slate-800 rounded-xl py-2 pl-9 pr-4 text-xs text-slate-200 focus:outline-none focus:border-gold-500/50 transition-colors">
-                    </div>
+                    <button onclick="openAddFriendModal()" class="w-8 h-8 rounded-xl bg-slate-800 text-gold-400 flex items-center justify-center">
+                        <i class="fa-solid fa-user-plus text-xs"></i>
+                    </button>
                 </div>
-
-                <div id="chat-list" class="flex-1 overflow-y-auto p-2 space-y-1">
-                    <!-- Dynamic rendering -->
-                </div>
+                <div id="chat-list" class="flex-1 overflow-y-auto p-2 space-y-1"></div>
             </section>
 
-            <!-- 3. CHAT WORKSPACE AREA -->
-            <main id="chat-workspace" class="flex-1 flex flex-col bg-slate-950 relative">
-                <header id="chat-header" class="h-16 border-b border-slate-800/80 px-6 flex items-center justify-between bg-dark-900/60 backdrop-blur-md z-10">
-                    <div class="flex items-center gap-3">
-                        <div id="active-chat-avatar-box" class="w-10 h-10 rounded-2xl border border-gold-500/30 overflow-hidden bg-slate-800 flex items-center justify-center font-bold text-gold-400 text-sm">
-                        </div>
-                        <div>
-                            <h3 id="active-chat-name" class="font-bold text-slate-100 text-sm">Chọn một cuộc trò chuyện</h3>
-                            <p id="active-chat-status" class="text-[11px] text-slate-500">Chưa chọn bạn bè</p>
-                        </div>
-                    </div>
-
-                    <div id="chat-actions" class="flex items-center gap-2 hidden">
-                        <button onclick="startCall('voice')" class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60 text-slate-300 hover:text-gold-400 hover:border-gold-500/40 hover:bg-slate-800 transition-all active:scale-95" title="Gọi Thường">
-                            <i class="fa-solid fa-phone text-sm"></i>
-                        </button>
-                        <button onclick="startCall('video')" class="p-2.5 rounded-xl bg-gold-gradient text-dark-950 font-bold hover:brightness-110 shadow-md shadow-gold-500/10 transition-all active:scale-95 flex items-center gap-1.5 text-xs" title="Gọi Video Call">
-                            <i class="fa-solid fa-video text-xs"></i>
-                            <span class="hidden sm:inline">Gọi Video</span>
-                        </button>
-                    </div>
+            <main class="flex-1 flex flex-col bg-slate-950 relative">
+                <header id="chat-header" class="h-16 border-b border-slate-800 px-6 flex items-center justify-between bg-dark-900/60 hidden">
+                    <h3 id="active-chat-name" class="font-bold text-slate-100 text-sm"></h3>
                 </header>
-
-                <div id="messages-container" class="flex-1 overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-dark-900/30 to-transparent">
-                    <div id="empty-workspace-state" class="h-full flex flex-col items-center justify-center text-slate-600 gap-3">
-                        <div class="w-16 h-16 rounded-full border border-slate-800 flex items-center justify-center text-2xl text-slate-700">
-                            <i class="fa-solid fa-comments"></i>
-                        </div>
-                        <p class="text-xs">Chọn bạn bè hoặc tìm kiếm SĐT để bắt đầu trò chuyện</p>
-                        <button onclick="openAddFriendModal()" class="px-4 py-2 bg-gold-gradient text-dark-950 font-bold text-xs rounded-xl shadow-md hover:brightness-110">
-                            <i class="fa-solid fa-user-plus mr-1"></i> Kết Bạn Bằng SĐT
-                        </button>
-                    </div>
+                <div id="messages-container" class="flex-1 overflow-y-auto p-6 space-y-4">
+                    <div id="empty-state" class="h-full flex items-center justify-center text-slate-600 text-xs">Chọn bạn bè hoặc bấm nút (+) để thêm SĐT kết bạn</div>
                 </div>
-
-                <div id="chat-input-area" class="p-4 border-t border-slate-800/80 bg-dark-900/80 backdrop-blur-md hidden">
-                    <form onsubmit="handleSendMessage(event)" class="flex items-center gap-2">
-                        <input id="chat-input" type="text" placeholder="Nhập tin nhắn bảo mật..." class="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-100 focus:outline-none focus:border-gold-500/50 transition-colors">
-                        <button type="submit" class="p-2.5 px-4 bg-gold-gradient text-dark-950 font-extrabold rounded-xl hover:brightness-110 transition-all shadow-md shadow-gold-500/10 flex items-center gap-1 text-xs">
-                            <span>Gửi</span>
-                            <i class="fa-solid fa-paper-plane text-xs"></i>
-                        </button>
+                <div id="chat-input-area" class="p-4 border-t border-slate-800 hidden">
+                    <form onsubmit="handleSendMessage(event)" class="flex gap-2">
+                        <input id="chat-input" type="text" placeholder="Nhập tin nhắn..." class="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-100 focus:outline-none">
+                        <button type="submit" class="px-5 bg-gold-gradient text-dark-950 font-bold rounded-xl text-xs">Gửi</button>
                     </form>
                 </div>
             </main>
         </div>
 
-        <!-- 4. PROFILE MODAL -->
-        <div id="profile-modal" class="fixed inset-0 z-50 hidden bg-dark-950/80 backdrop-blur-md flex items-center justify-center p-4">
-            <div class="glass-panel w-full max-w-sm p-6 rounded-3xl border-gold-glow relative">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-base font-bold text-gold-metallic">Hồ Sơ Cá Nhân VIP</h3>
-                    <button onclick="closeProfileModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-                </div>
-
-                <div class="flex flex-col items-center gap-4">
-                    <div class="relative group cursor-pointer" onclick="document.getElementById('avatar-file-input').click()">
-                        <div id="profile-modal-avatar-box" class="w-24 h-24 rounded-3xl overflow-hidden border-2 border-gold-500/60 shadow-xl bg-slate-800 flex items-center justify-center text-3xl font-extrabold text-gold-400">
-                        </div>
-                        <div class="absolute inset-0 bg-dark-950/60 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-gold-400 text-xs font-bold gap-1">
-                            <i class="fa-solid fa-camera text-base"></i>
-                            <span>Đổi Ảnh</span>
-                        </div>
-                    </div>
-                    <input type="file" id="avatar-file-input" accept="image/*" onchange="handleAvatarUpload(event)" class="hidden">
-
-                    <div class="text-center w-full space-y-1">
-                        <h4 id="profile-modal-name" class="font-bold text-base text-slate-100">---</h4>
-                        <p id="profile-modal-phone" class="text-xs text-slate-400">SĐT: ---</p>
-                    </div>
-
-                    <button onclick="document.getElementById('avatar-file-input').click()" class="w-full py-2.5 bg-slate-800 border border-gold-500/40 text-gold-400 font-bold text-xs rounded-xl hover:bg-slate-700 transition-colors mt-2">
-                        <i class="fa-solid fa-upload mr-1.5"></i> Tải Ảnh Đại Diện Mới (Tự Nén)
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 5. CALL OVERLAY MODAL -->
-        <div id="call-modal" class="fixed inset-0 z-50 hidden bg-dark-950/95 backdrop-blur-2xl flex flex-col justify-between p-6 overflow-hidden">
-            <div class="flex items-center justify-between z-10">
-                <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-lg bg-gold-gradient text-dark-950 font-black flex items-center justify-center text-xs">Z</div>
-                    <span class="font-bold text-xs uppercase tracking-widest text-gold-metallic">ZinCall Encrypted Call</span>
-                </div>
-                <div class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span id="call-timer">00:00</span>
-                </div>
-            </div>
-
-            <div class="flex-1 flex flex-col items-center justify-center relative my-4">
-                <div id="video-container" class="relative w-full max-w-4xl h-[70vh] rounded-3xl overflow-hidden border-gold-glow bg-slate-950 flex items-center justify-center">
-                    <video id="remote-video" autoplay playsinline class="w-full h-full object-cover"></video>
-                    
-                    <div id="remote-avatar-fallback" class="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-dark-900 to-dark-950">
-                        <div id="call-remote-avatar-box" class="w-28 h-28 rounded-full overflow-hidden border-4 border-gold-500/40 shadow-2xl mb-4 bg-slate-800 flex items-center justify-center font-bold text-3xl text-gold-400">
-                        </div>
-                        <h2 id="call-remote-name" class="text-xl font-bold text-slate-100">---</h2>
-                        <p id="call-status-text" class="text-xs text-gold-400 mt-1">Đang kết nối tín hiệu mã hóa...</p>
-
-                        <div id="voice-visualizer" class="flex items-end gap-1.5 h-10 mt-6">
-                            <div class="w-1.5 bg-gold-400 rounded-full animate-wave-1"></div>
-                            <div class="w-1.5 bg-gold-400 rounded-full animate-wave-2"></div>
-                            <div class="w-1.5 bg-gold-500 rounded-full animate-wave-3"></div>
-                            <div class="w-1.5 bg-gold-400 rounded-full animate-wave-4"></div>
-                            <div class="w-1.5 bg-gold-400 rounded-full animate-wave-5"></div>
-                        </div>
-                    </div>
-
-                    <div class="absolute bottom-4 right-4 w-32 h-44 sm:w-44 sm:h-60 rounded-2xl overflow-hidden border-2 border-gold-500/50 shadow-2xl bg-slate-900 z-20">
-                        <video id="local-video" autoplay playsinline muted class="w-full h-full object-cover"></video>
-                        <div id="local-video-off" class="absolute inset-0 bg-slate-900 flex flex-col items-center justify-center text-slate-500 hidden">
-                            <i class="fa-solid fa-video-slash text-xl mb-1"></i>
-                            <span class="text-[10px]">Cam Tắt</span>
-                        </div>
-                        <span class="absolute bottom-2 left-2 bg-dark-950/80 px-2 py-0.5 rounded text-[10px] text-slate-300">Bạn</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex items-center justify-center gap-4 z-10">
-                <button id="btn-toggle-mic" onclick="toggleMic()" class="w-14 h-14 rounded-2xl bg-slate-800 border border-slate-700 text-slate-200 hover:text-gold-400 flex items-center justify-center text-lg transition-all active:scale-95 shadow-lg">
-                    <i class="fa-solid fa-microphone"></i>
-                </button>
-                <button id="btn-toggle-cam" onclick="toggleCam()" class="w-14 h-14 rounded-2xl bg-slate-800 border border-slate-700 text-slate-200 hover:text-gold-400 flex items-center justify-center text-lg transition-all active:scale-95 shadow-lg">
-                    <i class="fa-solid fa-video"></i>
-                </button>
-                <button onclick="endCall()" class="w-16 h-16 rounded-2xl bg-gradient-to-r from-rose-600 to-red-700 text-white font-bold flex items-center justify-center text-xl transition-all active:scale-95 shadow-xl border border-red-500/40" title="Tắt máy">
-                    <i class="fa-solid fa-phone-slash"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- 6. ADD FRIEND MODAL -->
+        <!-- ADD FRIEND MODAL -->
         <div id="add-friend-modal" class="fixed inset-0 z-50 hidden bg-dark-950/80 backdrop-blur-md flex items-center justify-center p-4">
-            <div class="glass-panel w-full max-w-md p-6 rounded-3xl border-gold-glow">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-base font-bold text-gold-metallic">Thêm Bạn Mới qua SĐT</h3>
-                    <button onclick="closeAddFriendModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <div class="glass-panel w-full max-w-md p-6 rounded-3xl border-gold-glow space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-base font-bold text-gold-metallic">Thêm Bạn Mới Bằng SĐT</h3>
+                    <button onclick="closeAddFriendModal()" class="text-slate-400"><i class="fa-solid fa-xmark"></i></button>
                 </div>
-                <div class="space-y-4">
+                <div class="flex gap-2">
+                    <input id="search-friend-input" type="tel" placeholder="Nhập SĐT..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-100 focus:outline-none">
+                    <button onclick="searchFriendByPhone()" class="px-4 bg-gold-gradient text-dark-950 font-bold text-xs rounded-xl">Tìm kiếm</button>
+                </div>
+                <div id="search-result" class="hidden p-3.5 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-between">
                     <div>
-                        <label class="text-xs text-slate-400 mb-1 block">Nhập chính xác Số điện thoại bạn bè</label>
-                        <div class="flex gap-2">
-                            <input id="search-friend-input" type="tel" placeholder="09xxxxxxxx" class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-100 focus:outline-none focus:border-gold-500">
-                            <button onclick="searchFriendByPhone()" class="px-4 py-2 bg-gold-gradient text-dark-950 font-bold text-xs rounded-xl hover:brightness-110">Tìm kiếm</button>
-                        </div>
+                        <p id="found-user-name" class="text-xs font-bold text-slate-100"></p>
+                        <p id="found-user-phone" class="text-[10px] text-slate-400"></p>
                     </div>
-
-                    <div id="search-result" class="hidden p-3.5 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div id="found-user-avatar-box" class="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 overflow-hidden flex items-center justify-center font-bold text-gold-400 text-xs">
-                            </div>
-                            <div>
-                                <p id="found-user-name" class="text-xs font-bold text-slate-100">---</p>
-                                <p id="found-user-phone" class="text-[10px] text-slate-400">---</p>
-                            </div>
-                        </div>
-                        <button id="btn-add-found-user" onclick="addFoundUserAsFriend()" class="px-3 py-1.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-lg text-xs font-bold hover:bg-emerald-500 hover:text-white transition-all">Kết Bạn</button>
-                    </div>
-
-                    <div id="search-empty-result" class="hidden text-center py-4 text-xs text-rose-400">
-                        Không tìm thấy SĐT này! Hãy chắc chắn SĐT đã đăng ký trên máy này.
-                    </div>
+                    <button id="btn-add-found-user" onclick="addFoundUserAsFriend()" class="px-3 py-1.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-lg text-xs font-bold">Kết Bạn</button>
                 </div>
+                <p id="search-empty-result" class="hidden text-center text-xs text-rose-400">Không tìm thấy SĐT này trên máy!</p>
             </div>
-        </div>
-
-        <!-- TOAST NOTIFICATION -->
-        <div id="toast" class="fixed top-5 right-5 z-50 transform translate-y-[-100px] opacity-0 transition-all duration-300 bg-slate-900 border border-gold-500/40 text-slate-100 px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3">
-            <i class="fa-solid fa-bell text-gold-400"></i>
-            <span id="toast-msg" class="text-xs font-semibold">Thông báo</span>
         </div>
 
     </div>
 
-    <!-- APP LOGIC & PERSISTENCE -->
     <script>
-        const STORAGE_USERS = 'zincall_users_db_v1';
-        const STORAGE_SESSION = 'zincall_active_session_v1';
-        const STORAGE_CHATS = 'zincall_chats_db_v1';
+        const DB_KEY = 'zincall_master_db_v3';
+        const SESSION_KEY = 'zincall_active_session_v3';
 
-        let dbUsers = {}; 
+        let db = { users: {}, chats: {} };
         let currentUser = null;
-        let dbChats = {}; 
         let activeChatUser = null;
-        
-        let localStream = null;
-        let callTimerInterval = null;
-        let callSeconds = 0;
-        let isMicMuted = false;
-        let isCamOff = false;
         let searchedUser = null;
 
-        // Auto Sync between Browser Tabs
-        const syncChannel = window.BroadcastChannel ? new BroadcastChannel('zincall_sync_channel') : null;
-        if (syncChannel) {
-            syncChannel.onmessage = (e) => {
-                loadDatabase();
-                if (currentUser) {
-                    currentUser = dbUsers[currentUser.phone] || currentUser;
-                    renderChatList();
-                    if (activeChatUser) renderMessages();
-                }
-            };
-        }
-
-        function cleanPhone(p) {
-            return (p || '').toString().trim().replace(/\s+/g, '');
-        }
-
         window.onload = () => {
-            loadDatabase();
-            checkAutoLogin();
+            loadDB();
+            checkSession();
         };
 
-        function loadDatabase() {
-            try {
-                // Merge legacy DB keys into unified DB
-                let merged = {};
-                ['zincall_users', 'zincall_users_v2', STORAGE_USERS].forEach(key => {
-                    const raw = localStorage.getItem(key);
-                    if (raw) {
-                        try {
-                            const parsed = JSON.parse(raw);
-                            Object.assign(merged, parsed);
-                        } catch(e){}
-                    }
-                });
-
-                dbUsers = merged;
-                localStorage.setItem(STORAGE_USERS, JSON.stringify(dbUsers));
-
-                const rawChats = localStorage.getItem(STORAGE_CHATS);
-                dbChats = rawChats ? JSON.parse(rawChats) : {};
-            } catch (e) {
-                console.error("Storage load error", e);
-                dbUsers = {};
-                dbChats = {};
+        function loadDB() {
+            const raw = localStorage.getItem(DB_KEY);
+            if (raw) {
+                try { db = JSON.parse(raw); } catch(e) {}
             }
         }
 
-        function saveDatabase() {
-            localStorage.setItem(STORAGE_USERS, JSON.stringify(dbUsers));
-            localStorage.setItem(STORAGE_CHATS, JSON.stringify(dbChats));
-            if (syncChannel) syncChannel.postMessage('update');
+        function saveDB() {
+            localStorage.setItem(DB_KEY, JSON.stringify(db));
         }
 
-        function saveSession(phone) {
-            if (phone) {
-                localStorage.setItem(STORAGE_SESSION, phone);
-            } else {
-                localStorage.removeItem(STORAGE_SESSION);
-            }
-        }
-
-        function checkAutoLogin() {
-            const savedSessionPhone = localStorage.getItem(STORAGE_SESSION) || localStorage.getItem('zincall_current_user');
-            
-            let phoneToUse = savedSessionPhone;
-            if (savedSessionPhone && savedSessionPhone.startsWith('{')) {
-                try { phoneToUse = JSON.parse(savedSessionPhone).phone; } catch(e){}
-            }
-
-            if (phoneToUse && dbUsers[phoneToUse]) {
-                currentUser = dbUsers[phoneToUse];
+        function checkSession() {
+            const phone = localStorage.getItem(SESSION_KEY);
+            if (phone && db.users[phone]) {
+                currentUser = db.users[phone];
                 document.getElementById('auth-screen').classList.add('hidden');
-                updateUserProfileUI();
+                document.getElementById('my-phone-badge').innerText = "SĐT: " + currentUser.phone;
                 renderChatList();
-                showToast(`Chào mừng: ${currentUser.name}`);
-            } else {
-                document.getElementById('auth-screen').classList.remove('hidden');
             }
         }
 
         function switchAuthTab(type) {
-            const tabLogin = document.getElementById('tab-login');
-            const tabRegister = document.getElementById('tab-register');
-            const formLogin = document.getElementById('form-login');
-            const formRegister = document.getElementById('form-register');
-
-            if (type === 'login') {
-                tabLogin.className = "flex-1 py-2 text-xs font-bold rounded-lg transition-all text-dark-950 bg-gold-gradient shadow-md";
-                tabRegister.className = "flex-1 py-2 text-xs font-bold text-slate-400 rounded-lg transition-all hover:text-white";
-                formLogin.classList.remove('hidden');
-                formRegister.classList.add('hidden');
-            } else {
-                tabRegister.className = "flex-1 py-2 text-xs font-bold rounded-lg transition-all text-dark-950 bg-gold-gradient shadow-md";
-                tabLogin.className = "flex-1 py-2 text-xs font-bold text-slate-400 rounded-lg transition-all hover:text-white";
-                formRegister.classList.remove('hidden');
-                formLogin.classList.add('hidden');
-            }
+            document.getElementById('form-login').classList.toggle('hidden', type !== 'login');
+            document.getElementById('form-register').classList.toggle('hidden', type !== 'register');
         }
 
         function handleAuth(e, type) {
             e.preventDefault();
-            loadDatabase();
+            loadDB();
 
             if (type === 'register') {
                 const name = document.getElementById('reg-name').value.trim();
-                const phone = cleanPhone(document.getElementById('reg-phone').value);
+                const phone = document.getElementById('reg-phone').value.trim();
                 const password = document.getElementById('reg-password').value;
 
-                if (!phone || phone.length < 9) {
-                    showToast('Số điện thoại không hợp lệ!');
-                    return;
-                }
+                if (!phone) return alert('Vui lòng nhập SĐT');
+                if (db.users[phone]) return alert('SĐT đã tồn tại!');
 
-                if (dbUsers[phone]) {
-                    showToast('Số điện thoại này đã tồn tại!');
-                    return;
-                }
+                db.users[phone] = { name, phone, password, friends: [] };
+                saveDB();
 
-                const newUser = {
-                    name,
-                    phone,
-                    password,
-                    pass: password,
-                    avatar: '',
-                    friends: []
-                };
-
-                dbUsers[phone] = newUser;
-                saveDatabase();
-
-                currentUser = newUser;
-                saveSession(phone);
-                document.getElementById('auth-screen').classList.add('hidden');
-                updateUserProfileUI();
-                renderChatList();
-                showToast('Đăng ký tài khoản thành công!');
-
+                currentUser = db.users[phone];
+                localStorage.setItem(SESSION_KEY, phone);
+                location.reload();
             } else {
-                const phone = cleanPhone(document.getElementById('login-phone').value);
+                const phone = document.getElementById('login-phone').value.trim();
                 const password = document.getElementById('login-password').value;
 
-                const user = dbUsers[phone];
-                if (!user || (user.password !== password && user.pass !== password)) {
-                    showToast('Số điện thoại hoặc mật khẩu không đúng!');
-                    return;
+                if (!db.users[phone] || db.users[phone].password !== password) {
+                    return alert('Sai SĐT hoặc mật khẩu!');
                 }
 
-                currentUser = user;
-                saveSession(phone);
-                document.getElementById('auth-screen').classList.add('hidden');
-                updateUserProfileUI();
-                renderChatList();
-                showToast(`Chào mừng, ${currentUser.name}!`);
+                currentUser = db.users[phone];
+                localStorage.setItem(SESSION_KEY, phone);
+                location.reload();
             }
         }
 
-        function createSampleAccounts() {
-            loadDatabase();
-            dbUsers['0911111111'] = {
-                name: 'Đinh Nam (VIP)',
-                phone: '0911111111',
-                password: '123',
-                pass: '123',
-                avatar: '',
-                friends: ['0922222222']
-            };
-            dbUsers['0922222222'] = {
-                name: 'Hoàng Linh',
-                phone: '0922222222',
-                password: '123',
-                pass: '123',
-                avatar: '',
-                friends: ['0911111111']
-            };
-            saveDatabase();
-            alert('Đã tạo thành công 2 SĐT thử nghiệm:\n\n1) SĐT: 0911111111 (Mật khẩu: 123)\n2) SĐT: 0922222222 (Mật khẩu: 123)');
+        function createSampleData() {
+            loadDB();
+            db.users['0911111111'] = { name: 'Đinh Nam', phone: '0911111111', password: '123', friends: ['0922222222'] };
+            db.users['0922222222'] = { name: 'Hoàng Linh', phone: '0922222222', password: '123', friends: ['0911111111'] };
+            saveDB();
+            alert('Đã tạo thành công 2 SĐT mẫu:\n1) 0911111111 (Pass: 123)\n2) 0922222222 (Pass: 123)');
         }
 
         function logout() {
-            saveSession(null);
-            currentUser = null;
-            activeChatUser = null;
-            document.getElementById('auth-screen').classList.remove('hidden');
-            showToast('Đã đăng xuất.');
+            localStorage.removeItem(SESSION_KEY);
+            location.reload();
         }
 
-        function switchMainTab(tab) {
-            const btnChat = document.getElementById('nav-chat');
-            const btnContacts = document.getElementById('nav-contacts');
-            const title = document.getElementById('sidebar-title');
+        function openAddFriendModal() {
+            document.getElementById('add-friend-modal').classList.remove('hidden');
+            document.getElementById('search-result').classList.add('hidden');
+            document.getElementById('search-empty-result').classList.add('hidden');
+        }
 
-            if (tab === 'chat') {
-                btnChat.className = "nav-btn active relative p-3 rounded-2xl text-gold-400 bg-slate-800/80 border border-gold-500/35 transition-all hover:scale-110";
-                btnContacts.className = "nav-btn p-3 rounded-2xl text-slate-400 hover:text-gold-400 hover:bg-slate-800/50 transition-all hover:scale-110";
-                title.innerText = "Trò Chuyện";
+        function closeAddFriendModal() {
+            document.getElementById('add-friend-modal').classList.add('hidden');
+        }
+
+        function searchFriendByPhone() {
+            loadDB();
+            const phone = document.getElementById('search-friend-input').value.trim();
+            if (!phone || phone === currentUser.phone) return;
+
+            if (db.users[phone]) {
+                searchedUser = db.users[phone];
+                document.getElementById('found-user-name').innerText = searchedUser.name;
+                document.getElementById('found-user-phone').innerText = "SĐT: " + searchedUser.phone;
+                document.getElementById('search-result').classList.remove('hidden');
+                document.getElementById('search-empty-result').classList.add('hidden');
+
+                const btn = document.getElementById('btn-add-found-user');
+                if (currentUser.friends && currentUser.friends.includes(phone)) {
+                    btn.innerText = "Đã là bạn";
+                    btn.disabled = true;
+                } else {
+                    btn.innerText = "Kết Bạn";
+                    btn.disabled = false;
+                }
             } else {
-                btnContacts.className = "nav-btn active relative p-3 rounded-2xl text-gold-400 bg-slate-800/80 border border-gold-500/35 transition-all hover:scale-110";
-                btnChat.className = "nav-btn p-3 rounded-2xl text-slate-400 hover:text-gold-400 hover:bg-slate-800/50 transition-all hover:scale-110";
-                title.innerText = "Danh Bạ VIP";
+                document.getElementById('search-result').classList.add('hidden');
+                document.getElementById('search-empty-result').classList.remove('hidden');
             }
-            renderChatList(tab);
         }
 
-        function renderChatList(mode = 'chat') {
-            const listContainer = document.getElementById('chat-list');
-            listContainer.innerHTML = '';
+        function addFoundUserAsFriend() {
+            if (!searchedUser) return;
+            loadDB();
 
-            if (!currentUser || !currentUser.friends || currentUser.friends.length === 0) {
-                listContainer.innerHTML = `
-                    <div class="p-6 text-center text-slate-500 text-xs">
-                        <p class="mb-2">Chưa có liên hệ nào.</p>
-                        <button onclick="openAddFriendModal()" class="text-gold-400 underline font-semibold">Thêm bạn mới ngay</button>
-                    </div>
-                `;
+            if (!currentUser.friends) currentUser.friends = [];
+            if (!currentUser.friends.includes(searchedUser.phone)) currentUser.friends.push(searchedUser.phone);
+
+            let target = db.users[searchedUser.phone];
+            if (!target.friends) target.friends = [];
+            if (!target.friends.includes(currentUser.phone)) target.friends.push(currentUser.phone);
+
+            db.users[currentUser.phone] = currentUser;
+            db.users[searchedUser.phone] = target;
+            saveDB();
+
+            closeAddFriendModal();
+            renderChatList();
+            selectChat(target);
+        }
+
+        function renderChatList() {
+            loadDB();
+            currentUser = db.users[currentUser.phone];
+            const listEl = document.getElementById('chat-list');
+            listEl.innerHTML = '';
+
+            if (!currentUser.friends || currentUser.friends.length === 0) {
+                listEl.innerHTML = `<div class="p-4 text-center text-slate-500 text-xs">Chưa có bạn bè. Bấm (+) để thêm.</div>`;
                 return;
             }
 
-            currentUser.friends.forEach(friendPhone => {
-                const friend = dbUsers[friendPhone];
+            currentUser.friends.forEach(fPhone => {
+                const friend = db.users[fPhone];
                 if (!friend) return;
 
-                const isActive = activeChatUser && activeChatUser.phone === friend.phone;
                 const item = document.createElement('div');
-                item.className = `p-3 rounded-2xl cursor-pointer transition-all flex items-center gap-3 ${isActive ? 'bg-slate-800/90 border border-gold-500/30' : 'hover:bg-slate-900/60 border border-transparent'}`;
-                item.onclick = () => selectChatTarget(friend);
-
-                let avatarHTML = friend.avatar ? `<img src="${friend.avatar}" class="w-full h-full object-cover">` : `<span class="text-gold-400 font-bold text-sm">${friend.name.charAt(0).toUpperCase()}</span>`;
-
+                item.className = "p-3 bg-slate-900 border border-slate-800 rounded-2xl cursor-pointer hover:border-gold-500/50 flex items-center justify-between";
+                item.onclick = () => selectChat(friend);
                 item.innerHTML = `
-                    <div class="w-12 h-12 rounded-2xl bg-slate-800 border border-gold-500/20 overflow-hidden flex items-center justify-center shrink-0">
-                        ${avatarHTML}
+                    <div>
+                        <h4 class="font-bold text-xs text-slate-100">${friend.name}</h4>
+                        <p class="text-[10px] text-slate-400">SĐT: ${friend.phone}</p>
                     </div>
-                    <div class="flex-1 min-w-0">
-                        <div class="flex items-center justify-between mb-0.5">
-                            <h4 class="font-bold text-xs text-slate-100 truncate">${friend.name}</h4>
-                            <span class="text-[9px] text-slate-500">ZinVIP</span>
-                        </div>
-                        <p class="text-[11px] text-slate-400 truncate">SĐT: ${friend.phone}</p>
-                    </div>
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                 `;
-                listContainer.appendChild(item);
+                listEl.appendChild(item);
             });
-        }
-
-        function filterChatList(keyword) {
-            const listContainer = document.getElementById('chat-list');
-            listContainer.innerHTML = '';
-            if (!currentUser || !currentUser.friends) return;
-
-            const filtered = currentUser.friends.filter(phone => {
-                const f = dbUsers[phone];
-                return f && (f.name.toLowerCase().includes(keyword.toLowerCase()) || f.phone.includes(keyword));
-            });
-
-            if (filtered.length === 0) {
-                listContainer.innerHTML = `<div class="p-4 text-center text-slate-500 text-xs">Không tìm thấy kết quả</div>`;
-                return;
-            }
-
-            filtered.forEach(friendPhone => {
-                const friend = dbUsers[friendPhone];
-                const isActive = activeChatUser && activeChatUser.phone === friend.phone;
-                const item = document.createElement('div');
-                item.className = `p-3 rounded-2xl cursor-pointer transition-all flex items-center gap-3 ${isActive ? 'bg-slate-800/90 border border-gold-500/30' : 'hover:bg-slate-900/60 border border-transparent'}`;
-                item.onclick = () => selectChatTarget(friend);
-
-                let avatarHTML = friend.avatar ? `<img src="${friend.avatar}" class="w-full h-full object-cover">` : `<span class="text-gold-400 font-bold text-sm">${friend.name.charAt(0).toUpperCase()}</span>`;
-
-                item.innerHTML = `
-                    <div class="w-12 h-12 rounded-2xl bg-slate-800 border border-gold-500/20 overflow-hidden flex items-center justify-center shrink-0">
-                        ${avatarHTML}
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <h4 class="font-bold text-xs text-slate-100 truncate">${friend.name}</h4>
-                        <p class="text-[11px] text-slate-400 truncate">SĐT: ${friend.phone}</p>
-                    </div>
-                `;
-                listContainer.appendChild(item);
-            });
-        }
-
-        function selectChatTarget(friend) {
-            activeChatUser = friend;
-            document.getElementById('empty-workspace-state').classList.add('hidden');
-            document.getElementById('chat-input-area').classList.remove('hidden');
-            document.getElementById('chat-actions').classList.remove('hidden');
-
-            document.getElementById('active-chat-name').innerText = friend.name;
-            document.getElementById('active-chat-status').innerText = `SĐT: ${friend.phone} • Trực tuyến`;
-
-            const avatarBox = document.getElementById('active-chat-avatar-box');
-            if (friend.avatar) {
-                avatarBox.innerHTML = `<img src="${friend.avatar}" class="w-full h-full object-cover">`;
-            } else {
-                avatarBox.innerText = friend.name.charAt(0).toUpperCase();
-            }
-
-            renderChatList();
-            renderMessages();
         }
 
         function getChatKey(p1, p2) {
             return [p1, p2].sort().join('_');
         }
 
+        function selectChat(friend) {
+            activeChatUser = friend;
+            document.getElementById('empty-state').classList.add('hidden');
+            document.getElementById('chat-header').classList.remove('hidden');
+            document.getElementById('chat-input-area').classList.remove('hidden');
+            document.getElementById('active-chat-name').innerText = friend.name + " (" + friend.phone + ")";
+            renderMessages();
+        }
+
         function renderMessages() {
+            loadDB();
             const container = document.getElementById('messages-container');
             container.innerHTML = '';
 
-            if (!activeChatUser) return;
-
             const key = getChatKey(currentUser.phone, activeChatUser.phone);
-            const messages = dbChats[key] || [];
+            const messages = db.chats[key] || [];
 
             if (messages.length === 0) {
-                container.innerHTML = `
-                    <div class="h-full flex flex-col items-center justify-center text-slate-600 gap-2">
-                        <i class="fa-solid fa-shield-halved text-3xl text-gold-500/40"></i>
-                        <p class="text-xs">Bắt đầu trò chuyện mã hóa với ${activeChatUser.name}</p>
-                    </div>
-                `;
+                container.innerHTML = `<div class="h-full flex items-center justify-center text-slate-600 text-xs">Bắt đầu trò chuyện với ${activeChatUser.name}</div>`;
                 return;
             }
 
             messages.forEach(msg => {
-                const isMe = (msg.senderPhone || msg.sender) === currentUser.phone;
-                const msgEl = document.createElement('div');
-                msgEl.className = `flex ${isMe ? 'justify-end' : 'justify-start'}`;
-
-                msgEl.innerHTML = `
-                    <div class="max-w-[75%] md:max-w-[60%] px-4 py-3 rounded-2xl text-xs space-y-1 shadow-md ${isMe ? 'bg-gold-gradient text-dark-950 font-medium rounded-tr-none' : 'glass-panel text-slate-100 rounded-tl-none border border-white/5'}">
-                        <p class="leading-relaxed">${msg.text}</p>
-                        <span class="text-[9px] block text-right opacity-60">${msg.timestamp ? new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : (msg.time || '')}</span>
+                const isMe = msg.sender === currentUser.phone;
+                const div = document.createElement('div');
+                div.className = `flex ${isMe ? 'justify-end' : 'justify-start'}`;
+                div.innerHTML = `
+                    <div class="max-w-[70%] px-4 py-2.5 rounded-2xl text-xs ${isMe ? 'bg-gold-gradient text-dark-950 font-bold' : 'bg-slate-900 text-slate-100 border border-slate-800'}">
+                        ${msg.text}
                     </div>
                 `;
-                container.appendChild(msgEl);
+                container.appendChild(div);
             });
-
             container.scrollTop = container.scrollHeight;
         }
 
@@ -757,250 +386,15 @@
             const text = input.value.trim();
             if (!text || !activeChatUser) return;
 
+            loadDB();
             const key = getChatKey(currentUser.phone, activeChatUser.phone);
-            if (!dbChats[key]) dbChats[key] = [];
+            if (!db.chats[key]) db.chats[key] = [];
 
-            dbChats[key].push({
-                senderPhone: currentUser.phone,
-                sender: currentUser.phone,
-                text,
-                timestamp: Date.now()
-            });
+            db.chats[key].push({ sender: currentUser.phone, text, time: Date.now() });
+            saveDB();
 
-            saveDatabase();
             input.value = '';
             renderMessages();
-        }
-
-        function updateUserProfileUI() {
-            const container = document.getElementById('my-avatar-container');
-            if (currentUser.avatar) {
-                container.innerHTML = `<img src="${currentUser.avatar}" class="w-full h-full object-cover">`;
-            } else {
-                container.innerText = currentUser.name.charAt(0).toUpperCase();
-            }
-            document.getElementById('my-phone-badge').innerText = currentUser.phone;
-        }
-
-        function openProfileModal() {
-            if (!currentUser) return;
-            document.getElementById('profile-modal-name').innerText = currentUser.name;
-            document.getElementById('profile-modal-phone').innerText = `SĐT: ${currentUser.phone}`;
-            
-            const box = document.getElementById('profile-modal-avatar-box');
-            if (currentUser.avatar) {
-                box.innerHTML = `<img src="${currentUser.avatar}" class="w-full h-full object-cover">`;
-            } else {
-                box.innerText = currentUser.name.charAt(0).toUpperCase();
-            }
-
-            document.getElementById('profile-modal').classList.remove('hidden');
-        }
-
-        function closeProfileModal() {
-            document.getElementById('profile-modal').classList.add('hidden');
-        }
-
-        function handleAvatarUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    const MAX_SIZE = 250;
-                    let width = img.width;
-                    let height = img.height;
-
-                    if (width > height) {
-                        if (width > MAX_SIZE) {
-                            height *= MAX_SIZE / width;
-                            width = MAX_SIZE;
-                        }
-                    } else {
-                        if (height > MAX_SIZE) {
-                            width *= MAX_SIZE / height;
-                            height = MAX_SIZE;
-                        }
-                    }
-
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.85);
-
-                    currentUser.avatar = compressedBase64;
-                    dbUsers[currentUser.phone] = currentUser;
-                    saveDatabase();
-
-                    updateUserProfileUI();
-                    openProfileModal();
-                    renderChatList();
-                    showToast('Đã đổi ảnh đại diện!');
-                }
-                img.src = e.target.result;
-            }
-            reader.readAsDataURL(file);
-        }
-
-        function openAddFriendModal() {
-            document.getElementById('search-friend-input').value = '';
-            document.getElementById('search-result').classList.add('hidden');
-            document.getElementById('search-empty-result').classList.add('hidden');
-            document.getElementById('add-friend-modal').classList.remove('hidden');
-        }
-
-        function closeAddFriendModal() {
-            document.getElementById('add-friend-modal').classList.add('hidden');
-        }
-
-        function searchFriendByPhone() {
-            const phone = cleanPhone(document.getElementById('search-friend-input').value);
-            loadDatabase();
-
-            const resBox = document.getElementById('search-result');
-            const emptyBox = document.getElementById('search-empty-result');
-
-            if (!phone || phone === currentUser.phone || !dbUsers[phone]) {
-                resBox.classList.add('hidden');
-                emptyBox.classList.remove('hidden');
-                return;
-            }
-
-            searchedUser = dbUsers[phone];
-            emptyBox.classList.add('hidden');
-            resBox.classList.remove('hidden');
-
-            document.getElementById('found-user-name').innerText = searchedUser.name;
-            document.getElementById('found-user-phone').innerText = `SĐT: ${searchedUser.phone}`;
-            
-            const avatarBox = document.getElementById('found-user-avatar-box');
-            if (searchedUser.avatar) {
-                avatarBox.innerHTML = `<img src="${searchedUser.avatar}" class="w-full h-full object-cover">`;
-            } else {
-                avatarBox.innerText = searchedUser.name.charAt(0).toUpperCase();
-            }
-
-            const btnAdd = document.getElementById('btn-add-found-user');
-            if (currentUser.friends && currentUser.friends.includes(searchedUser.phone)) {
-                btnAdd.innerText = "Đã là bạn";
-                btnAdd.disabled = true;
-                btnAdd.className = "px-3 py-1.5 bg-slate-800 text-slate-500 rounded-lg text-xs font-bold cursor-not-allowed";
-            } else {
-                btnAdd.innerText = "Kết Bạn";
-                btnAdd.disabled = false;
-                btnAdd.className = "px-3 py-1.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-lg text-xs font-bold hover:bg-emerald-500 hover:text-white transition-all";
-            }
-        }
-
-        function addFoundUserAsFriend() {
-            if (!searchedUser) return;
-
-            if (!currentUser.friends) currentUser.friends = [];
-            if (!currentUser.friends.includes(searchedUser.phone)) {
-                currentUser.friends.push(searchedUser.phone);
-            }
-
-            if (!searchedUser.friends) searchedUser.friends = [];
-            if (!searchedUser.friends.includes(currentUser.phone)) {
-                searchedUser.friends.push(currentUser.phone);
-            }
-
-            dbUsers[currentUser.phone] = currentUser;
-            dbUsers[searchedUser.phone] = searchedUser;
-            saveDatabase();
-
-            closeAddFriendModal();
-            renderChatList();
-            showToast(`Đã thêm ${searchedUser.name} vào danh bạ!`);
-            selectChatTarget(searchedUser);
-        }
-
-        async function startCall(type) {
-            if (!activeChatUser) return;
-
-            document.getElementById('call-modal').classList.remove('hidden');
-            document.getElementById('call-remote-name').innerText = activeChatUser.name;
-            
-            const avatarBox = document.getElementById('call-remote-avatar-box');
-            if (activeChatUser.avatar) {
-                avatarBox.innerHTML = `<img src="${activeChatUser.avatar}" class="w-full h-full object-cover">`;
-            } else {
-                avatarBox.innerText = activeChatUser.name.charAt(0).toUpperCase();
-            }
-
-            callSeconds = 0;
-            document.getElementById('call-timer').innerText = "00:00";
-            callTimerInterval = setInterval(() => {
-                callSeconds++;
-                const m = Math.floor(callSeconds / 60).toString().padStart(2, '0');
-                const s = (callSeconds % 60).toString().padStart(2, '0');
-                document.getElementById('call-timer').innerText = `${m}:${s}`;
-            }, 1000);
-
-            try {
-                localStream = await navigator.mediaDevices.getUserMedia({
-                    audio: true,
-                    video: type === 'video'
-                });
-
-                document.getElementById('local-video').srcObject = localStream;
-                if (type === 'video') {
-                    document.getElementById('remote-video').srcObject = localStream;
-                    document.getElementById('remote-avatar-fallback').classList.add('hidden');
-                } else {
-                    document.getElementById('remote-avatar-fallback').classList.remove('hidden');
-                }
-                document.getElementById('call-status-text').innerText = "Đã kết nối mã hóa bảo mật";
-            } catch (err) {
-                console.warn("Media devices error:", err);
-                document.getElementById('call-status-text').innerText = "Cuộc gọi giả lập (Không tìm thấy Camera/Mic)";
-            }
-        }
-
-        function endCall() {
-            if (localStream) {
-                localStream.getTracks().forEach(track => track.stop());
-                localStream = null;
-            }
-            if (callTimerInterval) clearInterval(callTimerInterval);
-            document.getElementById('call-modal').classList.add('hidden');
-        }
-
-        function toggleMic() {
-            if (!localStream) return;
-            isMicMuted = !isMicMuted;
-            localStream.getAudioTracks()[0].enabled = !isMicMuted;
-            const btn = document.getElementById('btn-toggle-mic');
-            btn.className = isMicMuted ? 
-                "w-14 h-14 rounded-2xl bg-rose-600/20 border border-rose-500/50 text-rose-400 flex items-center justify-center text-lg transition-all shadow-lg" : 
-                "w-14 h-14 rounded-2xl bg-slate-800 border border-slate-700 text-slate-200 hover:text-gold-400 flex items-center justify-center text-lg transition-all shadow-lg";
-        }
-
-        function toggleCam() {
-            if (!localStream) return;
-            isCamOff = !isCamOff;
-            const videoTrack = localStream.getVideoTracks()[0];
-            if (videoTrack) videoTrack.enabled = !isCamOff;
-            
-            document.getElementById('local-video-off').classList.toggle('hidden', !isCamOff);
-            const btn = document.getElementById('btn-toggle-cam');
-            btn.className = isCamOff ? 
-                "w-14 h-14 rounded-2xl bg-rose-600/20 border border-rose-500/50 text-rose-400 flex items-center justify-center text-lg transition-all shadow-lg" : 
-                "w-14 h-14 rounded-2xl bg-slate-800 border border-slate-700 text-slate-200 hover:text-gold-400 flex items-center justify-center text-lg transition-all shadow-lg";
-        }
-
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toast-msg').innerText = msg;
-            toast.classList.remove('translate-y-[-100px]', 'opacity-0');
-            setTimeout(() => {
-                toast.classList.add('translate-y-[-100px]', 'opacity-0');
-            }, 3500);
         }
     </script>
 </body>
