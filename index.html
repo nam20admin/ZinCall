@@ -299,7 +299,7 @@
                 </div>
                 <input type="file" id="avatarFileInput" accept="image/*" onchange="previewAvatar(event)" class="text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-amber-500/10 file:text-amber-300 hover:file:bg-amber-500/20">
                 <div class="flex space-x-2">
-                    <button onclick="saveAvatar()" class="flex-1 py-2 rounded-xl font-bold text-dark-900 gold-gradient-bg">Lưu Ảnh</button>
+                    <button id="btnSaveAvatar" onclick="saveAvatar()" class="flex-1 py-2 rounded-xl font-bold text-dark-900 gold-gradient-bg">Lưu Ảnh</button>
                     <button onclick="closeAvatarModal()" class="flex-1 py-2 rounded-xl border border-slate-700 text-slate-300">Hủy</button>
                 </div>
             </div>
@@ -361,7 +361,7 @@
 
         // App State
         let currentUser = null;
-        let activeTab = 'chats'; // 'chats' | 'contacts'
+        let activeTab = 'chats'; 
         let activeTargetPhone = null;
         let selectedAvatarData = null;
         let mediaStream = null;
@@ -425,7 +425,7 @@
 
             const users = getUsers();
             if (users[phone]) {
-                alert('Số điện thoại này đã được đăng ký trên hệ thống!');
+                alert('Số điện thoại này đã được đăng ký!');
                 return;
             }
 
@@ -530,7 +530,6 @@
             const filter = document.getElementById('searchInput').value.toLowerCase();
             const users = getUsers();
 
-            // Refresh current user data
             currentUser = users[currentUser.phone] || currentUser;
 
             listEl.innerHTML = '';
@@ -607,7 +606,6 @@
                 return;
             }
 
-            // Mutual friendship
             currentUser.friends.push(searchPhone);
             if (!targetUser.friends) targetUser.friends = [];
             if (!targetUser.friends.includes(currentUser.phone)) {
@@ -696,9 +694,11 @@
             renderMessages();
         }
 
-        // --- AVATAR UPLOAD LOGIC ---
+        // --- AVATAR UPLOAD & AUTO COMPRESS LOGIC (FIX LỖI LƯU ẢNH) ---
         function openAvatarModal() {
-            document.getElementById('avatarPreview').src = currentUser.avatar || DEFAULT_AVATAR;
+            selectedAvatarData = currentUser.avatar || DEFAULT_AVATAR;
+            document.getElementById('avatarPreview').src = selectedAvatarData;
+            document.getElementById('avatarFileInput').value = '';
             document.getElementById('avatarModal').classList.remove('hidden');
         }
 
@@ -711,26 +711,45 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = (event) => {
-                    selectedAvatarData = event.target.result;
-                    document.getElementById('avatarPreview').src = selectedAvatarData;
+                    const img = new Image();
+                    img.onload = () => {
+                        // Nén ảnh bằng Canvas xuống tối đa 200x200px để không làm tràn bộ nhớ
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        const maxSize = 200;
+                        canvas.width = maxSize;
+                        canvas.height = maxSize;
+                        
+                        ctx.drawImage(img, 0, 0, maxSize, maxSize);
+                        selectedAvatarData = canvas.toDataURL('image/jpeg', 0.85); // Nén JPEG chất lượng 85%
+                        document.getElementById('avatarPreview').src = selectedAvatarData;
+                    };
+                    img.src = event.target.result;
                 };
                 reader.readAsDataURL(file);
             }
         }
 
         function saveAvatar() {
-            if (selectedAvatarData) {
+            if (!selectedAvatarData) return;
+
+            try {
                 currentUser.avatar = selectedAvatarData;
                 const users = getUsers();
                 users[currentUser.phone] = currentUser;
+                
                 saveUsers(users);
                 localStorage.setItem(SESSION_KEY, JSON.stringify(currentUser));
 
                 document.getElementById('myAvatar').src = currentUser.avatar;
                 if (activeTargetPhone) renderMessages();
                 renderSidebar();
+
+                alert('Cập nhật ảnh đại diện thành công!');
+                closeAvatarModal();
+            } catch (err) {
+                alert('Ảnh vẫn quá lớn, vui lòng chọn một file ảnh khác nhỏ hơn!');
             }
-            closeAvatarModal();
         }
 
         // --- WEBRTC / CAMERA & VOICE CALL LOGIC ---
@@ -770,7 +789,7 @@
                     localVid.classList.remove('hidden');
                     
                     localVid.srcObject = mediaStream;
-                    remoteVid.srcObject = mediaStream; // Simulating remote view
+                    remoteVid.srcObject = mediaStream; 
                     document.getElementById('callStatusText').innerText = "ĐANG GỌI VIDEO HD...";
                 } else {
                     voiceAvt.classList.remove('hidden');
