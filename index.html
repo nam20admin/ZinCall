@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" class="h-full bg-slate-950 text-slate-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZinCall - VIP Communication Platform</title>
+    <title>ZinCall - VIP Communication Suite</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Montserrat & Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
+    <!-- Google Fonts (Plus Jakarta Sans) -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     <script>
         tailwind.config = {
             theme: {
@@ -18,819 +18,895 @@
                     colors: {
                         gold: {
                             100: '#FFF9E6',
-                            300: '#FFE082',
-                            400: '#FFD54F',
-                            500: '#FFC107',
-                            600: '#FFB300',
-                            700: '#FFA000',
-                            800: '#FF8F00',
+                            300: '#FFE599',
+                            400: '#F5C242',
+                            500: '#D4AF37', /* Classic Gold */
+                            600: '#AA820A',
+                            700: '#806000',
                         },
                         dark: {
-                            900: '#090B10',
-                            800: '#121620',
-                            700: '#1A202C',
-                            600: '#2D3748',
+                            950: '#06080C',
+                            900: '#0B0F19',
+                            800: '#141A28',
+                            700: '#1E2638',
+                            600: '#2A344A'
                         }
                     },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Montserrat', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'gold-gradient': 'linear-gradient(135deg, #FFE599 0%, #D4AF37 50%, #AA820A 100%)',
+                        'gold-metallic': 'linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%)',
+                        'dark-glass': 'linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%)',
                     }
                 }
             }
         }
     </script>
+
     <style>
-        /* Custom Metallic Gold Gradients & Glassmorphic UI */
-        .gold-gradient-text {
-            background: linear-gradient(135deg, #FFF5C0 0%, #E6C665 50%, #B8860B 100%);
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: rgba(11, 15, 25, 0.8); }
+        ::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.3); border-radius: 999px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(212, 175, 55, 0.6); }
+
+        /* Metallic Text Effect */
+        .text-gold-metallic {
+            background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 30%, #B38728 60%, #FBF5B7 80%, #AA771C 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .gold-gradient-bg {
-            background: linear-gradient(135deg, #F3E5AB 0%, #D4AF37 50%, #AA7C11 100%);
+
+        .border-gold-glow {
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.12);
         }
-        .gold-btn-hover:hover {
-            background: linear-gradient(135deg, #FFE89C 0%, #E2B739 50%, #C48E08 100%);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
-        }
+
         .glass-panel {
-            background: rgba(18, 22, 32, 0.75);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(212, 175, 55, 0.2);
+            background: rgba(20, 26, 40, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
-        .glass-panel-light {
-            background: rgba(30, 38, 54, 0.5);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(212, 175, 55, 0.15);
+
+        /* Voice Wave Animation */
+        @keyframes wave {
+            0%, 100% { height: 6px; }
+            50% { height: 32px; }
         }
-        .gold-border-glow {
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.25);
-        }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #090B10;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #D4AF37;
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #FFD700;
-        }
+        .animate-wave-1 { animation: wave 1.2s infinite ease-in-out; }
+        .animate-wave-2 { animation: wave 1.2s infinite ease-in-out 0.2s; }
+        .animate-wave-3 { animation: wave 1.2s infinite ease-in-out 0.4s; }
+        .animate-wave-4 { animation: wave 1.2s infinite ease-in-out 0.1s; }
+        .animate-wave-5 { animation: wave 1.2s infinite ease-in-out 0.3s; }
     </style>
 </head>
-<body class="bg-dark-900 text-slate-100 font-sans h-screen overflow-hidden antialiased select-none">
+
+<body class="h-full antialiased selection:bg-gold-500 selection:text-black overflow-hidden font-sans">
 
     <!-- APP CONTAINER -->
-    <div id="app" class="h-full w-full relative flex items-center justify-center">
+    <div id="app" class="h-full w-full flex flex-col bg-dark-950 relative">
 
-        <!-- ================= AUTH CONTAINER (ĐĂNG KÝ / ĐĂNG NHẬP) ================= -->
-        <div id="authContainer" class="w-full max-w-md p-6 z-20">
-            <div class="glass-panel p-8 rounded-2xl gold-border-glow text-center shadow-2xl relative overflow-hidden">
-                <div class="absolute -top-10 -right-10 w-32 h-32 bg-yellow-500/10 rounded-full blur-2xl pointer-events-none"></div>
-                
-                <!-- Logo -->
-                <div class="mb-6 inline-flex flex-col items-center">
-                    <div class="w-20 h-20 rounded-full gold-gradient-bg p-1 shadow-lg flex items-center justify-center mb-2">
-                        <div class="w-full h-full bg-dark-900 rounded-full flex items-center justify-center">
-                            <i class="fa-solid fa-phone-volume text-3xl gold-gradient-text"></i>
-                        </div>
+        <!-- AUTH SCREEN (LOGIN / REGISTER MODAL OVERLAY) -->
+        <div id="auth-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark-950/95 backdrop-blur-2xl">
+            <div class="glass-panel w-full max-w-md p-8 rounded-3xl border-gold-glow relative overflow-hidden shadow-2xl">
+                <div class="absolute -top-24 -left-24 w-48 h-48 bg-gold-500/20 rounded-full blur-3xl"></div>
+                <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-gold-500/10 rounded-full blur-3xl"></div>
+
+                <div class="text-center mb-8 relative z-10">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-gold-600 via-gold-400 to-amber-200 text-dark-950 shadow-lg shadow-gold-500/20 mb-3 font-extrabold text-2xl tracking-tighter">
+                        Z
                     </div>
-                    <h1 class="text-3xl font-extrabold font-display tracking-wider gold-gradient-text">ZinCall</h1>
-                    <span class="text-xs uppercase tracking-widest text-amber-300/80 font-semibold mt-1">VIP Communication</span>
+                    <h1 class="text-3xl font-black tracking-wider text-gold-metallic">ZinCall</h1>
+                    <p class="text-[11px] text-slate-400 mt-1 uppercase tracking-widest font-semibold">Luxury Executive Messenger</p>
                 </div>
 
-                <!-- Tabs -->
-                <div class="flex bg-dark-800 p-1 rounded-xl mb-6 border border-amber-500/20">
-                    <button id="tabLogin" onclick="switchAuthTab('login')" class="flex-1 py-2 text-sm font-semibold rounded-lg gold-gradient-bg text-dark-900 shadow">Đăng Nhập</button>
-                    <button id="tabRegister" onclick="switchAuthTab('register')" class="flex-1 py-2 text-sm font-semibold rounded-lg text-slate-400 hover:text-amber-200 transition">Đăng Ký</button>
+                <!-- Auth Tabs -->
+                <div class="flex bg-slate-900/90 p-1 rounded-xl mb-6 border border-white/5 relative z-10">
+                    <button id="tab-login" onclick="switchAuthTab('login')" class="flex-1 py-2 text-xs font-bold rounded-lg transition-all text-dark-950 bg-gold-gradient shadow-md">Đăng Nhập</button>
+                    <button id="tab-register" onclick="switchAuthTab('register')" class="flex-1 py-2 text-xs font-bold text-slate-400 rounded-lg transition-all hover:text-white">Đăng Ký Tài Khoản</button>
                 </div>
 
                 <!-- Form Login -->
-                <form id="formLogin" onsubmit="handleLogin(event)" class="space-y-4 text-left">
+                <form id="form-login" onsubmit="handleAuth(event, 'login')" class="space-y-4 relative z-10">
                     <div>
-                        <label class="block text-xs font-medium text-amber-200/80 uppercase mb-1">Số điện thoại</label>
+                        <label class="text-xs font-semibold text-slate-300 mb-1 block">Số điện thoại / Mã ZinID</label>
                         <div class="relative">
-                            <i class="fa-solid fa-phone absolute left-3 top-3 text-slate-500"></i>
-                            <input type="tel" id="loginPhone" required placeholder="0912345678" class="w-full bg-dark-800 border border-amber-500/20 rounded-xl py-2.5 pl-10 pr-4 text-sm focus:outline-none focus:border-amber-400 text-white">
+                            <i class="fa-solid fa-phone absolute left-3.5 top-3 text-slate-500 text-xs"></i>
+                            <input type="text" id="login-phone" required placeholder="Nhập SĐT..." class="w-full bg-slate-950/90 border border-slate-800 rounded-xl py-2.5 pl-10 pr-4 text-xs text-slate-100 focus:outline-none focus:border-gold-500 transition-colors">
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-amber-200/80 uppercase mb-1">Mật khẩu</label>
+                        <label class="text-xs font-semibold text-slate-300 mb-1 block">Mật khẩu</label>
                         <div class="relative">
-                            <i class="fa-solid fa-lock absolute left-3 top-3 text-slate-500"></i>
-                            <input type="password" id="loginPass" required placeholder="••••••••" class="w-full bg-dark-800 border border-amber-500/20 rounded-xl py-2.5 pl-10 pr-4 text-sm focus:outline-none focus:border-amber-400 text-white">
+                            <i class="fa-solid fa-lock absolute left-3.5 top-3 text-slate-500 text-xs"></i>
+                            <input type="password" id="login-password" required placeholder="••••••••" class="w-full bg-slate-950/90 border border-slate-800 rounded-xl py-2.5 pl-10 pr-4 text-xs text-slate-100 focus:outline-none focus:border-gold-500 transition-colors">
                         </div>
                     </div>
-                    <button type="submit" class="w-full py-3 rounded-xl font-bold text-dark-900 gold-gradient-bg gold-btn-hover transition duration-200 mt-2 shadow-lg">
-                        ĐĂNG NHẬP VIP
+                    <button type="submit" class="w-full py-3 bg-gold-gradient text-dark-950 font-extrabold text-xs uppercase tracking-wider rounded-xl hover:brightness-110 transition-all shadow-lg shadow-gold-500/20 active:scale-[0.99]">
+                        Đăng Nhập ZinCall
                     </button>
                 </form>
 
                 <!-- Form Register -->
-                <form id="formRegister" onsubmit="handleRegister(event)" class="space-y-4 text-left hidden">
+                <form id="form-register" onsubmit="handleAuth(event, 'register')" class="space-y-4 hidden relative z-10">
                     <div>
-                        <label class="block text-xs font-medium text-amber-200/80 uppercase mb-1">Họ và Tên</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-user absolute left-3 top-3 text-slate-500"></i>
-                            <input type="text" id="regName" required placeholder="Nguyễn Văn A" class="w-full bg-dark-800 border border-amber-500/20 rounded-xl py-2.5 pl-10 pr-4 text-sm focus:outline-none focus:border-amber-400 text-white">
-                        </div>
+                        <label class="text-xs font-semibold text-slate-300 mb-1 block">Họ và Tên</label>
+                        <input type="text" id="reg-name" required placeholder="Nguyễn Văn A" class="w-full bg-slate-950/90 border border-slate-800 rounded-xl py-2.5 px-3.5 text-xs text-slate-100 focus:outline-none focus:border-gold-500 transition-colors">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-amber-200/80 uppercase mb-1">Số điện thoại</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-phone absolute left-3 top-3 text-slate-500"></i>
-                            <input type="tel" id="regPhone" required placeholder="0912345678" class="w-full bg-dark-800 border border-amber-500/20 rounded-xl py-2.5 pl-10 pr-4 text-sm focus:outline-none focus:border-amber-400 text-white">
-                        </div>
+                        <label class="text-xs font-semibold text-slate-300 mb-1 block">Số điện thoại (Dùng làm SĐT ZinCall)</label>
+                        <input type="text" id="reg-phone" required placeholder="0901234567" class="w-full bg-slate-950/90 border border-slate-800 rounded-xl py-2.5 px-3.5 text-xs text-slate-100 focus:outline-none focus:border-gold-500 transition-colors">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-amber-200/80 uppercase mb-1">Mật khẩu</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-lock absolute left-3 top-3 text-slate-500"></i>
-                            <input type="password" id="regPass" required placeholder="••••••••" class="w-full bg-dark-800 border border-amber-500/20 rounded-xl py-2.5 pl-10 pr-4 text-sm focus:outline-none focus:border-amber-400 text-white">
-                        </div>
+                        <label class="text-xs font-semibold text-slate-300 mb-1 block">Mật khẩu</label>
+                        <input type="password" id="reg-password" required placeholder="••••••••" class="w-full bg-slate-950/90 border border-slate-800 rounded-xl py-2.5 px-3.5 text-xs text-slate-100 focus:outline-none focus:border-gold-500 transition-colors">
                     </div>
-                    <button type="submit" class="w-full py-3 rounded-xl font-bold text-dark-900 gold-gradient-bg gold-btn-hover transition duration-200 mt-2 shadow-lg">
-                        TẠO TÀI KHOẢN VIP
+                    <button type="submit" class="w-full py-3 bg-gold-gradient text-dark-950 font-extrabold text-xs uppercase tracking-wider rounded-xl hover:brightness-110 transition-all shadow-lg shadow-gold-500/20 active:scale-[0.99]">
+                        Tạo Tài Khoản
                     </button>
                 </form>
-
-                <!-- Shortcut test account -->
-                <div class="mt-6 pt-4 border-t border-slate-800 flex justify-between items-center text-xs text-slate-400">
-                    <span>Thử nghiệm nhanh:</span>
-                    <button onclick="createTestAccounts()" class="text-amber-400 underline hover:text-amber-300">Tạo 2 tài khoản mẫu</button>
-                </div>
             </div>
         </div>
 
+        <!-- MAIN APP WORKSPACE -->
+        <div class="flex-1 flex overflow-hidden">
 
-        <!-- ================= MAIN DASHBOARD CONTAINER ================= -->
-        <div id="mainContainer" class="w-full h-full flex hidden">
-            
-            <!-- LEFT NAVIGATION BAR -->
-            <div class="w-20 bg-dark-800 border-r border-amber-500/20 flex flex-col items-center py-6 justify-between z-10">
-                <div class="flex flex-col items-center space-y-8">
-                    <!-- Brand Icon -->
-                    <div class="w-12 h-12 rounded-2xl gold-gradient-bg p-0.5 shadow-lg flex items-center justify-center cursor-pointer">
-                        <div class="w-full h-full bg-dark-900 rounded-2xl flex items-center justify-center">
-                            <i class="fa-solid fa-phone-volume text-xl gold-gradient-text"></i>
+            <!-- 1. LEFT NAVIGATION BAR -->
+            <aside class="w-16 md:w-20 bg-dark-900 border-r border-slate-800/80 flex flex-col items-center py-5 justify-between z-20 shrink-0">
+                <div class="flex flex-col items-center gap-1 group cursor-pointer" onclick="showToast('ZinCall VIP Edition')">
+                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-gold-gradient p-[1px] shadow-lg shadow-gold-500/10 group-hover:scale-105 transition-transform">
+                        <div class="w-full h-full bg-dark-950 rounded-[15px] flex items-center justify-center text-gold-400 font-black text-xl">
+                            Z
                         </div>
                     </div>
-
-                    <!-- Navigation Items -->
-                    <div class="flex flex-col space-y-6">
-                        <button onclick="switchTab('chats')" id="navChats" class="p-3 rounded-xl text-amber-400 bg-amber-500/10 border border-amber-500/30 transition">
-                            <i class="fa-solid fa-comments text-xl"></i>
-                        </button>
-                        <button onclick="switchTab('contacts')" id="navContacts" class="p-3 rounded-xl text-slate-400 hover:text-amber-300 transition">
-                            <i class="fa-solid fa-address-book text-xl"></i>
-                        </button>
-                        <button onclick="openAddFriendModal()" class="p-3 rounded-xl text-slate-400 hover:text-amber-300 transition">
-                            <i class="fa-solid fa-user-plus text-xl"></i>
-                        </button>
-                    </div>
+                    <span class="text-[9px] font-bold text-gold-metallic tracking-wider hidden md:block">ZinCall</span>
                 </div>
 
-                <!-- User Profile Avatar & Logout -->
-                <div class="flex flex-col items-center space-y-4">
-                    <div class="relative group cursor-pointer" onclick="openAvatarModal()">
-                        <img id="myAvatar" src="" class="w-11 h-11 rounded-full object-cover border-2 border-amber-400 shadow-md">
-                        <div class="absolute inset-0 bg-black/60 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
-                            <i class="fa-solid fa-camera text-xs text-amber-300"></i>
+                <nav class="flex flex-col gap-5 my-auto">
+                    <button onclick="switchMainTab('chat')" id="nav-chat" class="nav-btn active relative p-3 rounded-2xl text-gold-400 bg-slate-800/80 border border-gold-500/30 transition-all hover:scale-110">
+                        <i class="fa-solid fa-comment-dots text-lg"></i>
+                    </button>
+                    <button onclick="switchMainTab('contacts')" id="nav-contacts" class="nav-btn p-3 rounded-2xl text-slate-400 hover:text-gold-400 hover:bg-slate-800/50 transition-all hover:scale-110">
+                        <i class="fa-solid fa-address-book text-lg"></i>
+                    </button>
+                    <button onclick="openAddFriendModal()" class="p-3 rounded-2xl text-slate-400 hover:text-gold-400 hover:bg-slate-800/50 transition-all hover:scale-110" title="Thêm bạn mới">
+                        <i class="fa-solid fa-user-plus text-lg"></i>
+                    </button>
+                </nav>
+
+                <div class="flex flex-col gap-4 items-center">
+                    <button onclick="openProfileModal()" class="relative group" title="Hồ sơ & Đổi Avatar">
+                        <div id="my-avatar-container" class="w-10 h-10 rounded-2xl overflow-hidden border-2 border-gold-500/50 group-hover:border-gold-400 transition-all flex items-center justify-center bg-slate-800 text-gold-400 font-bold text-base">
+                            <!-- Avatar image or fallback letter -->
                         </div>
-                    </div>
-                    <button onclick="handleLogout()" class="text-slate-500 hover:text-red-400 transition p-2">
-                        <i class="fa-solid fa-right-from-bracket text-lg"></i>
+                        <span class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-dark-900 rounded-full"></span>
+                    </button>
+                    <button onclick="logout()" class="text-slate-500 hover:text-rose-400 transition-colors p-2" title="Đăng xuất">
+                        <i class="fa-solid fa-right-from-bracket"></i>
                     </button>
                 </div>
-            </div>
+            </aside>
 
-            <!-- SIDEBAR: CHATS / CONTACTS -->
-            <div class="w-80 bg-dark-800/60 border-r border-amber-500/10 flex flex-col h-full">
-                <!-- Sidebar Header -->
-                <div class="p-4 border-b border-amber-500/10 flex items-center justify-between">
-                    <h2 id="sidebarTitle" class="font-bold font-display text-lg gold-gradient-text">Đoạn Chát</h2>
-                    <span id="myPhoneBadge" class="text-xs bg-amber-500/10 border border-amber-500/30 text-amber-300 px-2 py-1 rounded-full"></span>
-                </div>
+            <!-- 2. SIDEBAR LIST (CHATS & CONTACTS) -->
+            <section class="w-80 md:w-96 bg-dark-900 border-r border-slate-800/80 flex flex-col z-10 shrink-0">
+                <div class="p-4 border-b border-slate-800/80 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h2 id="sidebar-title" class="text-lg font-extrabold text-gold-metallic tracking-wide">Trò Chuyện</h2>
+                        <button onclick="openAddFriendModal()" class="w-8 h-8 rounded-xl bg-slate-800 border border-slate-700 hover:border-gold-500/50 text-gold-400 flex items-center justify-center transition-colors">
+                            <i class="fa-solid fa-user-plus text-xs"></i>
+                        </button>
+                    </div>
 
-                <!-- Search Bar -->
-                <div class="p-3">
                     <div class="relative">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-500 text-sm"></i>
-                        <input type="text" id="searchInput" oninput="renderSidebar()" placeholder="Tìm kiếm..." class="w-full bg-dark-900 border border-amber-500/20 rounded-xl py-2 pl-9 pr-3 text-xs focus:outline-none focus:border-amber-400 text-white">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-500 text-xs"></i>
+                        <input type="text" oninput="filterChatList(this.value)" placeholder="Tìm kiếm bạn bè..." class="w-full bg-dark-950 border border-slate-800 rounded-xl py-2 pl-9 pr-4 text-xs text-slate-200 focus:outline-none focus:border-gold-500/50 transition-colors">
                     </div>
                 </div>
 
-                <!-- Lists Container -->
-                <div id="sidebarList" class="flex-1 overflow-y-auto divide-y divide-slate-800/40">
+                <!-- Chat / Contact List Content -->
+                <div id="chat-list" class="flex-1 overflow-y-auto p-2 space-y-1">
                     <!-- Dynamic rendering -->
                 </div>
-            </div>
+            </section>
 
-            <!-- CHAT / MAIN DISPLAY AREA -->
-            <div class="flex-1 flex flex-col h-full bg-dark-900 relative">
+            <!-- 3. CHAT WORKSPACE AREA -->
+            <main id="chat-workspace" class="flex-1 flex flex-col bg-slate-950 relative">
                 
-                <!-- Chat Active Header -->
-                <div id="chatHeader" class="p-4 border-b border-amber-500/10 flex items-center justify-between glass-panel hidden z-10">
-                    <div class="flex items-center space-y-0 space-x-3">
-                        <img id="activeTargetAvatar" src="" class="w-10 h-10 rounded-full object-cover border border-amber-400">
+                <!-- Chat Header -->
+                <header id="chat-header" class="h-16 border-b border-slate-800/80 px-6 flex items-center justify-between bg-dark-900/60 backdrop-blur-md z-10">
+                    <div class="flex items-center gap-3">
+                        <div id="active-chat-avatar-box" class="w-10 h-10 rounded-2xl border border-gold-500/30 overflow-hidden bg-slate-800 flex items-center justify-center font-bold text-gold-400 text-sm">
+                            <!-- Avatar or Letter -->
+                        </div>
                         <div>
-                            <h3 id="activeTargetName" class="font-bold text-sm text-white"></h3>
-                            <span id="activeTargetPhone" class="text-xs text-amber-300/70"></span>
+                            <h3 id="active-chat-name" class="font-bold text-slate-100 text-sm">Chọn một cuộc trò chuyện</h3>
+                            <p id="active-chat-status" class="text-[11px] text-slate-500">Chưa chọn bạn bè</p>
                         </div>
                     </div>
-                    <div class="flex items-center space-x-3">
-                        <button onclick="startCall('voice')" class="p-2.5 rounded-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 transition">
-                            <i class="fa-solid fa-phone"></i>
+
+                    <div id="chat-actions" class="flex items-center gap-2 hidden">
+                        <button onclick="startCall('voice')" class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60 text-slate-300 hover:text-gold-400 hover:border-gold-500/40 hover:bg-slate-800 transition-all active:scale-95" title="Gọi Thường">
+                            <i class="fa-solid fa-phone text-sm"></i>
                         </button>
-                        <button onclick="startCall('video')" class="p-2.5 rounded-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 transition">
-                            <i class="fa-solid fa-video"></i>
+                        <button onclick="startCall('video')" class="p-2.5 rounded-xl bg-gold-gradient text-dark-950 font-bold hover:brightness-110 shadow-md shadow-gold-500/10 transition-all active:scale-95 flex items-center gap-1.5 text-xs" title="Gọi Video Call">
+                            <i class="fa-solid fa-video text-xs"></i>
+                            <span class="hidden sm:inline">Gọi Video</span>
                         </button>
+                    </div>
+                </header>
+
+                <!-- Messages Stream -->
+                <div id="messages-container" class="flex-1 overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-dark-900/30 to-transparent">
+                    <div id="empty-workspace-state" class="h-full flex flex-col items-center justify-center text-slate-600 gap-3">
+                        <div class="w-16 h-16 rounded-full border border-slate-800 flex items-center justify-center text-2xl text-slate-700">
+                            <i class="fa-solid fa-comments"></i>
+                        </div>
+                        <p class="text-xs">Chọn bạn bè hoặc tìm kiếm kết bạn để bắt đầu trò chuyện</p>
                     </div>
                 </div>
 
-                <!-- Chat Messages Body -->
-                <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-4">
-                    <!-- Empty state -->
-                    <div id="emptyChatState" class="h-full flex flex-col items-center justify-center text-center text-slate-500">
-                        <i class="fa-solid fa-comments text-5xl mb-4 text-slate-700"></i>
-                        <p class="text-sm">Chọn một bạn bè hoặc tìm kiếm SĐT để bắt đầu nhắn tin & gọi điện VIP</p>
-                    </div>
-                </div>
-
-                <!-- Chat Input Footer -->
-                <div id="chatFooter" class="p-4 border-t border-amber-500/10 glass-panel hidden">
-                    <form onsubmit="sendMessage(event)" class="flex items-center space-x-2">
-                        <input type="text" id="messageInput" placeholder="Nhập tin nhắn..." class="flex-1 bg-dark-800 border border-amber-500/20 rounded-xl py-2.5 px-4 text-sm focus:outline-none focus:border-amber-400 text-white">
-                        <button type="submit" class="px-5 py-2.5 rounded-xl font-bold text-dark-900 gold-gradient-bg gold-btn-hover transition">
-                            <i class="fa-solid fa-paper-plane"></i>
+                <!-- Input Footer -->
+                <div id="chat-input-area" class="p-4 border-t border-slate-800/80 bg-dark-900/80 backdrop-blur-md hidden">
+                    <form onsubmit="handleSendMessage(event)" class="flex items-center gap-2">
+                        <input id="chat-input" type="text" placeholder="Nhập tin nhắn bảo mật..." class="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-100 focus:outline-none focus:border-gold-500/50 transition-colors">
+                        <button type="submit" class="p-2.5 px-4 bg-gold-gradient text-dark-950 font-extrabold rounded-xl hover:brightness-110 transition-all shadow-md shadow-gold-500/10 flex items-center gap-1 text-xs">
+                            <span>Gửi</span>
+                            <i class="fa-solid fa-paper-plane text-xs"></i>
                         </button>
                     </form>
                 </div>
-            </div>
+            </main>
         </div>
 
-        <!-- ================= MODAL: KẾT BẠN ================= -->
-        <div id="addFriendModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 hidden">
-            <div class="glass-panel p-6 rounded-2xl w-full max-w-sm gold-border-glow space-y-4">
-                <div class="flex justify-between items-center border-b border-amber-500/20 pb-3">
-                    <h3 class="font-bold gold-gradient-text">Kết Bạn Mới</h3>
-                    <button onclick="closeAddFriendModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+        <!-- 4. PROFILE & AVATAR UPLOAD MODAL -->
+        <div id="profile-modal" class="fixed inset-0 z-50 hidden bg-dark-950/80 backdrop-blur-md flex items-center justify-center p-4">
+            <div class="glass-panel w-full max-w-sm p-6 rounded-3xl border-gold-glow relative">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-base font-bold text-gold-metallic">Hồ Sơ Cá Nhân VIP</h3>
+                    <button onclick="closeProfileModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
                 </div>
-                <div>
-                    <label class="block text-xs text-amber-200/80 mb-1">Nhập SĐT bạn bè</label>
-                    <input type="tel" id="friendSearchPhone" placeholder="09xxxxxxxx" class="w-full bg-dark-800 border border-amber-500/20 rounded-xl py-2 px-3 text-sm focus:outline-none focus:border-amber-400 text-white">
-                </div>
-                <button onclick="searchAndAddFriend()" class="w-full py-2.5 rounded-xl font-bold text-dark-900 gold-gradient-bg">Tìm & Kết Bạn</button>
-            </div>
-        </div>
 
-        <!-- ================= MODAL: ĐỔI AVATAR ================= -->
-        <div id="avatarModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 hidden">
-            <div class="glass-panel p-6 rounded-2xl w-full max-w-sm gold-border-glow space-y-4 text-center">
-                <h3 class="font-bold gold-gradient-text border-b border-amber-500/20 pb-3">Đổi Ảnh Đại Diện VIP</h3>
-                <div class="flex justify-center">
-                    <img id="avatarPreview" src="" class="w-24 h-24 rounded-full object-cover border-2 border-amber-400">
-                </div>
-                <input type="file" id="avatarFileInput" accept="image/*" onchange="previewAvatar(event)" class="text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-amber-500/10 file:text-amber-300 hover:file:bg-amber-500/20">
-                <div class="flex space-x-2">
-                    <button id="btnSaveAvatar" onclick="saveAvatar()" class="flex-1 py-2 rounded-xl font-bold text-dark-900 gold-gradient-bg">Lưu Ảnh</button>
-                    <button onclick="closeAvatarModal()" class="flex-1 py-2 rounded-xl border border-slate-700 text-slate-300">Hủy</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- ================= CALL OVERLAY SCREEN (VOICE & VIDEO) ================= -->
-        <div id="callOverlay" class="fixed inset-0 bg-dark-900/95 backdrop-blur-md flex flex-col justify-between p-8 z-50 hidden">
-            <!-- Call Top -->
-            <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-2">
-                    <div class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
-                    <span id="callStatusText" class="text-xs tracking-wider uppercase text-amber-300 font-semibold">Đang gọi...</span>
-                </div>
-                <span id="callTimer" class="font-mono text-sm text-slate-400">00:00</span>
-            </div>
-
-            <!-- Call Center Visual -->
-            <div class="flex-1 flex flex-col items-center justify-center relative my-4">
-                <!-- Video Remote Stream -->
-                <video id="remoteVideo" autoplay playsinline class="w-full h-full object-cover rounded-2xl border border-amber-500/30 hidden max-h-[60vh]"></video>
-                
-                <!-- Video Local Stream (PIP) -->
-                <video id="localVideo" autoplay playsinline muted class="absolute bottom-4 right-4 w-32 h-44 object-cover rounded-xl border-2 border-amber-400 shadow-xl hidden"></video>
-
-                <!-- Avatar Voice Fallback -->
-                <div id="voiceAvatarContainer" class="flex flex-col items-center space-y-4">
-                    <div class="relative">
-                        <div class="w-32 h-32 rounded-full gold-gradient-bg p-1 animate-pulse">
-                            <img id="callTargetAvatar" src="" class="w-full h-full rounded-full object-cover">
+                <div class="flex flex-col items-center gap-4">
+                    <!-- Avatar Preview & Edit -->
+                    <div class="relative group cursor-pointer" onclick="document.getElementById('avatar-file-input').click()">
+                        <div id="profile-modal-avatar-box" class="w-24 h-24 rounded-3xl overflow-hidden border-2 border-gold-500/60 shadow-xl bg-slate-800 flex items-center justify-center text-3xl font-extrabold text-gold-400">
+                            <!-- Preview -->
+                        </div>
+                        <div class="absolute inset-0 bg-dark-950/60 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-gold-400 text-xs font-bold gap-1">
+                            <i class="fa-solid fa-camera text-base"></i>
+                            <span>Đổi Ảnh</span>
                         </div>
                     </div>
-                    <h2 id="callTargetName" class="text-2xl font-bold text-white"></h2>
-                    <p id="callTargetPhone" class="text-sm text-amber-300/80"></p>
+                    <input type="file" id="avatar-file-input" accept="image/*" onchange="handleAvatarUpload(event)" class="hidden">
+
+                    <div class="text-center w-full space-y-1">
+                        <h4 id="profile-modal-name" class="font-bold text-base text-slate-100">---</h4>
+                        <p id="profile-modal-phone" class="text-xs text-slate-400">SĐT: ---</p>
+                    </div>
+
+                    <div class="w-full bg-slate-900/80 p-3 rounded-2xl border border-slate-800/80 text-xs space-y-2 mt-2">
+                        <div class="flex justify-between text-slate-400">
+                            <span>Gói dịch vụ:</span>
+                            <span class="text-gold-400 font-bold">ZinCall VIP Membership</span>
+                        </div>
+                        <div class="flex justify-between text-slate-400">
+                            <span>Bảo mật:</span>
+                            <span class="text-emerald-400 font-bold">Mã Hóa Trực Tiếp</span>
+                        </div>
+                    </div>
+
+                    <button onclick="document.getElementById('avatar-file-input').click()" class="w-full py-2.5 bg-slate-800 border border-gold-500/40 text-gold-400 font-bold text-xs rounded-xl hover:bg-slate-700 transition-colors mt-2">
+                        <i class="fa-solid fa-upload mr-1.5"></i> Tải Ảnh Đại Diện Mới
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. CALL OVERLAY MODAL -->
+        <div id="call-modal" class="fixed inset-0 z-50 hidden bg-dark-950/95 backdrop-blur-2xl flex flex-col justify-between p-6 overflow-hidden">
+            <div class="flex items-center justify-between z-10">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-gold-gradient text-dark-950 font-black flex items-center justify-center text-xs">Z</div>
+                    <span class="font-bold text-xs uppercase tracking-widest text-gold-metallic">ZinCall Encrypted Call</span>
+                </div>
+                <div class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span id="call-timer">00:00</span>
                 </div>
             </div>
 
-            <!-- Call Controls -->
-            <div class="flex items-center justify-center space-x-6">
-                <button onclick="toggleMic()" id="btnToggleMic" class="w-12 h-12 rounded-full bg-dark-800 border border-amber-500/30 text-white flex items-center justify-center hover:bg-slate-700">
+            <div class="flex-1 flex flex-col items-center justify-center relative my-4">
+                <div id="video-container" class="relative w-full max-w-4xl h-[70vh] rounded-3xl overflow-hidden border-gold-glow bg-slate-950 flex items-center justify-center">
+                    
+                    <video id="remote-video" autoplay playsinline class="w-full h-full object-cover"></video>
+                    
+                    <div id="remote-avatar-fallback" class="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-dark-900 to-dark-950">
+                        <div id="call-remote-avatar-box" class="w-28 h-28 rounded-full overflow-hidden border-4 border-gold-500/40 shadow-2xl mb-4 bg-slate-800 flex items-center justify-center font-bold text-3xl text-gold-400">
+                            <!-- Avatar or Letter -->
+                        </div>
+                        <h2 id="call-remote-name" class="text-xl font-bold text-slate-100">---</h2>
+                        <p id="call-status-text" class="text-xs text-gold-400 mt-1">Đang kết nối tín hiệu mã hóa...</p>
+
+                        <div id="voice-visualizer" class="flex items-end gap-1.5 h-10 mt-6">
+                            <div class="w-1.5 bg-gold-400 rounded-full animate-wave-1"></div>
+                            <div class="w-1.5 bg-gold-400 rounded-full animate-wave-2"></div>
+                            <div class="w-1.5 bg-gold-500 rounded-full animate-wave-3"></div>
+                            <div class="w-1.5 bg-gold-400 rounded-full animate-wave-4"></div>
+                            <div class="w-1.5 bg-gold-400 rounded-full animate-wave-5"></div>
+                        </div>
+                    </div>
+
+                    <!-- PIP Preview -->
+                    <div class="absolute bottom-4 right-4 w-32 h-44 sm:w-44 sm:h-60 rounded-2xl overflow-hidden border-2 border-gold-500/50 shadow-2xl bg-slate-900 z-20">
+                        <video id="local-video" autoplay playsinline muted class="w-full h-full object-cover"></video>
+                        <div id="local-video-off" class="absolute inset-0 bg-slate-900 flex flex-col items-center justify-center text-slate-500 hidden">
+                            <i class="fa-solid fa-video-slash text-xl mb-1"></i>
+                            <span class="text-[10px]">Cam Tắt</span>
+                        </div>
+                        <span class="absolute bottom-2 left-2 bg-dark-950/80 px-2 py-0.5 rounded text-[10px] text-slate-300">Bạn</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-center gap-4 z-10">
+                <button id="btn-toggle-mic" onclick="toggleMic()" class="w-14 h-14 rounded-2xl bg-slate-800 border border-slate-700 text-slate-200 hover:text-gold-400 flex items-center justify-center text-lg transition-all active:scale-95 shadow-lg">
                     <i class="fa-solid fa-microphone"></i>
                 </button>
-                <button onclick="endCall()" class="w-16 h-16 rounded-full bg-red-600 text-white flex items-center justify-center text-xl shadow-lg hover:bg-red-700 transition">
-                    <i class="fa-solid fa-phone-slash"></i>
-                </button>
-                <button onclick="toggleCam()" id="btnToggleCam" class="w-12 h-12 rounded-full bg-dark-800 border border-amber-500/30 text-white flex items-center justify-center hover:bg-slate-700">
+
+                <button id="btn-toggle-cam" onclick="toggleCam()" class="w-14 h-14 rounded-2xl bg-slate-800 border border-slate-700 text-slate-200 hover:text-gold-400 flex items-center justify-center text-lg transition-all active:scale-95 shadow-lg">
                     <i class="fa-solid fa-video"></i>
                 </button>
+
+                <button onclick="endCall()" class="w-16 h-16 rounded-2xl bg-gradient-to-r from-rose-600 to-red-700 text-white font-bold flex items-center justify-center text-xl transition-all active:scale-95 shadow-xl border border-red-500/40" title="Tắt máy">
+                    <i class="fa-solid fa-phone-slash"></i>
+                </button>
             </div>
+        </div>
+
+        <!-- 6. ADD FRIEND MODAL -->
+        <div id="add-friend-modal" class="fixed inset-0 z-50 hidden bg-dark-950/80 backdrop-blur-md flex items-center justify-center p-4">
+            <div class="glass-panel w-full max-w-md p-6 rounded-3xl border-gold-glow">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-base font-bold text-gold-metallic">Thêm Bạn Mới qua SĐT ZinCall</h3>
+                    <button onclick="closeAddFriendModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs text-slate-400 mb-1 block">Nhập chính xác Số điện thoại người dùng đã đăng ký</label>
+                        <div class="flex gap-2">
+                            <input id="search-friend-input" type="text" placeholder="Nhập SĐT..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-100 focus:outline-none focus:border-gold-500">
+                            <button onclick="searchFriendByPhone()" class="px-4 py-2 bg-gold-gradient text-dark-950 font-bold text-xs rounded-xl hover:brightness-110">Tìm kiếm</button>
+                        </div>
+                    </div>
+
+                    <div id="search-result" class="hidden p-3.5 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div id="found-user-avatar-box" class="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 overflow-hidden flex items-center justify-center font-bold text-gold-400 text-xs">
+                                <!-- Avatar -->
+                            </div>
+                            <div>
+                                <p id="found-user-name" class="text-xs font-bold text-slate-100">---</p>
+                                <p id="found-user-phone" class="text-[10px] text-slate-400">---</p>
+                            </div>
+                        </div>
+                        <button id="btn-add-found-user" onclick="addFoundUserAsFriend()" class="px-3 py-1.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-lg text-xs font-bold hover:bg-emerald-500 hover:text-white transition-all">Kết Bạn</button>
+                    </div>
+
+                    <div id="search-empty-result" class="hidden text-center py-4 text-xs text-rose-400">
+                        Không tìm thấy người dùng nào với Số điện thoại này!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TOAST NOTIFICATION -->
+        <div id="toast" class="fixed top-5 right-5 z-50 transform translate-y-[-100px] opacity-0 transition-all duration-300 bg-slate-900 border border-gold-500/40 text-slate-100 px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3">
+            <i class="fa-solid fa-bell text-gold-400"></i>
+            <span id="toast-msg" class="text-xs font-semibold">Thông báo</span>
         </div>
 
     </div>
 
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- APP LOGIC & PERSISTENCE -->
     <script>
-        // Storage Keys
-        const USERS_KEY = 'zincall_users_v2';
-        const SESSION_KEY = 'zincall_current_user';
-        const MESSAGES_KEY = 'zincall_messages_v2';
+        /* Persistent Storage Keys */
+        const STORAGE_USERS = 'zincall_users_db_v1';
+        const STORAGE_SESSION = 'zincall_active_session_v1';
+        const STORAGE_CHATS = 'zincall_chats_db_v1';
 
-        // App State
-        let currentUser = null;
-        let activeTab = 'chats'; 
-        let activeTargetPhone = null;
-        let selectedAvatarData = null;
-        let mediaStream = null;
+        /* App State */
+        let dbUsers = {};         // { [phone]: { name, phone, password, avatar, friends: [phone] } }
+        let currentUser = null;   // Active logged user
+        let dbChats = {};         // { [chatKey]: [ { senderPhone, text, timestamp } ] }
+        let activeChatUser = null;// Selected friend object
+        
+        let localStream = null;
         let callTimerInterval = null;
         let callSeconds = 0;
+        let isMicMuted = false;
+        let isCamOff = false;
+        let searchedUser = null;
 
-        // Default Avatars
-        const DEFAULT_AVATAR = 'https://api.dicebear.com/7.x/bottts/svg?seed=VIPUser';
+        // Initialize App
+        window.onload = () => {
+            loadDatabase();
+            checkAutoLogin();
+        };
 
-        // --- INIT & PERSISTENCE ---
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedSession = localStorage.getItem(SESSION_KEY);
-            if (savedSession) {
-                currentUser = JSON.parse(savedSession);
-                showMainApp();
+        /* LocalStorage Persistence Layer */
+        function loadDatabase() {
+            try {
+                const rawUsers = localStorage.getItem(STORAGE_USERS);
+                dbUsers = rawUsers ? JSON.parse(rawUsers) : {};
+
+                const rawChats = localStorage.getItem(STORAGE_CHATS);
+                dbChats = rawChats ? JSON.parse(rawChats) : {};
+            } catch (e) {
+                console.error("Storage load error", e);
+                dbUsers = {};
+                dbChats = {};
             }
-        });
-
-        function getUsers() {
-            return JSON.parse(localStorage.getItem(USERS_KEY) || '{}');
         }
 
-        function saveUsers(users) {
-            localStorage.setItem(USERS_KEY, JSON.stringify(users));
+        function saveDatabase() {
+            localStorage.setItem(STORAGE_USERS, JSON.stringify(dbUsers));
+            localStorage.setItem(STORAGE_CHATS, JSON.stringify(dbChats));
         }
 
-        function formatPhone(phone) {
-            return phone.trim().replace(/\s+/g, '');
-        }
-
-        // --- AUTH LOGIC ---
-        function switchAuthTab(tab) {
-            const btnLogin = document.getElementById('tabLogin');
-            const btnReg = document.getElementById('tabRegister');
-            const formLogin = document.getElementById('formLogin');
-            const formReg = document.getElementById('formRegister');
-
-            if (tab === 'login') {
-                btnLogin.className = "flex-1 py-2 text-sm font-semibold rounded-lg gold-gradient-bg text-dark-900 shadow";
-                btnReg.className = "flex-1 py-2 text-sm font-semibold rounded-lg text-slate-400 hover:text-amber-200 transition";
-                formLogin.classList.remove('hidden');
-                formReg.classList.add('hidden');
+        function saveSession(phone) {
+            if (phone) {
+                localStorage.setItem(STORAGE_SESSION, phone);
             } else {
-                btnReg.className = "flex-1 py-2 text-sm font-semibold rounded-lg gold-gradient-bg text-dark-900 shadow";
-                btnLogin.className = "flex-1 py-2 text-sm font-semibold rounded-lg text-slate-400 hover:text-amber-200 transition";
-                formReg.classList.remove('hidden');
+                localStorage.removeItem(STORAGE_SESSION);
+            }
+        }
+
+        function checkAutoLogin() {
+            const savedSessionPhone = localStorage.getItem(STORAGE_SESSION);
+            if (savedSessionPhone && dbUsers[savedSessionPhone]) {
+                currentUser = dbUsers[savedSessionPhone];
+                document.getElementById('auth-screen').classList.add('hidden');
+                updateUserProfileUI();
+                renderChatList();
+                showToast(`Tự động đăng nhập: ${currentUser.name}`);
+            } else {
+                document.getElementById('auth-screen').classList.remove('hidden');
+            }
+        }
+
+        /* Authentication Logic */
+        function switchAuthTab(type) {
+            const tabLogin = document.getElementById('tab-login');
+            const tabRegister = document.getElementById('tab-register');
+            const formLogin = document.getElementById('form-login');
+            const formRegister = document.getElementById('form-register');
+
+            if (type === 'login') {
+                tabLogin.className = "flex-1 py-2 text-xs font-bold rounded-lg transition-all text-dark-950 bg-gold-gradient shadow-md";
+                tabRegister.className = "flex-1 py-2 text-xs font-bold text-slate-400 rounded-lg transition-all hover:text-white";
+                formLogin.classList.remove('hidden');
+                formRegister.classList.add('hidden');
+            } else {
+                tabRegister.className = "flex-1 py-2 text-xs font-bold rounded-lg transition-all text-dark-950 bg-gold-gradient shadow-md";
+                tabLogin.className = "flex-1 py-2 text-xs font-bold text-slate-400 rounded-lg transition-all hover:text-white";
+                formRegister.classList.remove('hidden');
                 formLogin.classList.add('hidden');
             }
         }
 
-        function handleRegister(e) {
+        function handleAuth(e, type) {
             e.preventDefault();
-            const name = document.getElementById('regName').value.trim();
-            const phone = formatPhone(document.getElementById('regPhone').value);
-            const pass = document.getElementById('regPass').value;
+            loadDatabase(); // Ensure fresh DB
 
-            if (!phone || phone.length < 9) {
-                alert('Vui lòng nhập số điện thoại hợp lệ!');
-                return;
-            }
+            if (type === 'register') {
+                const name = document.getElementById('reg-name').value.trim();
+                const phone = document.getElementById('reg-phone').value.trim();
+                const password = document.getElementById('reg-password').value.trim();
 
-            const users = getUsers();
-            if (users[phone]) {
-                alert('Số điện thoại này đã được đăng ký!');
-                return;
-            }
-
-            const newUser = {
-                name,
-                phone,
-                pass,
-                avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${phone}`,
-                friends: []
-            };
-
-            users[phone] = newUser;
-            saveUsers(users);
-
-            currentUser = newUser;
-            localStorage.setItem(SESSION_KEY, JSON.stringify(currentUser));
-            showMainApp();
-        }
-
-        function handleLogin(e) {
-            e.preventDefault();
-            const phone = formatPhone(document.getElementById('loginPhone').value);
-            const pass = document.getElementById('loginPass').value;
-
-            const users = getUsers();
-            const user = users[phone];
-
-            if (!user) {
-                alert('Số điện thoại này chưa được đăng ký!');
-                return;
-            }
-
-            if (user.pass !== pass) {
-                alert('Mật khẩu không chính xác!');
-                return;
-            }
-
-            currentUser = user;
-            localStorage.setItem(SESSION_KEY, JSON.stringify(currentUser));
-            showMainApp();
-        }
-
-        function handleLogout() {
-            localStorage.removeItem(SESSION_KEY);
-            currentUser = null;
-            document.getElementById('mainContainer').classList.add('hidden');
-            document.getElementById('authContainer').classList.remove('hidden');
-        }
-
-        function createTestAccounts() {
-            const users = getUsers();
-            users['0911111111'] = {
-                name: 'Đinh Nam (VIP)',
-                phone: '0911111111',
-                pass: '123456',
-                avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=NamVIP',
-                friends: ['0922222222']
-            };
-            users['0922222222'] = {
-                name: 'Hoàng Linh',
-                phone: '0922222222',
-                pass: '123456',
-                avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Linh',
-                friends: ['0911111111']
-            };
-            saveUsers(users);
-            alert('Đã tạo 2 tài khoản mẫu:\n1) 0911111111 (Pass: 123456)\n2) 0922222222 (Pass: 123456)');
-        }
-
-        // --- MAIN APP DISPLAY ---
-        function showMainApp() {
-            document.getElementById('authContainer').classList.add('hidden');
-            document.getElementById('mainContainer').classList.remove('hidden');
-
-            document.getElementById('myAvatar').src = currentUser.avatar || DEFAULT_AVATAR;
-            document.getElementById('myPhoneBadge').innerText = currentUser.phone;
-
-            renderSidebar();
-        }
-
-        // --- TAB SWITCHING & SIDEBAR ---
-        function switchTab(tab) {
-            activeTab = tab;
-            const navChats = document.getElementById('navChats');
-            const navContacts = document.getElementById('navContacts');
-            const sidebarTitle = document.getElementById('sidebarTitle');
-
-            if (tab === 'chats') {
-                navChats.className = "p-3 rounded-xl text-amber-400 bg-amber-500/10 border border-amber-500/30 transition";
-                navContacts.className = "p-3 rounded-xl text-slate-400 hover:text-amber-300 transition";
-                sidebarTitle.innerText = "Đoạn Chát";
-            } else {
-                navContacts.className = "p-3 rounded-xl text-amber-400 bg-amber-500/10 border border-amber-500/30 transition";
-                navChats.className = "p-3 rounded-xl text-slate-400 hover:text-amber-300 transition";
-                sidebarTitle.innerText = "Danh Bạ VIP";
-            }
-            renderSidebar();
-        }
-
-        function renderSidebar() {
-            const listEl = document.getElementById('sidebarList');
-            const filter = document.getElementById('searchInput').value.toLowerCase();
-            const users = getUsers();
-
-            currentUser = users[currentUser.phone] || currentUser;
-
-            listEl.innerHTML = '';
-
-            if (activeTab === 'chats' || activeTab === 'contacts') {
-                const friendsList = currentUser.friends || [];
-
-                if (friendsList.length === 0) {
-                    listEl.innerHTML = `
-                        <div class="p-6 text-center text-slate-500 text-xs">
-                            Chưa có bạn bè nào.<br>Bấm nút <i class="fa-solid fa-user-plus text-amber-400"></i> để thêm bạn bằng SĐT.
-                        </div>
-                    `;
+                if (dbUsers[phone]) {
+                    showToast('Số điện thoại này đã được đăng ký!');
                     return;
                 }
 
-                friendsList.forEach(fPhone => {
-                    const friend = users[fPhone];
-                    if (!friend) return;
+                dbUsers[phone] = {
+                    name,
+                    phone,
+                    password,
+                    avatar: null, // No default automatic avatar
+                    friends: []   // Empty friend list by default
+                };
 
-                    if (filter && !friend.name.toLowerCase().includes(filter) && !friend.phone.includes(filter)) {
-                        return;
-                    }
+                saveDatabase();
+                currentUser = dbUsers[phone];
+                saveSession(phone);
 
-                    const isSelected = activeTargetPhone === friend.phone;
-                    const item = document.createElement('div');
-                    item.className = `p-3.5 flex items-center space-x-3 cursor-pointer hover:bg-amber-500/5 transition ${isSelected ? 'bg-amber-500/10 border-l-2 border-amber-400' : ''}`;
-                    item.onclick = () => selectChatTarget(friend.phone);
+                showToast('Đăng ký tài khoản mới thành công!');
+            } else {
+                const phone = document.getElementById('login-phone').value.trim();
+                const password = document.getElementById('login-password').value.trim();
 
-                    item.innerHTML = `
-                        <img src="${friend.avatar || DEFAULT_AVATAR}" class="w-11 h-11 rounded-full object-cover border border-amber-500/30">
-                        <div class="flex-1 min-w-0">
-                            <div class="flex justify-between items-baseline">
-                                <h4 class="text-sm font-semibold text-white truncate">${friend.name}</h4>
-                                <span class="text-[10px] text-amber-300/60">${friend.phone}</span>
-                            </div>
-                            <p class="text-xs text-slate-400 truncate">Sẵn sàng trò chuyện...</p>
-                        </div>
-                    `;
-                    listEl.appendChild(item);
-                });
+                if (!dbUsers[phone] || dbUsers[phone].password !== password) {
+                    showToast('Số điện thoại hoặc mật khẩu không chính xác!');
+                    return;
+                }
+
+                currentUser = dbUsers[phone];
+                saveSession(phone);
+                showToast(`Đăng nhập thành công! Chào ${currentUser.name}`);
+            }
+
+            document.getElementById('auth-screen').classList.add('hidden');
+            updateUserProfileUI();
+            renderChatList();
+        }
+
+        function logout() {
+            saveSession(null);
+            currentUser = null;
+            activeChatUser = null;
+            document.getElementById('auth-screen').classList.remove('hidden');
+            document.getElementById('empty-workspace-state').classList.remove('hidden');
+            document.getElementById('chat-actions').classList.add('hidden');
+            document.getElementById('chat-input-area').classList.add('hidden');
+            showToast('Đã đăng xuất.');
+        }
+
+        /* Avatar Helper */
+        function renderAvatarBox(container, userObj) {
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (userObj && userObj.avatar) {
+                const img = document.createElement('img');
+                img.src = userObj.avatar;
+                img.className = 'w-full h-full object-cover';
+                container.appendChild(img);
+            } else {
+                const initial = (userObj && userObj.name) ? userObj.name.charAt(0).toUpperCase() : '?';
+                const span = document.createElement('span');
+                span.innerText = initial;
+                container.appendChild(span);
             }
         }
 
-        // --- FRIEND LOGIC ---
+        function updateUserProfileUI() {
+            if (!currentUser) return;
+            const myAvatarBox = document.getElementById('my-avatar-container');
+            renderAvatarBox(myAvatarBox, currentUser);
+        }
+
+        /* Avatar Upload Logic */
+        function openProfileModal() {
+            if (!currentUser) return;
+            document.getElementById('profile-modal').classList.remove('hidden');
+            document.getElementById('profile-modal-name').innerText = currentUser.name;
+            document.getElementById('profile-modal-phone').innerText = `SĐT: ${currentUser.phone}`;
+            renderAvatarBox(document.getElementById('profile-modal-avatar-box'), currentUser);
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profile-modal').classList.add('hidden');
+        }
+
+        function handleAvatarUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (file.size > 2 * 1024 * 1024) { // 2MB limit for localStorage safety
+                showToast('Kích thước ảnh nên nhỏ hơn 2MB!');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Img = e.target.result;
+                currentUser.avatar = base64Img;
+                dbUsers[currentUser.phone].avatar = base64Img;
+                saveDatabase();
+
+                updateUserProfileUI();
+                renderAvatarBox(document.getElementById('profile-modal-avatar-box'), currentUser);
+                renderChatList();
+                if (activeChatUser) selectChat(activeChatUser);
+                showToast('Cập nhật ảnh đại diện mới thành công!');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        /* Search & Add Friend Logic */
         function openAddFriendModal() {
-            document.getElementById('addFriendModal').classList.remove('hidden');
+            document.getElementById('add-friend-modal').classList.remove('hidden');
+            document.getElementById('search-result').classList.add('hidden');
+            document.getElementById('search-empty-result').classList.add('hidden');
+            document.getElementById('search-friend-input').value = '';
         }
 
         function closeAddFriendModal() {
-            document.getElementById('addFriendModal').classList.add('hidden');
+            document.getElementById('add-friend-modal').classList.add('hidden');
         }
 
-        function searchAndAddFriend() {
-            const searchPhone = formatPhone(document.getElementById('friendSearchPhone').value);
-            if (!searchPhone) return;
+        function searchFriendByPhone() {
+            const phoneQuery = document.getElementById('search-friend-input').value.trim();
+            document.getElementById('search-result').classList.add('hidden');
+            document.getElementById('search-empty-result').classList.add('hidden');
 
-            if (searchPhone === currentUser.phone) {
-                alert('Không thể tự kết bạn với chính mình!');
+            if (!phoneQuery) return;
+
+            if (phoneQuery === currentUser.phone) {
+                showToast('Không thể tìm chính số điện thoại của bạn!');
                 return;
             }
 
-            const users = getUsers();
-            const targetUser = users[searchPhone];
+            loadDatabase();
+            if (dbUsers[phoneQuery]) {
+                searchedUser = dbUsers[phoneQuery];
+                document.getElementById('search-result').classList.remove('hidden');
+                document.getElementById('found-user-name').innerText = searchedUser.name;
+                document.getElementById('found-user-phone').innerText = `SĐT: ${searchedUser.phone}`;
+                renderAvatarBox(document.getElementById('found-user-avatar-box'), searchedUser);
 
-            if (!targetUser) {
-                alert(`Không tìm thấy tài khoản nào sở hữu SĐT: ${searchPhone}`);
+                const isAlreadyFriend = currentUser.friends.includes(searchedUser.phone);
+                const btn = document.getElementById('btn-add-found-user');
+                if (isAlreadyFriend) {
+                    btn.innerText = 'Đã Bạn Bè';
+                    btn.className = "px-3 py-1.5 bg-slate-800 text-slate-400 border border-slate-700 rounded-lg text-xs font-bold cursor-default";
+                    btn.disabled = true;
+                } else {
+                    btn.innerText = 'Kết Bạn';
+                    btn.className = "px-3 py-1.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-lg text-xs font-bold hover:bg-emerald-500 hover:text-white transition-all";
+                    btn.disabled = false;
+                }
+            } else {
+                searchedUser = null;
+                document.getElementById('search-empty-result').classList.remove('hidden');
+            }
+        }
+
+        function addFoundUserAsFriend() {
+            if (!searchedUser || !currentUser) return;
+            
+            if (!currentUser.friends.includes(searchedUser.phone)) {
+                currentUser.friends.push(searchedUser.phone);
+                dbUsers[currentUser.phone].friends = currentUser.friends;
+
+                // Mutual friendship
+                if (!dbUsers[searchedUser.phone].friends.includes(currentUser.phone)) {
+                    dbUsers[searchedUser.phone].friends.push(currentUser.phone);
+                }
+
+                saveDatabase();
+                showToast(`Đã kết bạn với ${searchedUser.name}!`);
+                closeAddFriendModal();
+                renderChatList();
+                selectChat(searchedUser);
+            }
+        }
+
+        /* Render Contact / Chat List */
+        function switchMainTab(tab) {
+            document.querySelectorAll('.nav-btn').forEach(b => {
+                b.classList.remove('text-gold-400', 'bg-slate-800/80', 'border', 'border-gold-500/30');
+                b.classList.add('text-slate-400');
+            });
+            const btn = document.getElementById(`nav-${tab}`);
+            if (btn) {
+                btn.classList.add('text-gold-400', 'bg-slate-800/80', 'border', 'border-gold-500/30');
+                btn.classList.remove('text-slate-400');
+            }
+
+            const sidebarTitle = document.getElementById('sidebar-title');
+            if (tab === 'chat') sidebarTitle.innerText = "Trò Chuyện VIP";
+            if (tab === 'contacts') sidebarTitle.innerText = "Danh Bạ Bạn Bè";
+            renderChatList();
+        }
+
+        function renderChatList(filter = '') {
+            const listEl = document.getElementById('chat-list');
+            listEl.innerHTML = '';
+
+            if (!currentUser || !currentUser.friends || currentUser.friends.length === 0) {
+                listEl.innerHTML = `
+                    <div class="p-6 text-center text-xs text-slate-500 space-y-2">
+                        <i class="fa-solid fa-user-group text-2xl text-slate-700 block mb-1"></i>
+                        <p>Danh sách bạn bè trống.</p>
+                        <p class="text-[10px] text-slate-600">Bấm nút (+) bên trên để tìm & kết bạn qua SĐT!</p>
+                    </div>
+                `;
                 return;
             }
 
-            if (!currentUser.friends) currentUser.friends = [];
-            if (currentUser.friends.includes(searchPhone)) {
-                alert('Hai người đã là bạn bè rồi!');
+            const friendObjects = currentUser.friends
+                .map(phone => dbUsers[phone])
+                .filter(u => u && u.name.toLowerCase().includes(filter.toLowerCase()));
+
+            if (friendObjects.length === 0) {
+                listEl.innerHTML = `<div class="p-4 text-center text-xs text-slate-500">Không tìm thấy kết quả.</div>`;
                 return;
             }
 
-            currentUser.friends.push(searchPhone);
-            if (!targetUser.friends) targetUser.friends = [];
-            if (!targetUser.friends.includes(currentUser.phone)) {
-                targetUser.friends.push(currentUser.phone);
-            }
+            friendObjects.forEach(friend => {
+                const isSelected = activeChatUser && activeChatUser.phone === friend.phone;
+                const div = document.createElement('div');
+                div.onclick = () => selectChat(friend);
+                div.className = `p-3 rounded-2xl flex items-center gap-3 cursor-pointer transition-all ${isSelected ? 'bg-slate-800/90 border border-gold-500/30' : 'hover:bg-slate-800/40'}`;
+                
+                const avatarBox = document.createElement('div');
+                avatarBox.className = 'w-11 h-11 rounded-2xl border border-slate-700 bg-slate-800 overflow-hidden flex items-center justify-center font-bold text-gold-400 text-sm shrink-0';
+                renderAvatarBox(avatarBox, friend);
 
-            users[currentUser.phone] = currentUser;
-            users[searchPhone] = targetUser;
-            saveUsers(users);
+                const chatKey = getChatKey(currentUser.phone, friend.phone);
+                const msgs = dbChats[chatKey] || [];
+                const lastMsg = msgs.length > 0 ? msgs[msgs.length - 1].text : 'Bắt đầu trò chuyện...';
 
-            alert(`Đã kết bạn thành công với ${targetUser.name}!`);
-            closeAddFriendModal();
-            renderSidebar();
-            selectChatTarget(searchPhone);
+                div.appendChild(avatarBox);
+                div.innerHTML += `
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between mb-0.5">
+                            <h4 class="text-xs font-bold text-slate-100 truncate">${friend.name}</h4>
+                            <span class="text-[9px] text-slate-500">${friend.phone}</span>
+                        </div>
+                        <p class="text-[11px] text-slate-400 truncate">${lastMsg}</p>
+                    </div>
+                `;
+                listEl.appendChild(div);
+            });
         }
 
-        // --- CHAT MESSAGING LOGIC ---
-        function selectChatTarget(phone) {
-            activeTargetPhone = phone;
-            const users = getUsers();
-            const target = users[phone];
-
-            document.getElementById('emptyChatState').classList.add('hidden');
-            document.getElementById('chatHeader').classList.remove('hidden');
-            document.getElementById('chatFooter').classList.remove('hidden');
-
-            document.getElementById('activeTargetAvatar').src = target.avatar || DEFAULT_AVATAR;
-            document.getElementById('activeTargetName').innerText = target.name;
-            document.getElementById('activeTargetPhone').innerText = target.phone;
-
-            renderSidebar();
-            renderMessages();
+        function filterChatList(q) {
+            renderChatList(q);
         }
 
-        function getConversationKey(phone1, phone2) {
+        /* Select Chat & Messages Logic */
+        function getChatKey(phone1, phone2) {
             return [phone1, phone2].sort().join('_');
         }
 
+        function selectChat(friend) {
+            activeChatUser = friend;
+            document.getElementById('empty-workspace-state').classList.add('hidden');
+            document.getElementById('chat-actions').classList.remove('hidden');
+            document.getElementById('chat-input-area').classList.remove('hidden');
+
+            document.getElementById('active-chat-name').innerText = friend.name;
+            document.getElementById('active-chat-status').innerText = `SĐT: ${friend.phone}`;
+
+            renderAvatarBox(document.getElementById('active-chat-avatar-box'), friend);
+            renderChatList();
+            renderMessages();
+        }
+
         function renderMessages() {
-            if (!activeTargetPhone) return;
-            const container = document.getElementById('chatMessages');
+            const container = document.getElementById('messages-container');
             container.innerHTML = '';
 
-            const key = getConversationKey(currentUser.phone, activeTargetPhone);
-            const allMessages = JSON.parse(localStorage.getItem(MESSAGES_KEY) || '{}');
-            const messages = allMessages[key] || [];
+            if (!activeChatUser) return;
 
-            messages.forEach(msg => {
-                const isMe = msg.sender === currentUser.phone;
-                const wrapper = document.createElement('div');
-                wrapper.className = `flex ${isMe ? 'justify-end' : 'justify-start'}`;
+            const chatKey = getChatKey(currentUser.phone, activeChatUser.phone);
+            const messages = dbChats[chatKey] || [];
 
-                wrapper.innerHTML = `
-                    <div class="max-w-xs md:max-w-md px-4 py-2.5 rounded-2xl text-sm ${isMe ? 'gold-gradient-bg text-dark-900 font-medium rounded-tr-none shadow-md' : 'glass-panel text-white rounded-tl-none border border-amber-500/20'}">
-                        <p>${msg.text}</p>
-                        <span class="text-[9px] opacity-60 block text-right mt-1">${msg.time}</span>
+            if (messages.length === 0) {
+                container.innerHTML = `
+                    <div class="h-full flex flex-col items-center justify-center text-slate-600 text-xs gap-1">
+                        <i class="fa-solid fa-paper-plane text-lg text-slate-700 mb-1"></i>
+                        <p>Chưa có tin nhắn nào. Hãy gửi lời chào!</p>
                     </div>
                 `;
-                container.appendChild(wrapper);
+                return;
+            }
+
+            messages.forEach(msg => {
+                const isMe = msg.senderPhone === currentUser.phone;
+                const div = document.createElement('div');
+                div.className = `flex ${isMe ? 'justify-end' : 'justify-start'}`;
+
+                div.innerHTML = `
+                    <div class="max-w-[70%] p-3 rounded-2xl text-xs leading-relaxed ${isMe ? 'bg-gold-gradient text-dark-950 font-semibold rounded-tr-none shadow-md shadow-gold-500/10' : 'bg-slate-800 text-slate-100 border border-slate-700/60 rounded-tl-none'}">
+                        ${msg.text}
+                    </div>
+                `;
+                container.appendChild(div);
             });
 
             container.scrollTop = container.scrollHeight;
         }
 
-        function sendMessage(e) {
+        function handleSendMessage(e) {
             e.preventDefault();
-            const input = document.getElementById('messageInput');
+            const input = document.getElementById('chat-input');
             const text = input.value.trim();
-            if (!text || !activeTargetPhone) return;
+            if (!text || !activeChatUser) return;
 
-            const key = getConversationKey(currentUser.phone, activeTargetPhone);
-            const allMessages = JSON.parse(localStorage.getItem(MESSAGES_KEY) || '{}');
-            if (!allMessages[key]) allMessages[key] = [];
+            const chatKey = getChatKey(currentUser.phone, activeChatUser.phone);
+            if (!dbChats[chatKey]) dbChats[chatKey] = [];
 
-            const now = new Date();
-            const timeStr = `${now.getHours()}:${now.getMinutes() < 10 ? '0' : ''}${now.getMinutes()}`;
-
-            allMessages[key].push({
-                sender: currentUser.phone,
-                text,
-                time: timeStr
+            dbChats[chatKey].push({
+                senderPhone: currentUser.phone,
+                text: text,
+                timestamp: Date.now()
             });
 
-            localStorage.setItem(MESSAGES_KEY, JSON.stringify(allMessages));
+            saveDatabase();
             input.value = '';
             renderMessages();
+            renderChatList();
         }
 
-        // --- AVATAR UPLOAD & AUTO COMPRESS LOGIC (FIX LỖI LƯU ẢNH) ---
-        function openAvatarModal() {
-            selectedAvatarData = currentUser.avatar || DEFAULT_AVATAR;
-            document.getElementById('avatarPreview').src = selectedAvatarData;
-            document.getElementById('avatarFileInput').value = '';
-            document.getElementById('avatarModal').classList.remove('hidden');
-        }
+        /* Calls System */
+        async function startCall(type) {
+            if (!activeChatUser) return;
 
-        function closeAvatarModal() {
-            document.getElementById('avatarModal').classList.add('hidden');
-        }
+            document.getElementById('call-modal').classList.remove('hidden');
+            document.getElementById('call-remote-name').innerText = activeChatUser.name;
+            renderAvatarBox(document.getElementById('call-remote-avatar-box'), activeChatUser);
 
-        function previewAvatar(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    const img = new Image();
-                    img.onload = () => {
-                        // Nén ảnh bằng Canvas xuống tối đa 200x200px để không làm tràn bộ nhớ
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        const maxSize = 200;
-                        canvas.width = maxSize;
-                        canvas.height = maxSize;
-                        
-                        ctx.drawImage(img, 0, 0, maxSize, maxSize);
-                        selectedAvatarData = canvas.toDataURL('image/jpeg', 0.85); // Nén JPEG chất lượng 85%
-                        document.getElementById('avatarPreview').src = selectedAvatarData;
-                    };
-                    img.src = event.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function saveAvatar() {
-            if (!selectedAvatarData) return;
+            const isVideo = type === 'video';
+            document.getElementById('remote-avatar-fallback').style.display = isVideo ? 'none' : 'flex';
 
             try {
-                currentUser.avatar = selectedAvatarData;
-                const users = getUsers();
-                users[currentUser.phone] = currentUser;
-                
-                saveUsers(users);
-                localStorage.setItem(SESSION_KEY, JSON.stringify(currentUser));
+                localStream = await navigator.mediaDevices.getUserMedia({
+                    video: isVideo,
+                    audio: true
+                });
 
-                document.getElementById('myAvatar').src = currentUser.avatar;
-                if (activeTargetPhone) renderMessages();
-                renderSidebar();
-
-                alert('Cập nhật ảnh đại diện thành công!');
-                closeAvatarModal();
+                document.getElementById('local-video').srcObject = localStream;
+                document.getElementById('remote-video').srcObject = localStream;
             } catch (err) {
-                alert('Ảnh vẫn quá lớn, vui lòng chọn một file ảnh khác nhỏ hơn!');
+                console.warn("MediaDevice notice:", err);
+                showToast("Đang kích hoạt chế độ cuộc gọi riêng tư!");
             }
-        }
-
-        // --- WEBRTC / CAMERA & VOICE CALL LOGIC ---
-        async function startCall(type) {
-            if (!activeTargetPhone) return;
-            const users = getUsers();
-            const target = users[activeTargetPhone];
-
-            document.getElementById('callOverlay').classList.remove('hidden');
-            document.getElementById('callTargetAvatar').src = target.avatar || DEFAULT_AVATAR;
-            document.getElementById('callTargetName').innerText = target.name;
-            document.getElementById('callTargetPhone').innerText = target.phone;
-
-            const remoteVid = document.getElementById('remoteVideo');
-            const localVid = document.getElementById('localVideo');
-            const voiceAvt = document.getElementById('voiceAvatarContainer');
 
             callSeconds = 0;
-            document.getElementById('callTimer').innerText = '00:00';
+            clearInterval(callTimerInterval);
             callTimerInterval = setInterval(() => {
                 callSeconds++;
-                const m = Math.floor(callSeconds / 60).toString().padStart(2, '0');
-                const s = (callSeconds % 60).toString().padStart(2, '0');
-                document.getElementById('callTimer').innerText = `${m}:${s}`;
+                const mins = String(Math.floor(callSeconds / 60)).padStart(2, '0');
+                const secs = String(callSeconds % 60).padStart(2, '0');
+                document.getElementById('call-timer').innerText = `${mins}:${secs}`;
             }, 1000);
-
-            try {
-                const constraints = {
-                    audio: true,
-                    video: type === 'video'
-                };
-                mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
-
-                if (type === 'video') {
-                    voiceAvt.classList.add('hidden');
-                    remoteVid.classList.remove('hidden');
-                    localVid.classList.remove('hidden');
-                    
-                    localVid.srcObject = mediaStream;
-                    remoteVid.srcObject = mediaStream; 
-                    document.getElementById('callStatusText').innerText = "ĐANG GỌI VIDEO HD...";
-                } else {
-                    voiceAvt.classList.remove('hidden');
-                    remoteVid.classList.add('hidden');
-                    localVid.classList.add('hidden');
-                    document.getElementById('callStatusText').innerText = "ĐANG GỌI THOẠI VIP...";
-                }
-            } catch (err) {
-                console.warn('Microphone/Camera access rejected or unavailable:', err);
-                document.getElementById('callStatusText').innerText = "CUỘC GỌI GIẢ LẬP (KHÔNG CÓ MIC/CAM)";
-            }
         }
 
         function endCall() {
-            if (mediaStream) {
-                mediaStream.getTracks().forEach(track => track.stop());
-                mediaStream = null;
+            if (localStream) {
+                localStream.getTracks().forEach(track => track.stop());
+                localStream = null;
             }
-            if (callTimerInterval) clearInterval(callTimerInterval);
-
-            document.getElementById('callOverlay').classList.add('hidden');
+            clearInterval(callTimerInterval);
+            document.getElementById('call-modal').classList.add('hidden');
+            showToast('Cuộc gọi đã kết thúc.');
         }
 
         function toggleMic() {
-            if (mediaStream) {
-                const audioTrack = mediaStream.getAudioTracks()[0];
-                if (audioTrack) {
-                    audioTrack.enabled = !audioTrack.enabled;
-                    document.getElementById('btnToggleMic').classList.toggle('text-red-400');
-                }
+            isMicMuted = !isMicMuted;
+            if (localStream) {
+                localStream.getAudioTracks().forEach(t => t.enabled = !isMicMuted);
             }
+            const btn = document.getElementById('btn-toggle-mic');
+            btn.className = `w-14 h-14 rounded-2xl flex items-center justify-center text-lg transition-all active:scale-95 shadow-lg ${isMicMuted ? 'bg-red-600 text-white' : 'bg-slate-800 border border-slate-700 text-slate-200'}`;
+            showToast(isMicMuted ? 'Đã tắt Micro' : 'Đã bật Micro');
         }
 
         function toggleCam() {
-            if (mediaStream) {
-                const videoTrack = mediaStream.getVideoTracks()[0];
-                if (videoTrack) {
-                    videoTrack.enabled = !videoTrack.enabled;
-                    document.getElementById('btnToggleCam').classList.toggle('text-red-400');
-                }
+            isCamOff = !isCamOff;
+            if (localStream) {
+                localStream.getVideoTracks().forEach(t => t.enabled = !isCamOff);
             }
+            document.getElementById('local-video-off').classList.toggle('hidden', !isCamOff);
+            const btn = document.getElementById('btn-toggle-cam');
+            btn.className = `w-14 h-14 rounded-2xl flex items-center justify-center text-lg transition-all active:scale-95 shadow-lg ${isCamOff ? 'bg-red-600 text-white' : 'bg-slate-800 border border-slate-700 text-slate-200'}`;
+            showToast(isCamOff ? 'Đã tắt Camera' : 'Đã bật Camera');
+        }
+
+        /* Toast Popup */
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            toast.classList.remove('translate-y-[-100px]', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-[-100px]', 'opacity-0');
+            }, 3000);
         }
     </script>
 </body>
