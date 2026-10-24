@@ -1,1042 +1,247 @@
-<!DOCTYPE html>
-<html lang="vi">
+<!DOCTYPE PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ConnectX - Web Chat & Gọi Điện Demo</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Font - Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            50: '#f5f3ff',
-                            100: '#ede9fe',
-                            500: '#8b5cf6',
-                            600: '#7c3aed',
-                            700: '#6d28d9',
-                            800: '#5b21b6',
-                        }
-                    },
-                    animation: {
-                        'pulse-ring': 'pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite',
-                        'float': 'float 3s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        'pulse-ring': {
-                            '0%': { transform: 'scale(0.95)', opacity: '0.8' },
-                            '50%': { transform: 'scale(1.15)', opacity: '0.4' },
-                            '100%': { transform: 'scale(0.95)', opacity: '0.8' },
-                        },
-                        'float': {
-                            '0%, 100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-6px)' },
-                        }
-                    }
-                }
-            }
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Ung dung Ket Ban HTML4</title>
+  <style type="text/css">
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      margin: 20px;
+    }
+    .box {
+      width: 450px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border: 1px solid #cccccc;
+      padding: 15px;
+    }
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #333333;
+      border-bottom: 2px solid #0066cc;
+      padding-bottom: 5px;
+      margin-bottom: 15px;
+    }
+    .section {
+      margin-bottom: 15px;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border: 1px solid #eeeeee;
+    }
+    label {
+      font-weight: bold;
+      font-size: 13px;
+    }
+    input[type="text"] {
+      padding: 5px;
+      width: 200px;
+      border: 1px solid #999999;
+    }
+    input[type="button"], button {
+      padding: 5px 10px;
+      background-color: #0066cc;
+      color: #ffffff;
+      border: 1px solid #004488;
+      cursor: pointer;
+    }
+    .avatar {
+      width: 50px;
+      height: 50px;
+      border: 1px solid #999999;
+      vertical-align: middle;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    table, th, td {
+      border: 1px solid #dddddd;
+    }
+    th, td {
+      padding: 6px;
+      text-align: left;
+      font-size: 13px;
+    }
+    .status-msg {
+      color: red;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+  </style>
+
+  <script type="text/javascript">
+    // Danh sach nguoi dung he thong (ID + Ten + Avatar)
+    var databaseUsers = [
+      { id: "USER01", name: "Nam N", avatar: "https://i.imgur.com/6VBx3io.png" },
+      { id: "USER02", name: "Huynh Nhi", avatar: "https://i.imgur.com/6VBx3io.png" },
+      { id: "1001", name: "Admin", avatar: "https://i.imgur.com/6VBx3io.png" }
+    ];
+
+    // Danh sach ban be hien tai
+    var myFriends = [];
+
+    // Chuan hoa chuoi: Xoa khoang trang va chuyen ve chu thuong
+    function cleanString(str) {
+      if (!str) return "";
+      // Strip space dau va cuoi (thay the trim() HTML4)
+      var cleaned = str.replace(/^\s+|\s+$/g, '');
+      return cleaned.toLowerCase();
+    }
+
+    // 1. Tim kiem bang ID (Khong lo loi nhap thua khoang trang hay hoa/thuong)
+    function searchUserByID() {
+      var inputVal = document.getElementById("searchIDInput").value;
+      var cleanInput = cleanString(inputVal);
+      var msgBox = document.getElementById("searchMsg");
+      var resultArea = document.getElementById("searchResultArea");
+
+      msgBox.innerHTML = "";
+      resultArea.style.display = "none";
+
+      if (cleanInput === "") {
+        msgBox.innerHTML = "Vui long nhap ID can tim!";
+        return;
+      }
+
+      var foundUser = null;
+      for (var i = 0; i < databaseUsers.length; i++) {
+        var currentID = cleanString(databaseUsers[i].id);
+        if (currentID === cleanInput) {
+          foundUser = databaseUsers[i];
+          break;
         }
-    </script>
-    <style>
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+      }
+
+      if (foundUser) {
+        document.getElementById("resAvatar").src = foundUser.avatar;
+        document.getElementById("resName").innerHTML = foundUser.name;
+        document.getElementById("resID").innerHTML = foundUser.id;
+        document.getElementById("targetUserID").value = foundUser.id;
+        resultArea.style.display = "block";
+      } else {
+        msgBox.innerHTML = "Khong tim me gi thay ID '" + inputVal + "'. Ket qua test ID co san: USER01, USER02, 1001";
+      }
+    }
+
+    // 2. Them vao danh sach ban be
+    function addFriend() {
+      var targetID = document.getElementById("targetUserID").value;
+      
+      // Kiem tra xem da la ban nghe chua
+      for (var i = 0; i < myFriends.length; i++) {
+        if (cleanString(myFriends[i].id) === cleanString(targetID)) {
+          alert("Nguoi nay da co trong danh sach ban be roi!");
+          return;
         }
-        ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.05);
+      }
+
+      // Lay thong tin user va push vao list ban be
+      for (var j = 0; j < databaseUsers.length; j++) {
+        if (cleanString(databaseUsers[j].id) === cleanString(targetID)) {
+          myFriends.push(databaseUsers[j]);
+          break;
         }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(139, 92, 246, 0.3);
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(139, 92, 246, 0.6);
-        }
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
-        .dark-glass {
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-        }
-    </style>
+      }
+
+      alert("Da ket ban thanh cong!");
+      document.getElementById("searchResultArea").style.display = "none";
+      document.getElementById("searchIDInput").value = "";
+      renderFriendList();
+    }
+
+    // 3. Hien thi danh sach ban be ra bang
+    function renderFriendList() {
+      var tbody = document.getElementById("friendTableBody");
+      tbody.innerHTML = "";
+
+      if (myFriends.length === 0) {
+        tbody.innerHTML = "<tr><td colspan='3'>Chua co ban be nao.</td></tr>";
+        return;
+      }
+
+      for (var i = 0; i < myFriends.length; i++) {
+        var user = myFriends[i];
+        var tr = document.createElement("tr");
+        
+        tr.innerHTML = "<td><img src='" + user.avatar + "' class='avatar' alt='Avatar'></td>" +
+                       "<td><b>" + user.name + "</b><br><small>ID: " + user.id + "</small></td>" +
+                       "<td><input type='button' value='Goi Dien' onclick=\"makeCall('" + user.name + "')\"></td>";
+        tbody.appendChild(tr);
+      }
+    }
+
+    // 4. Cap nhat Avatar ca nhan
+    function updateAvatar() {
+      var newUrl = document.getElementById("avatarUrlInput").value;
+      if (cleanString(newUrl) === "") {
+        alert("Vui long nhap Link anh!");
+        return;
+      }
+      document.getElementById("myAvatarImg").src = newUrl;
+      alert("Da cap nhat Avatar thanh cong!");
+    }
+
+    // 5. Mo phong Cuoc goi
+    function makeCall(name) {
+      alert("Dang ket noi cuoc goi toi: " + name + "...");
+    }
+  </script>
 </head>
-<body class="bg-slate-900 font-sans text-slate-100 min-h-screen flex items-center justify-center p-0 md:p-4">
+<body>
 
-    <!-- Container ứng dụng chính dạng Mobile View trên PC hoặc full screen trên Phone -->
-    <div class="w-full max-w-4xl h-screen md:h-[90vh] bg-slate-950 md:rounded-3xl shadow-2xl border border-slate-800/60 overflow-hidden flex flex-col relative">
+  <div class="box">
+    <div class="title">Ung Dung Ket Ban &amp; Goi Dien (HTML4)</div>
 
-        <!-- THÔNG BÁO POPUP / TOAST -->
-        <div id="toast-container" class="absolute top-4 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none w-11/12 max-w-sm"></div>
-
-        <!-- ============================================================== -->
-        <!-- 1. MÀN HÌNH ĐĂNG NHẬP / ĐĂNG KÝ (AUTH SCREEN) -->
-        <!-- ============================================================== -->
-        <div id="auth-screen" class="w-full h-full flex flex-col justify-center items-center p-6 bg-gradient-to-br from-slate-950 via-slate-900 to-brand-950 z-40">
-            <div class="w-full max-w-md bg-slate-900/80 p-8 rounded-3xl border border-slate-800/80 shadow-2xl backdrop-blur-xl">
-                <!-- Header Icon & Logo -->
-                <div class="text-center mb-8">
-                    <div class="w-16 h-16 bg-gradient-to-tr from-brand-600 to-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg shadow-brand-500/30 animate-float">
-                        <i class="fa-solid fa-comments text-3xl text-white"></i>
-                    </div>
-                    <h1 class="text-2xl font-bold bg-gradient-to-r from-white via-slate-200 to-brand-300 bg-clip-text text-transparent">ConnectX</h1>
-                    <p class="text-slate-400 text-sm mt-1">Kết nối tin nhắn & cuộc gọi trực tuyến</p>
-                </div>
-
-                <!-- Tab chuyển Đăng nhập / Đăng ký -->
-                <div class="flex bg-slate-950 p-1 rounded-xl mb-6 border border-slate-800">
-                    <button id="tab-login-btn" onclick="switchAuthTab('login')" class="flex-1 py-2 text-sm font-semibold rounded-lg transition-all duration-300 bg-brand-600 text-white shadow-md">Đăng nhập</button>
-                    <button id="tab-register-btn" onclick="switchAuthTab('register')" class="flex-1 py-2 text-sm font-semibold text-slate-400 hover:text-white transition-all duration-300">Đăng ký</button>
-                </div>
-
-                <!-- Form Đăng Nhập -->
-                <form id="login-form" class="space-y-4" onsubmit="handleLogin(event)">
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1 font-medium">Tên đăng nhập hoặc ID</label>
-                        <div class="relative">
-                            <i class="fa-regular fa-user absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"></i>
-                            <input type="text" id="login-username" required placeholder="Nhập tên tài khoản..." class="w-full bg-slate-950 border border-slate-800 rounded-xl py-2.5 pl-10 pr-4 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1 font-medium">Mật khẩu</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"></i>
-                            <input type="password" id="login-password" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl py-2.5 pl-10 pr-4 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all">
-                        </div>
-                    </div>
-                    <button type="submit" class="w-full py-3 bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white font-semibold rounded-xl shadow-lg shadow-brand-600/30 transition-all duration-200 transform active:scale-98 mt-2">
-                        Đăng Nhập
-                    </button>
-                </form>
-
-                <!-- Form Đăng Ký (Ẩn mặc định) -->
-                <form id="register-form" class="space-y-4 hidden" onsubmit="handleRegister(event)">
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1 font-medium">Họ & Tên hiển thị</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-id-card absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"></i>
-                            <input type="text" id="reg-fullname" required placeholder="Ví dụ: Nguyễn Văn A" class="w-full bg-slate-950 border border-slate-800 rounded-xl py-2.5 pl-10 pr-4 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1 font-medium">Tên đăng nhập</label>
-                        <div class="relative">
-                            <i class="fa-regular fa-user absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"></i>
-                            <input type="text" id="reg-username" required placeholder="Tên tài khoản không dấu..." class="w-full bg-slate-950 border border-slate-800 rounded-xl py-2.5 pl-10 pr-4 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1 font-medium">Mật khẩu</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"></i>
-                            <input type="password" id="reg-password" required placeholder="Tối thiểu 6 ký tự..." class="w-full bg-slate-950 border border-slate-800 rounded-xl py-2.5 pl-10 pr-4 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all">
-                        </div>
-                    </div>
-                    <button type="submit" class="w-full py-3 bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white font-semibold rounded-xl shadow-lg shadow-brand-600/30 transition-all duration-200 transform active:scale-98 mt-2">
-                        Tạo Tài Khoản
-                    </button>
-                </form>
-            </div>
-        </div>
-
-        <!-- ============================================================== -->
-        <!-- 2. MÀN HÌNH CHÍNH ỨNG DỤNG (MAIN APP INTERFACE) -->
-        <!-- ============================================================== -->
-        <div id="main-app" class="w-full h-full flex flex-col md:flex-row hidden relative overflow-hidden">
-            
-            <!-- SIDEBAR / NAVIGATION DASHBOARD -->
-            <div class="w-full md:w-80 bg-slate-900 border-r border-slate-800/80 flex flex-col h-full z-10">
-                <!-- Header Sidebar - User Info -->
-                <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/40">
-                    <div class="flex items-center gap-3 cursor-pointer group" onclick="switchMainTab('profile')">
-                        <div class="relative">
-                            <img id="current-user-avatar" src="" alt="Avatar" class="w-11 h-11 rounded-full object-cover ring-2 ring-brand-500/50 group-hover:ring-brand-400 transition-all">
-                            <span class="w-3.5 h-3.5 bg-emerald-500 border-2 border-slate-900 rounded-full absolute bottom-0 right-0"></span>
-                        </div>
-                        <div class="overflow-hidden">
-                            <h3 id="current-user-name" class="font-semibold text-sm text-white truncate group-hover:text-brand-300 transition-colors">--</h3>
-                            <p id="current-user-id" class="text-xs text-slate-400 font-mono truncate">ID: --</p>
-                        </div>
-                    </div>
-                    <button onclick="handleLogout()" title="Đăng xuất" class="p-2 text-slate-400 hover:text-rose-400 hover:bg-slate-800 rounded-xl transition-all">
-                        <i class="fa-solid fa-right-from-bracket text-lg"></i>
-                    </button>
-                </div>
-
-                <!-- Tab Navigation (Tin nhắn / Kết bạn / Hồ sơ) -->
-                <div class="flex border-b border-slate-800/80 bg-slate-950/20">
-                    <button id="nav-chats-btn" onclick="switchMainTab('chats')" class="flex-1 py-3 text-xs font-semibold flex items-center justify-center gap-2 border-b-2 border-brand-500 text-brand-400 transition-all">
-                        <i class="fa-solid fa-message"></i> Trò chuyện
-                    </button>
-                    <button id="nav-friends-btn" onclick="switchMainTab('friends')" class="flex-1 py-3 text-xs font-semibold flex items-center justify-center gap-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-all">
-                        <i class="fa-solid fa-user-group"></i> Bạn bè
-                    </button>
-                    <button id="nav-profile-btn" onclick="switchMainTab('profile')" class="flex-1 py-3 text-xs font-semibold flex items-center justify-center gap-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-all">
-                        <i class="fa-solid fa-gear"></i> Hồ sơ
-                    </button>
-                </div>
-
-                <!-- CONTEN PANELS IN SIDEBAR -->
-                <div class="flex-1 overflow-y-auto p-3 space-y-2">
-                    
-                    <!-- TAB 1: Danh sách trò chuyện -->
-                    <div id="tab-content-chats" class="space-y-1">
-                        <div class="px-2 py-1.5 flex justify-between items-center text-xs font-semibold text-slate-400">
-                            <span>ĐỌC GẦN ĐÂY</span>
-                            <span id="chat-count-badge" class="bg-brand-500/20 text-brand-300 px-2 py-0.5 rounded-full text-[10px]">0</span>
-                        </div>
-                        <div id="recent-chats-list" class="space-y-1">
-                            <!-- Danh sách chat render từ JS -->
-                        </div>
-                    </div>
-
-                    <!-- TAB 2: Kết bạn & Danh sách bạn -->
-                    <div id="tab-content-friends" class="space-y-4 hidden">
-                        <!-- Ô Tìm kiếm bạn -->
-                        <div class="bg-slate-950 p-2.5 rounded-2xl border border-slate-800">
-                            <label class="block text-[11px] font-semibold text-slate-400 mb-1">TÌM BẠN BÈ MỚI</label>
-                            <div class="flex gap-2">
-                                <input type="text" id="search-friend-input" placeholder="Nhập tên hoặc ID..." class="flex-1 bg-slate-900 border border-slate-800 text-xs text-white px-3 py-2 rounded-xl focus:outline-none focus:border-brand-500">
-                                <button onclick="handleSearchFriend()" class="bg-brand-600 hover:bg-brand-500 px-3 text-xs font-semibold rounded-xl transition-all">
-                                    <i class="fa-solid fa-magnifying-glass"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Kết quả tìm kiếm -->
-                        <div id="search-result-container" class="hidden">
-                            <p class="text-[11px] font-semibold text-slate-400 mb-1">KẾT QUẢ TÌM KIẾM</p>
-                            <div id="search-result-list" class="space-y-1"></div>
-                        </div>
-
-                        <!-- Danh sách bạn hiện tại -->
-                        <div>
-                            <p class="text-[11px] font-semibold text-slate-400 mb-2">DANH SÁCH BẠN BÈ (<span id="friends-count">0</span>)</p>
-                            <div id="friends-list" class="space-y-1">
-                                <!-- Render danh sách từ JS -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- TAB 3: Hồ sơ Cá nhân & Đổi Avatar -->
-                    <div id="tab-content-profile" class="space-y-4 hidden p-2">
-                        <div class="text-center py-3 border-b border-slate-800">
-                            <div class="relative w-24 h-24 mx-auto mb-3">
-                                <img id="profile-preview-avatar" src="" class="w-full h-full rounded-full object-cover ring-4 ring-brand-500/30">
-                                <label for="avatar-file-input" class="absolute bottom-0 right-0 bg-brand-600 hover:bg-brand-500 text-white w-8 h-8 rounded-full flex items-center justify-center cursor-pointer shadow-lg transition-transform hover:scale-110">
-                                    <i class="fa-solid fa-camera text-xs"></i>
-                                </label>
-                                <input type="file" id="avatar-file-input" accept="image/*" class="hidden" onchange="handleCustomAvatarUpload(event)">
-                            </div>
-                            <h3 id="profile-name-text" class="font-bold text-lg text-white">--</h3>
-                            <p id="profile-id-text" class="text-xs text-slate-400 font-mono">ID: --</p>
-                        </div>
-
-                        <!-- Chọn Avatar có sẵn -->
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-400 mb-2">CHỌN AVATAR MẶC ĐỊNH</label>
-                            <div class="grid grid-cols-4 gap-2" id="preset-avatars-grid">
-                                <!-- JS sẽ chèn danh sách avatar mẫu -->
-                            </div>
-                        </div>
-
-                        <!-- Đổi tên hiển thị -->
-                        <div class="pt-2">
-                            <label class="block text-xs font-semibold text-slate-400 mb-1">ĐỔI TÊN HIỂN THỊ</label>
-                            <div class="flex gap-2">
-                                <input type="text" id="update-fullname-input" placeholder="Tên mới..." class="flex-1 bg-slate-950 border border-slate-800 text-xs px-3 py-2 rounded-xl text-white focus:outline-none focus:border-brand-500">
-                                <button onclick="handleUpdateProfileName()" class="bg-brand-600 hover:bg-brand-500 px-4 text-xs font-semibold rounded-xl">Lưu</button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- CHAT MAIN CONTENT AREA -->
-            <div class="flex-1 bg-slate-950 flex flex-col h-full relative">
-                
-                <!-- Khi chưa chọn đoạn chat nào -->
-                <div id="no-chat-selected" class="flex-1 flex flex-col items-center justify-center p-6 text-center">
-                    <div class="w-20 h-20 bg-slate-900 rounded-3xl flex items-center justify-center text-slate-600 mb-4 border border-slate-800">
-                        <i class="fa-solid fa-paper-plane text-3xl"></i>
-                    </div>
-                    <h3 class="text-slate-300 font-semibold text-lg">Chưa chọn cuộc trò chuyện</h3>
-                    <p class="text-slate-500 text-xs max-w-xs mt-1">Chọn một người bạn từ danh sách hoặc tìm bạn mới để bắt đầu nhắn tin và gọi điện.</p>
-                </div>
-
-                <!-- Khung chat active -->
-                <div id="active-chat-container" class="flex-1 flex flex-col h-full hidden">
-                    <!-- Chat Header -->
-                    <div class="p-3.5 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between backdrop-blur-md">
-                        <div class="flex items-center gap-3">
-                            <!-- Nút Back trên di động -->
-                            <button onclick="closeActiveChatOnMobile()" class="md:hidden text-slate-400 hover:text-white p-1">
-                                <i class="fa-solid fa-arrow-left text-lg"></i>
-                            </button>
-                            <div class="relative">
-                                <img id="chat-header-avatar" src="" class="w-10 h-10 rounded-full object-cover">
-                                <span id="chat-header-status-dot" class="w-2.5 h-2.5 bg-emerald-500 rounded-full absolute bottom-0 right-0 ring-2 ring-slate-900"></span>
-                            </div>
-                            <div>
-                                <h4 id="chat-header-name" class="font-semibold text-sm text-white leading-tight">--</h4>
-                                <p id="chat-header-status" class="text-[11px] text-emerald-400">Đang hoạt động</p>
-                            </div>
-                        </div>
-
-                        <!-- Action Call Buttons -->
-                        <div class="flex items-center gap-1.5">
-                            <button onclick="startCall('voice')" title="Gọi thoại" class="w-9 h-9 rounded-xl bg-slate-800 hover:bg-brand-600/30 hover:text-brand-300 text-slate-300 flex items-center justify-center transition-all border border-slate-700/50">
-                                <i class="fa-solid fa-phone text-sm"></i>
-                            </button>
-                            <button onclick="startCall('video')" title="Gọi Video" class="w-9 h-9 rounded-xl bg-brand-600 hover:bg-brand-500 text-white flex items-center justify-center shadow-md shadow-brand-600/30 transition-all">
-                                <i class="fa-solid fa-video text-sm"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Messages List -->
-                    <div id="messages-body" class="flex-1 overflow-y-auto p-4 space-y-3 bg-slate-950/60">
-                        <!-- Nội dung tin nhắn render từ JS -->
-                    </div>
-
-                    <!-- Input Chat Bar -->
-                    <div class="p-3 bg-slate-900 border-t border-slate-800">
-                        <form onsubmit="handleSendMessage(event)" class="flex items-center gap-2">
-                            <input type="text" id="chat-input" placeholder="Nhập tin nhắn..." autocomplete="off" class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 transition-all">
-                            <button type="submit" class="w-10 h-10 bg-brand-600 hover:bg-brand-500 text-white rounded-xl flex items-center justify-center transition-all shadow-md shadow-brand-600/30 shrink-0">
-                                <i class="fa-solid fa-paper-plane text-sm"></i>
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- ============================================================== -->
-        <!-- 3. MÀN HÌNH MÔ PHỎNG CUỘC GỌI (FULLSCREEN CALL OVERLAY) -->
-        <!-- ============================================================== -->
-        <div id="call-screen" class="fixed inset-0 bg-slate-950/95 backdrop-blur-2xl z-50 flex flex-col justify-between p-6 hidden">
-            <!-- Call Header Status -->
-            <div class="text-center pt-6 z-10">
-                <div class="inline-flex items-center gap-2 px-3 py-1 bg-slate-800/80 border border-slate-700/60 rounded-full text-xs text-brand-300 mb-2">
-                    <span id="call-type-icon"><i class="fa-solid fa-video"></i></span>
-                    <span id="call-type-text">Cuộc gọi Video</span>
-                </div>
-                <h2 id="call-peer-name" class="text-2xl font-bold text-white">--</h2>
-                <p id="call-timer-status" class="text-sm font-mono text-emerald-400 mt-1">Đang kết nối...</p>
-            </div>
-
-            <!-- Call Center Visual / Avatar / Video View -->
-            <div class="relative flex-1 flex items-center justify-center my-6">
-                <!-- Video Container (Mô phỏng camera) -->
-                <div id="call-video-container" class="w-full max-w-sm h-80 bg-slate-900 rounded-3xl border border-slate-800 overflow-hidden relative shadow-2xl flex items-center justify-center">
-                    
-                    <!-- Simulating Peer Video / Avatar -->
-                    <div id="call-peer-avatar-wrapper" class="relative z-10 flex flex-col items-center">
-                        <div class="relative">
-                            <div id="call-pulse-ring" class="absolute -inset-4 bg-brand-500/20 rounded-full animate-pulse-ring"></div>
-                            <img id="call-peer-avatar" src="" class="w-28 h-28 rounded-full object-cover ring-4 ring-brand-500 shadow-2xl relative z-10">
-                        </div>
-                        <!-- Sóng âm thanh giả lập khi đang đàm thoại -->
-                        <div id="audio-wave-bars" class="flex items-end gap-1 h-6 mt-6 hidden">
-                            <span class="w-1 bg-brand-400 rounded-full animate-bounce h-full"></span>
-                            <span class="w-1 bg-brand-400 rounded-full animate-bounce h-3/4 delay-100"></span>
-                            <span class="w-1 bg-brand-400 rounded-full animate-bounce h-1/2 delay-200"></span>
-                            <span class="w-1 bg-brand-400 rounded-full animate-bounce h-full delay-150"></span>
-                        </div>
-                    </div>
-
-                    <!-- Local Camera Feed Simulator (Khung camera nhỏ góc dưới) -->
-                    <div id="local-video-preview" class="absolute bottom-3 right-3 w-24 h-32 bg-slate-950 border border-slate-700 rounded-2xl overflow-hidden shadow-xl flex flex-col items-center justify-center">
-                        <img id="call-my-avatar" src="" class="w-10 h-10 rounded-full object-cover mb-1 border border-slate-600">
-                        <span class="text-[9px] text-slate-400">Bạn</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Call Control Buttons -->
-            <div class="flex items-center justify-center gap-6 pb-6 z-10">
-                <!-- Toggle Mic -->
-                <button id="btn-toggle-mic" onclick="toggleCallMic()" class="w-14 h-14 rounded-full bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center text-xl transition-all border border-slate-700">
-                    <i id="icon-mic" class="fa-solid fa-microphone"></i>
-                </button>
-
-                <!-- End Call Button -->
-                <button onclick="endCall()" class="w-16 h-16 rounded-full bg-rose-600 hover:bg-rose-500 text-white flex items-center justify-center text-2xl transition-all shadow-lg shadow-rose-600/40 transform active:scale-90">
-                    <i class="fa-solid fa-phone-slash"></i>
-                </button>
-
-                <!-- Toggle Camera -->
-                <button id="btn-toggle-cam" onclick="toggleCallCam()" class="w-14 h-14 rounded-full bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center text-xl transition-all border border-slate-700">
-                    <i id="icon-cam" class="fa-solid fa-video"></i>
-                </button>
-            </div>
-        </div>
-
+    <!-- KHU VUC HO SO CA NHAN -->
+    <div class="section">
+      <b>Ho so ca nhan</b><br><br>
+      <img id="myAvatarImg" src="https://i.imgur.com/6VBx3io.png" class="avatar" alt="My Avatar">
+      <br><br>
+      <label for="avatarUrlInput">Doi Avatar (Nhap URL):</label><br>
+      <input type="text" id="avatarUrlInput" value="https://i.imgur.com/6VBx3io.png">
+      <input type="button" value="Luu Avatar" onclick="updateAvatar()">
     </div>
 
-    <!-- ============================================================== -->
-    <!-- JAVASCRIPT XỬ LÝ TOÀN BỘ LOGIC ỨNG DỤNG -->
-    <!-- ============================================================== -->
-    <script>
-        // --- 1. DỮ LIỆU & CẤU HÌNH MẶC ĐỊNH ---
-        const PRESET_AVATARS = [
-            'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-            'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
-            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
-            'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
-            'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
-            'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=150&auto=format&fit=crop&q=80',
-            'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80',
-            'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80',
-        ];
+    <!-- KHU VUC TIM KIEM KET BAN -->
+    <div class="section">
+      <b>Tim ban qua ID</b><br><br>
+      <label for="searchIDInput">Nhap ID nguoi dung:</label><br>
+      <input type="text" id="searchIDInput">
+      <input type="button" value="Tim Kiem" onclick="searchUserByID()">
+      <div id="searchMsg" class="status-msg"></div>
+
+      <!-- KET QUA TIM KIEM -->
+      <div id="searchResultArea" style="display:none; margin-top:10px; border-top:1px dashed #ccc; padding-top:10px;">
+        <input type="hidden" id="targetUserID" value="">
+        <img id="resAvatar" src="" class="avatar" alt="Result Avatar">
+        <span id="resName" style="font-weight:bold;"></span> (ID: <span id="resID"></span>)
+        <br><br>
+        <input type="button" value="+ Ket Ban ngay" onclick="addFriend()">
+      </div>
+    </div>
+
+    <!-- DANH SACH BAN BE -->
+    <div class="section">
+      <b>Danh sach ban be</b>
+      <table>
+        <thead>
+          <tr>
+            <th width="60">Anh</th>
+            <th>Thong tin</th>
+            <th width="80">Hao tac</th>
+          </tr>
+        </thead>
+        <tbody id="friendTableBody">
+          <tr>
+            <td colspan="3">Chua co ban be nao.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-        // Mẫu người dùng khởi tạo nếu hệ thống chưa có dữ liệu
-        const INITIAL_USERS = [
-            {
-                id: 'USR101',
-                username: 'nhanvien1',
-                password: '123',
-                fullname: 'Trần Minh Anh',
-                avatar: PRESET_AVATARS[0],
-                friends: ['USR102', 'USR103']
-            },
-            {
-                id: 'USR102',
-                username: 'nhanvien2',
-                password: '123',
-                fullname: 'Lê Hoàng Nam',
-                avatar: PRESET_AVATARS[1],
-                friends: ['USR101']
-            },
-            {
-                id: 'USR103',
-                username: 'nhanvien3',
-                password: '123',
-                fullname: 'Phạm Thu Thảo',
-                avatar: PRESET_AVATARS[2],
-                friends: ['USR101']
-            }
-        ];
-
-        // Mẫu tin nhắn ban đầu
-        const INITIAL_MESSAGES = [
-            { id: 1, senderId: 'USR102', receiverId: 'USR101', text: 'Chào bạn! Cuối tuần này rảnh không?', timestamp: '10:15' },
-            { id: 2, senderId: 'USR101', receiverId: 'USR102', text: 'Chào Nam, mình rảnh nhé. Có chuyện gì không?', timestamp: '10:16' }
-        ];
-
-        // --- STATE QUẢN LÝ ---
-        let users = JSON.parse(localStorage.getItem('connectx_users')) || INITIAL_USERS;
-        let messages = JSON.parse(localStorage.getItem('connectx_messages')) || INITIAL_MESSAGES;
-        let currentUser = JSON.parse(localStorage.getItem('connectx_current_user')) || null;
-        let activeChatFriendId = null;
-
-        // Trạng thái cuộc gọi
-        let callTimerInterval = null;
-        let callSeconds = 0;
-        let isMicOn = true;
-        let isCamOn = true;
-
-        // Khởi chạy khi load trang
-        window.onload = function() {
-            saveToStorage();
-            renderPresetAvatars();
-            if (currentUser) {
-                // Đã đăng nhập trước đó
-                showMainApp();
-            } else {
-                showAuthScreen();
-            }
-        };
-
-        function saveToStorage() {
-            localStorage.setItem('connectx_users', JSON.stringify(users));
-            localStorage.setItem('connectx_messages', JSON.stringify(messages));
-            localStorage.setItem('connectx_current_user', JSON.stringify(currentUser));
-        }
-
-        // --- TOAST NOTIFICATION ---
-        function showToast(msg, type = 'info') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            const bgClass = type === 'error' ? 'bg-rose-600' : (type === 'success' ? 'bg-emerald-600' : 'bg-brand-600');
-            
-            toast.className = `${bgClass} text-white px-4 py-3 rounded-2xl shadow-xl text-xs font-semibold flex items-center gap-2 transform transition-all duration-300 translate-y-[-10px] opacity-0 pointer-events-auto`;
-            toast.innerHTML = `<i class="fa-solid fa-circle-info"></i> <span>${msg}</span>`;
-            
-            container.appendChild(toast);
-            
-            // Animation In
-            setTimeout(() => {
-                toast.classList.remove('translate-y-[-10px]', 'opacity-0');
-            }, 10);
-
-            // Auto Remove
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-y-[-10px]');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
-
-        // --- 2. LOGIC AUTHENTICATION (ĐĂNG NHẬP / ĐĂNG KÝ) ---
-        function switchAuthTab(tab) {
-            const loginBtn = document.getElementById('tab-login-btn');
-            const regBtn = document.getElementById('tab-register-btn');
-            const loginForm = document.getElementById('login-form');
-            const regForm = document.getElementById('register-form');
-
-            if (tab === 'login') {
-                loginBtn.className = 'flex-1 py-2 text-sm font-semibold rounded-lg transition-all duration-300 bg-brand-600 text-white shadow-md';
-                regBtn.className = 'flex-1 py-2 text-sm font-semibold text-slate-400 hover:text-white transition-all duration-300';
-                loginForm.classList.remove('hidden');
-                regForm.classList.add('hidden');
-            } else {
-                regBtn.className = 'flex-1 py-2 text-sm font-semibold rounded-lg transition-all duration-300 bg-brand-600 text-white shadow-md';
-                loginBtn.className = 'flex-1 py-2 text-sm font-semibold text-slate-400 hover:text-white transition-all duration-300';
-                regForm.classList.remove('hidden');
-                loginForm.classList.add('hidden');
-            }
-        }
-
-        function handleLogin(e) {
-            e.preventDefault();
-            const usernameInput = document.getElementById('login-username').value.trim();
-            const passwordInput = document.getElementById('login-password').value.trim();
-
-            const user = users.find(u => (u.username === usernameInput || u.id === usernameInput) && u.password === passwordInput);
-
-            if (user) {
-                currentUser = user;
-                saveToStorage();
-                showToast(`Chào mừng trở lại, ${user.fullname}!`, 'success');
-                showMainApp();
-            } else {
-                showToast('Tên đăng nhập hoặc mật khẩu không chính xác!', 'error');
-            }
-        }
-
-        function handleRegister(e) {
-            e.preventDefault();
-            const fullname = document.getElementById('reg-fullname').value.trim();
-            const username = document.getElementById('reg-username').value.trim().toLowerCase();
-            const password = document.getElementById('reg-password').value.trim();
-
-            if (users.some(u => u.username === username)) {
-                showToast('Tên đăng nhập đã tồn tại!', 'error');
-                return;
-            }
-
-            const newId = 'USR' + Math.floor(100 + Math.random() * 900);
-            const randomAvatar = PRESET_AVATARS[Math.floor(Math.random() * PRESET_AVATARS.length)];
-
-            const newUser = {
-                id: newId,
-                username: username,
-                password: password,
-                fullname: fullname,
-                avatar: randomAvatar,
-                friends: []
-            };
-
-            users.push(newUser);
-            currentUser = newUser;
-            saveToStorage();
-
-            showToast('Đăng ký tài khoản thành công!', 'success');
-            showMainApp();
-        }
-
-        function handleLogout() {
-            currentUser = null;
-            activeChatFriendId = null;
-            saveToStorage();
-            showAuthScreen();
-            showToast('Đã đăng xuất tài khoản.');
-        }
-
-        function showAuthScreen() {
-            document.getElementById('auth-screen').classList.remove('hidden');
-            document.getElementById('main-app').classList.add('hidden');
-        }
-
-        function showMainApp() {
-            document.getElementById('auth-screen').classList.add('hidden');
-            document.getElementById('main-app').classList.remove('hidden');
-            updateUserInfoUI();
-            renderRecentChats();
-            renderFriendsList();
-            switchMainTab('chats');
-        }
-
-        // --- 3. QUẢN LÝ TÀI KHOẢN & AVATAR ---
-        function updateUserInfoUI() {
-            if (!currentUser) return;
-            document.getElementById('current-user-avatar').src = currentUser.avatar;
-            document.getElementById('current-user-name').innerText = currentUser.fullname;
-            document.getElementById('current-user-id').innerText = `ID: ${currentUser.id}`;
-
-            // Sync Profile Tab
-            document.getElementById('profile-preview-avatar').src = currentUser.avatar;
-            document.getElementById('profile-name-text').innerText = currentUser.fullname;
-            document.getElementById('profile-id-text').innerText = `Mã ID: ${currentUser.id}`;
-            document.getElementById('update-fullname-input').value = currentUser.fullname;
-        }
-
-        function renderPresetAvatars() {
-            const grid = document.getElementById('preset-avatars-grid');
-            grid.innerHTML = '';
-            PRESET_AVATARS.forEach(url => {
-                const img = document.createElement('img');
-                img.src = url;
-                img.className = 'w-12 h-12 rounded-full object-cover cursor-pointer border-2 border-transparent hover:border-brand-500 transition-all transform hover:scale-105';
-                img.onclick = () => selectPresetAvatar(url);
-                grid.appendChild(img);
-            });
-        }
-
-        function selectPresetAvatar(url) {
-            if (!currentUser) return;
-            currentUser.avatar = url;
-            syncUserInUsersArray();
-            saveToStorage();
-            updateUserInfoUI();
-            showToast('Đã cập nhật ảnh đại diện mới!', 'success');
-        }
-
-        function handleCustomAvatarUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            if (file.size > 2 * 1024 * 1024) {
-                showToast('Dung lượng ảnh tối đa 2MB!', 'error');
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const base64Avatar = e.target.result;
-                currentUser.avatar = base64Avatar;
-                syncUserInUsersArray();
-                saveToStorage();
-                updateUserInfoUI();
-                showToast('Tải ảnh đại diện thành công!', 'success');
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function handleUpdateProfileName() {
-            const newName = document.getElementById('update-fullname-input').value.trim();
-            if (!newName) return;
-
-            currentUser.fullname = newName;
-            syncUserInUsersArray();
-            saveToStorage();
-            updateUserInfoUI();
-            showToast('Đã đổi tên hiển thị!', 'success');
-        }
-
-        function syncUserInUsersArray() {
-            const idx = users.findIndex(u => u.id === currentUser.id);
-            if (idx !== -1) {
-                users[idx] = currentUser;
-            }
-        }
-
-        // --- 4. NAVIGATION TABS TRONG MAIN APP ---
-        function switchMainTab(tab) {
-            const chatsContent = document.getElementById('tab-content-chats');
-            const friendsContent = document.getElementById('tab-content-friends');
-            const profileContent = document.getElementById('tab-content-profile');
-
-            const navChats = document.getElementById('nav-chats-btn');
-            const navFriends = document.getElementById('nav-friends-btn');
-            const navProfile = document.getElementById('nav-profile-btn');
-
-            // Hide all
-            chatsContent.classList.add('hidden');
-            friendsContent.classList.add('hidden');
-            profileContent.classList.add('hidden');
-
-            navChats.className = 'flex-1 py-3 text-xs font-semibold flex items-center justify-center gap-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-all';
-            navFriends.className = 'flex-1 py-3 text-xs font-semibold flex items-center justify-center gap-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-all';
-            navProfile.className = 'flex-1 py-3 text-xs font-semibold flex items-center justify-center gap-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-all';
-
-            if (tab === 'chats') {
-                chatsContent.classList.remove('hidden');
-                navChats.className = 'flex-1 py-3 text-xs font-semibold flex items-center justify-center gap-2 border-b-2 border-brand-500 text-brand-400 transition-all';
-            } else if (tab === 'friends') {
-                friendsContent.classList.remove('hidden');
-                navFriends.className = 'flex-1 py-3 text-xs font-semibold flex items-center justify-center gap-2 border-b-2 border-brand-500 text-brand-400 transition-all';
-            } else if (tab === 'profile') {
-                profileContent.classList.remove('hidden');
-                navProfile.className = 'flex-1 py-3 text-xs font-semibold flex items-center justify-center gap-2 border-b-2 border-brand-500 text-brand-400 transition-all';
-            }
-        }
-
-        // --- 5. TÌM KIẾM & KẾT BẠN ---
-        function handleSearchFriend() {
-            const query = document.getElementById('search-friend-input').value.trim().toLowerCase();
-            const container = document.getElementById('search-result-container');
-            const list = document.getElementById('search-result-list');
-
-            if (!query) {
-                container.classList.add('hidden');
-                return;
-            }
-
-            const results = users.filter(u => 
-                u.id !== currentUser.id && 
-                (u.username.toLowerCase().includes(query) || u.fullname.toLowerCase().includes(query) || u.id.toLowerCase().includes(query))
-            );
-
-            list.innerHTML = '';
-            if (results.length === 0) {
-                list.innerHTML = `<p class="text-xs text-slate-500 p-2">Không tìm thấy người dùng phù hợp.</p>`;
-            } else {
-                results.forEach(targetUser => {
-                    const isAlreadyFriend = currentUser.friends && currentUser.friends.includes(targetUser.id);
-                    const div = document.createElement('div');
-                    div.className = 'p-2 bg-slate-900 rounded-xl border border-slate-800 flex items-center justify-between';
-                    div.innerHTML = `
-                        <div class="flex items-center gap-2">
-                            <img src="${targetUser.avatar}" class="w-8 h-8 rounded-full object-cover">
-                            <div>
-                                <h5 class="text-xs font-semibold text-white">${targetUser.fullname}</h5>
-                                <p class="text-[10px] text-slate-400">ID: ${targetUser.id}</p>
-                            </div>
-                        </div>
-                        ${isAlreadyFriend 
-                            ? `<span class="text-[10px] text-emerald-400 font-semibold px-2 py-1 bg-emerald-500/10 rounded-lg">Bạn bè</span>`
-                            : `<button onclick="addFriend('${targetUser.id}')" class="text-xs bg-brand-600 hover:bg-brand-500 text-white px-2.5 py-1 rounded-lg transition-all"><i class="fa-solid fa-user-plus"></i> Kết bạn</button>`
-                        }
-                    `;
-                    list.appendChild(div);
-                });
-            }
-            container.classList.remove('hidden');
-        }
-
-        function addFriend(friendId) {
-            if (!currentUser.friends) currentUser.friends = [];
-            if (!currentUser.friends.includes(friendId)) {
-                currentUser.friends.push(friendId);
-                
-                // Đồng bộ chiều ngược lại cho đối phương
-                const target = users.find(u => u.id === friendId);
-                if (target) {
-                    if (!target.friends) target.friends = [];
-                    if (!target.friends.includes(currentUser.id)) target.friends.push(currentUser.id);
-                }
-
-                syncUserInUsersArray();
-                saveToStorage();
-                renderFriendsList();
-                handleSearchFriend();
-                showToast('Đã thêm vào danh sách bạn bè!', 'success');
-            }
-        }
-
-        function renderFriendsList() {
-            const list = document.getElementById('friends-list');
-            const countBadge = document.getElementById('friends-count');
-            list.innerHTML = '';
-
-            const friendIds = currentUser.friends || [];
-            countBadge.innerText = friendIds.length;
-
-            if (friendIds.length === 0) {
-                list.innerHTML = `<p class="text-xs text-slate-500 p-2 text-center">Chưa có bạn bè nào.</p>`;
-                return;
-            }
-
-            friendIds.forEach(fId => {
-                const friend = users.find(u => u.id === fId);
-                if (!friend) return;
-
-                const div = document.createElement('div');
-                div.className = 'p-2.5 bg-slate-900/60 hover:bg-slate-800/80 rounded-2xl flex items-center justify-between cursor-pointer border border-slate-800/50 transition-all group';
-                div.onclick = () => openChatWith(friend.id);
-                div.innerHTML = `
-                    <div class="flex items-center gap-3 overflow-hidden">
-                        <img src="${friend.avatar}" class="w-9 h-9 rounded-full object-cover">
-                        <div class="overflow-hidden">
-                            <h4 class="text-xs font-semibold text-white group-hover:text-brand-300 truncate">${friend.fullname}</h4>
-                            <p class="text-[10px] text-slate-400 truncate">ID: ${friend.id}</p>
-                        </div>
-                    </div>
-                    <button class="w-8 h-8 bg-brand-600/20 hover:bg-brand-600 text-brand-300 hover:text-white rounded-xl flex items-center justify-center text-xs transition-all">
-                        <i class="fa-solid fa-comment"></i>
-                    </button>
-                `;
-                list.appendChild(div);
-            });
-        }
-
-        // --- 6. HỆ THỐNG TIN NHẮN (CHAT) ---
-        function renderRecentChats() {
-            const container = document.getElementById('recent-chats-list');
-            const badge = document.getElementById('chat-count-badge');
-            container.innerHTML = '';
-
-            const friendIds = currentUser.friends || [];
-            badge.innerText = friendIds.length;
-
-            if (friendIds.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-500 p-3 text-center">Chưa có cuộc trò chuyện nào.</p>`;
-                return;
-            }
-
-            friendIds.forEach(fId => {
-                const friend = users.find(u => u.id === fId);
-                if (!friend) return;
-
-                // Lấy tin nhắn cuối cùng với bạn này
-                const conversation = messages.filter(m => 
-                    (m.senderId === currentUser.id && m.receiverId === friend.id) ||
-                    (m.senderId === friend.id && m.receiverId === currentUser.id)
-                );
-                const lastMsg = conversation.length > 0 ? conversation[conversation.length - 1].text : 'Bắt đầu cuộc trò chuyện...';
-
-                const isActive = activeChatFriendId === friend.id;
-
-                const div = document.createElement('div');
-                div.className = `p-3 rounded-2xl flex items-center gap-3 cursor-pointer transition-all border ${isActive ? 'bg-brand-900/40 border-brand-500/50' : 'bg-slate-900/40 hover:bg-slate-800/60 border-slate-800/40'}`;
-                div.onclick = () => openChatWith(friend.id);
-                div.innerHTML = `
-                    <div class="relative shrink-0">
-                        <img src="${friend.avatar}" class="w-10 h-10 rounded-full object-cover">
-                        <span class="w-2.5 h-2.5 bg-emerald-500 border-2 border-slate-900 rounded-full absolute bottom-0 right-0"></span>
-                    </div>
-                    <div class="flex-1 overflow-hidden">
-                        <div class="flex justify-between items-center mb-0.5">
-                            <h4 class="text-xs font-semibold text-white truncate">${friend.fullname}</h4>
-                        </div>
-                        <p class="text-[11px] text-slate-400 truncate">${lastMsg}</p>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        function openChatWith(friendId) {
-            activeChatFriendId = friendId;
-            const friend = users.find(u => u.id === friendId);
-            if (!friend) return;
-
-            // Chuyển UI
-            document.getElementById('no-chat-selected').classList.add('hidden');
-            document.getElementById('active-chat-container').classList.remove('hidden');
-
-            document.getElementById('chat-header-avatar').src = friend.avatar;
-            document.getElementById('chat-header-name').innerText = friend.fullname;
-
-            renderRecentChats();
-            renderMessages();
-        }
-
-        function closeActiveChatOnMobile() {
-            activeChatFriendId = null;
-            document.getElementById('no-chat-selected').classList.remove('hidden');
-            document.getElementById('active-chat-container').classList.add('hidden');
-            renderRecentChats();
-        }
-
-        function renderMessages() {
-            const body = document.getElementById('messages-body');
-            body.innerHTML = '';
-
-            if (!activeChatFriendId) return;
-
-            const conversation = messages.filter(m => 
-                (m.senderId === currentUser.id && m.receiverId === activeChatFriendId) ||
-                (m.senderId === activeChatFriendId && m.receiverId === currentUser.id)
-            );
-
-            conversation.forEach(msg => {
-                const isMe = msg.senderId === currentUser.id;
-                const div = document.createElement('div');
-                div.className = `flex ${isMe ? 'justify-end' : 'justify-start'} mb-2`;
-
-                div.innerHTML = `
-                    <div class="max-w-[75%] ${isMe ? 'bg-gradient-to-r from-brand-600 to-indigo-600 text-white rounded-2xl rounded-tr-none' : 'bg-slate-800 text-slate-100 rounded-2xl rounded-tl-none'} p-3 text-xs shadow-md">
-                        <p class="leading-relaxed break-words">${msg.text}</p>
-                        <span class="block text-[9px] ${isMe ? 'text-brand-200' : 'text-slate-400'} text-right mt-1">${msg.timestamp}</span>
-                    </div>
-                `;
-                body.appendChild(div);
-            });
-
-            // Tự động cuộn xuống tin mới nhất
-            body.scrollTop = body.scrollHeight;
-        }
-
-        function handleSendMessage(e) {
-            e.preventDefault();
-            const input = document.getElementById('chat-input');
-            const text = input.value.trim();
-
-            if (!text || !activeChatFriendId) return;
-
-            const now = new Date();
-            const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-
-            const newMsg = {
-                id: Date.now(),
-                senderId: currentUser.id,
-                receiverId: activeChatFriendId,
-                text: text,
-                timestamp: timeStr
-            };
-
-            messages.push(newMsg);
-            saveToStorage();
-            input.value = '';
-
-            renderMessages();
-            renderRecentChats();
-
-            // Giả lập phản hồi tự động nếu là bot / bạn demo
-            simulateAutoReply(activeChatFriendId);
-        }
-
-        function simulateAutoReply(friendId) {
-            // Giả lập sau 2.5 giây đối phương trả lời tự động
-            setTimeout(() => {
-                if (activeChatFriendId === friendId) {
-                    const replies = [
-                        "Dạ mình đã nhận được tin nhắn!",
-                        "Oke bạn nhé, lát nữa gọi điện trao đổi thêm nha.",
-                        "Ứng dụng chạy mượt đấy!",
-                        "Cảm ơn bạn đã nhắn tin!"
-                    ];
-                    const randomText = replies[Math.floor(Math.random() * replies.length)];
-                    const now = new Date();
-                    const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-
-                    messages.push({
-                        id: Date.now(),
-                        senderId: friendId,
-                        receiverId: currentUser.id,
-                        text: randomText,
-                        timestamp: timeStr
-                    });
-                    saveToStorage();
-                    renderMessages();
-                    renderRecentChats();
-                }
-            }, 2500);
-        }
-
-        // --- 7. MÀN HÌNH GỌI ĐIỆN (CALL SIMULATION) ---
-        function startCall(type) {
-            if (!activeChatFriendId) return;
-            const friend = users.find(u => u.id === activeChatFriendId);
-            if (!friend) return;
-
-            const callScreen = document.getElementById('call-screen');
-            document.getElementById('call-peer-name').innerText = friend.fullname;
-            document.getElementById('call-peer-avatar').src = friend.avatar;
-            document.getElementById('call-my-avatar').src = currentUser.avatar;
-
-            const typeText = document.getElementById('call-type-text');
-            const typeIcon = document.getElementById('call-type-icon');
-
-            if (type === 'video') {
-                typeText.innerText = 'Cuộc gọi Video HD';
-                typeIcon.innerHTML = `<i class="fa-solid fa-video"></i>`;
-                document.getElementById('local-video-preview').classList.remove('hidden');
-            } else {
-                typeText.innerText = 'Cuộc gọi Thoại';
-                typeIcon.innerHTML = `<i class="fa-solid fa-phone"></i>`;
-                document.getElementById('local-video-preview').classList.add('hidden');
-            }
-
-            // Reset trạng thái mic/cam
-            isMicOn = true;
-            isCamOn = true;
-            updateMicCamUI();
-
-            // Hiển thị màn hình gọi
-            callScreen.classList.remove('hidden');
-
-            // Giả lập kết nối cuộc gọi sau 2s
-            document.getElementById('call-timer-status').innerText = 'Đang đổ chuông...';
-            document.getElementById('audio-wave-bars').classList.add('hidden');
-
-            setTimeout(() => {
-                document.getElementById('call-timer-status').innerText = '00:00';
-                document.getElementById('audio-wave-bars').classList.remove('hidden');
-                startCallTimer();
-            }, 2000);
-        }
-
-        function startCallTimer() {
-            callSeconds = 0;
-            clearInterval(callTimerInterval);
-            callTimerInterval = setInterval(() => {
-                callSeconds++;
-                const mins = Math.floor(callSeconds / 60).toString().padStart(2, '0');
-                const secs = (callSeconds % 60).toString().padStart(2, '0');
-                document.getElementById('call-timer-status').innerText = `${mins}:${secs}`;
-            }, 1000);
-        }
-
-        function toggleCallMic() {
-            isMicOn = !isMicOn;
-            updateMicCamUI();
-            showToast(isMicOn ? 'Đã bật Micro' : 'Đã tắt Micro');
-        }
-
-        function toggleCallCam() {
-            isCamOn = !isCamOn;
-            updateMicCamUI();
-            showToast(isCamOn ? 'Đã bật Camera' : 'Đã tắt Camera');
-        }
-
-        function updateMicCamUI() {
-            const micBtn = document.getElementById('btn-toggle-mic');
-            const micIcon = document.getElementById('icon-mic');
-            const camBtn = document.getElementById('btn-toggle-cam');
-            const camIcon = document.getElementById('icon-cam');
-
-            if (isMicOn) {
-                micBtn.className = 'w-14 h-14 rounded-full bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center text-xl transition-all border border-slate-700';
-                micIcon.className = 'fa-solid fa-microphone';
-            } else {
-                micBtn.className = 'w-14 h-14 rounded-full bg-rose-600/20 text-rose-400 border border-rose-500/50 flex items-center justify-center text-xl transition-all';
-                micIcon.className = 'fa-solid fa-microphone-slash';
-            }
-
-            if (isCamOn) {
-                camBtn.className = 'w-14 h-14 rounded-full bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center text-xl transition-all border border-slate-700';
-                camIcon.className = 'fa-solid fa-video';
-            } else {
-                camBtn.className = 'w-14 h-14 rounded-full bg-rose-600/20 text-rose-400 border border-rose-500/50 flex items-center justify-center text-xl transition-all';
-                camIcon.className = 'fa-solid fa-video-slash';
-            }
-        }
-
-        function endCall() {
-            clearInterval(callTimerInterval);
-            document.getElementById('call-screen').classList.add('hidden');
-            showToast('Cuộc gọi đã kết thúc');
-        }
-    </script>
 </body>
 </html>
