@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>Ung dung Ket Ban HTML4</title>
+  <title>Ung dung Ket Ban &amp; Goi Dien (HTML4)</title>
   <style type="text/css">
     body {
       font-family: Arial, sans-serif;
@@ -10,7 +10,7 @@
       margin: 20px;
     }
     .box {
-      width: 450px;
+      width: 480px;
       margin: 0 auto;
       background-color: #ffffff;
       border: 1px solid #cccccc;
@@ -36,7 +36,7 @@
     }
     input[type="text"] {
       padding: 5px;
-      width: 200px;
+      width: 190px;
       border: 1px solid #999999;
     }
     input[type="button"], button {
@@ -70,28 +70,60 @@
       font-size: 12px;
       margin-top: 5px;
     }
+    .success-msg {
+      color: green;
+      font-size: 12px;
+      margin-top: 5px;
+    }
   </style>
 
   <script type="text/javascript">
-    // Danh sach nguoi dung he thong (ID + Ten + Avatar)
     var databaseUsers = [
       { id: "USER01", name: "Nam N", avatar: "https://i.imgur.com/6VBx3io.png" },
       { id: "USER02", name: "Huynh Nhi", avatar: "https://i.imgur.com/6VBx3io.png" },
       { id: "1001", name: "Admin", avatar: "https://i.imgur.com/6VBx3io.png" }
     ];
 
-    // Danh sach ban be hien tai
     var myFriends = [];
 
-    // Chuan hoa chuoi: Xoa khoang trang va chuyen ve chu thuong
     function cleanString(str) {
       if (!str) return "";
-      // Strip space dau va cuoi (thay the trim() HTML4)
-      var cleaned = str.replace(/^\s+|\s+$/g, '');
-      return cleaned.toLowerCase();
+      return str.replace(/^\s+|\s+$/g, '').toLowerCase();
     }
 
-    // 1. Tim kiem bang ID (Khong lo loi nhap thua khoang trang hay hoa/thuong)
+    // Them nguoi dung moi vao danh sach ao de test
+    function registerNewUser() {
+      var newId = document.getElementById("newUserId").value;
+      var newName = document.getElementById("newUserName").value;
+      var msgBox = document.getElementById("registerMsg");
+
+      if (cleanString(newId) === "" || cleanString(newName) === "") {
+        msgBox.className = "status-msg";
+        msgBox.innerHTML = "Vui long nhap du ID va Ten!";
+        return;
+      }
+
+      // Kiem tra trung ID
+      for (var i = 0; i < databaseUsers.length; i++) {
+        if (cleanString(databaseUsers[i].id) === cleanString(newId)) {
+          msgBox.className = "status-msg";
+          msgBox.innerHTML = "ID nay da ton tai trong he thong!";
+          return;
+        }
+      }
+
+      databaseUsers.push({
+        id: newId.replace(/^\s+|\s+$/g, ''), // Giu nguyen hoa thuong cua ID nguoi dung nhap
+        name: newName,
+        avatar: "https://i.imgur.com/6VBx3io.png"
+      });
+
+      msgBox.className = "success-msg";
+      msgBox.innerHTML = "Them thanh cong ID: " + newId + "! Hay dung ID nay de tim kiem.";
+      document.getElementById("newUserId").value = "";
+      document.getElementById("newUserName").value = "";
+    }
+
     function searchUserByID() {
       var inputVal = document.getElementById("searchIDInput").value;
       var cleanInput = cleanString(inputVal);
@@ -108,8 +140,7 @@
 
       var foundUser = null;
       for (var i = 0; i < databaseUsers.length; i++) {
-        var currentID = cleanString(databaseUsers[i].id);
-        if (currentID === cleanInput) {
+        if (cleanString(databaseUsers[i].id) === cleanInput) {
           foundUser = databaseUsers[i];
           break;
         }
@@ -122,15 +153,13 @@
         document.getElementById("targetUserID").value = foundUser.id;
         resultArea.style.display = "block";
       } else {
-        msgBox.innerHTML = "Khong tim me gi thay ID '" + inputVal + "'. Ket qua test ID co san: USER01, USER02, 1001";
+        msgBox.innerHTML = "Khong tim thay ID '" + inputVal + "'.";
       }
     }
 
-    // 2. Them vao danh sach ban be
     function addFriend() {
       var targetID = document.getElementById("targetUserID").value;
       
-      // Kiem tra xem da la ban nghe chua
       for (var i = 0; i < myFriends.length; i++) {
         if (cleanString(myFriends[i].id) === cleanString(targetID)) {
           alert("Nguoi nay da co trong danh sach ban be roi!");
@@ -138,7 +167,6 @@
         }
       }
 
-      // Lay thong tin user va push vao list ban be
       for (var j = 0; j < databaseUsers.length; j++) {
         if (cleanString(databaseUsers[j].id) === cleanString(targetID)) {
           myFriends.push(databaseUsers[j]);
@@ -146,13 +174,12 @@
         }
       }
 
-      alert("Da ket ban thanh cong!");
+      alert("Ket ban thanh cong!");
       document.getElementById("searchResultArea").style.display = "none";
       document.getElementById("searchIDInput").value = "";
       renderFriendList();
     }
 
-    // 3. Hien thi danh sach ban be ra bang
     function renderFriendList() {
       var tbody = document.getElementById("friendTableBody");
       tbody.innerHTML = "";
@@ -165,15 +192,13 @@
       for (var i = 0; i < myFriends.length; i++) {
         var user = myFriends[i];
         var tr = document.createElement("tr");
-        
         tr.innerHTML = "<td><img src='" + user.avatar + "' class='avatar' alt='Avatar'></td>" +
                        "<td><b>" + user.name + "</b><br><small>ID: " + user.id + "</small></td>" +
-                       "<td><input type='button' value='Goi Dien' onclick=\"makeCall('" + user.name + "')\"></td>";
+                       "<td><input type='button' value='Goi' onclick=\"makeCall('" + user.name + "')\"></td>";
         tbody.appendChild(tr);
       }
     }
 
-    // 4. Cap nhat Avatar ca nhan
     function updateAvatar() {
       var newUrl = document.getElementById("avatarUrlInput").value;
       if (cleanString(newUrl) === "") {
@@ -181,10 +206,9 @@
         return;
       }
       document.getElementById("myAvatarImg").src = newUrl;
-      alert("Da cap nhat Avatar thanh cong!");
+      alert("Cap nhat Avatar thanh cong!");
     }
 
-    // 5. Mo phong Cuoc goi
     function makeCall(name) {
       alert("Dang ket noi cuoc goi toi: " + name + "...");
     }
@@ -195,31 +219,39 @@
   <div class="box">
     <div class="title">Ung Dung Ket Ban &amp; Goi Dien (HTML4)</div>
 
-    <!-- KHU VUC HO SO CA NHAN -->
+    <!-- HO SO CA NHAN -->
     <div class="section">
       <b>Ho so ca nhan</b><br><br>
       <img id="myAvatarImg" src="https://i.imgur.com/6VBx3io.png" class="avatar" alt="My Avatar">
       <br><br>
       <label for="avatarUrlInput">Doi Avatar (Nhap URL):</label><br>
       <input type="text" id="avatarUrlInput" value="https://i.imgur.com/6VBx3io.png">
-      <input type="button" value="Luu Avatar" onclick="updateAvatar()">
+      <input type="button" value="Luu" onclick="updateAvatar()">
     </div>
 
-    <!-- KHU VUC TIM KIEM KET BAN -->
+    <!-- TAO USER TEST (GIUP KHONG BI LOI KHONG TIM THAY ID) -->
+    <div class="section" style="background-color: #fffbe6; border-color: #ffe58f;">
+      <b>Tao User de test</b><br><br>
+      <label>ID:</label> <input type="text" id="newUserId" placeholder="VD: abc123"><br><br>
+      <label>Ten:</label> <input type="text" id="newUserName" placeholder="VD: Nguyen Van A"><br><br>
+      <input type="button" value="Tao User Moi" onclick="registerNewUser()">
+      <div id="registerMsg"></div>
+    </div>
+
+    <!-- TIM KIEM KET BAN -->
     <div class="section">
       <b>Tim ban qua ID</b><br><br>
-      <label for="searchIDInput">Nhap ID nguoi dung:</label><br>
-      <input type="text" id="searchIDInput">
-      <input type="button" value="Tim Kiem" onclick="searchUserByID()">
+      <label for="searchIDInput">Nhap ID:</label><br>
+      <input type="text" id="searchIDInput" placeholder="Thu ID: USER01 hoac ID vua tao">
+      <input type="button" value="Tim" onclick="searchUserByID()">
       <div id="searchMsg" class="status-msg"></div>
 
-      <!-- KET QUA TIM KIEM -->
       <div id="searchResultArea" style="display:none; margin-top:10px; border-top:1px dashed #ccc; padding-top:10px;">
         <input type="hidden" id="targetUserID" value="">
-        <img id="resAvatar" src="" class="avatar" alt="Result Avatar">
+        <img id="resAvatar" src="" class="avatar" alt="Avatar">
         <span id="resName" style="font-weight:bold;"></span> (ID: <span id="resID"></span>)
         <br><br>
-        <input type="button" value="+ Ket Ban ngay" onclick="addFriend()">
+        <input type="button" value="+ Ket Ban" onclick="addFriend()">
       </div>
     </div>
 
@@ -229,9 +261,9 @@
       <table>
         <thead>
           <tr>
-            <th width="60">Anh</th>
+            <th width="50">Anh</th>
             <th>Thong tin</th>
-            <th width="80">Hao tac</th>
+            <th width="60">Tac vu</th>
           </tr>
         </thead>
         <tbody id="friendTableBody">
