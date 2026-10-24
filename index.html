@@ -7,251 +7,177 @@
 <title>LIKE Chat</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#f0f4fa;font-family:Arial;color:#172033}
-header{background:#246bfd;color:white;padding:18px;font-size:25px;font-weight:bold}
+body{margin:0;font-family:Arial;background:#f0f4fa;color:#172033}
+header{background:#246bfd;color:white;padding:20px;font-size:26px;font-weight:bold}
 main{max-width:850px;margin:25px auto;padding:15px}
-.card{background:white;padding:22px;border-radius:16px;
-box-shadow:0 4px 20px #0001;margin-bottom:15px}
-input{width:100%;padding:13px;margin:7px 0;
-border:1px solid #ccd4e0;border-radius:9px}
-button{padding:12px 16px;border:0;border-radius:9px;
-background:#246bfd;color:white;cursor:pointer;margin:4px}
-button:hover{opacity:.85}
+.card{background:white;padding:22px;border-radius:16px;margin-bottom:15px;box-shadow:0 5px 20px #0001}
+input{width:100%;padding:13px;margin:7px 0;border:1px solid #ccd4e0;border-radius:9px}
+button{padding:12px 16px;background:#246bfd;color:white;border:0;border-radius:9px;cursor:pointer;margin:4px}
+.secondary{background:#e6edff;color:#2457bf}
 .hidden{display:none}
-#messages{height:280px;overflow:auto;background:#f6f8fc;
-padding:12px;border-radius:10px}
-.msg{padding:10px;margin:8px;background:#e2eaff;
-border-radius:10px;overflow-wrap:anywhere}
+.user{padding:12px;background:#f0f4fa;border-radius:8px;margin:7px 0;cursor:pointer}
+#messages{height:250px;overflow:auto;background:#f7f9fc;padding:12px;border-radius:10px}
+.msg{padding:10px;margin:7px;background:#e2eaff;border-radius:10px;overflow-wrap:anywhere}
 .mine{background:#246bfd;color:white;text-align:right}
-.user{padding:10px;background:#f2f5fa;margin:6px 0;
-border-radius:8px;cursor:pointer}
-.small{color:#667085;font-size:13px}
+small{color:#667085}
 </style>
 </head>
 <body>
 <header>💬 LIKE Chat</header>
 <main>
 <section id="login" class="card">
-<h2 id="heading">Đăng nhập</h2>
+<h2 id="title">Đăng nhập</h2>
 <form id="authForm">
-<input id="username" placeholder="Tên tài khoản (3–20 ký tự)"
-minlength="3" maxlength="20" required>
-<input id="password" type="password"
-placeholder="Mật khẩu (ít nhất 8 ký tự)"
-minlength="8" required>
-<button id="submitBtn">Đăng nhập</button>
+<input id="username" placeholder="Tên tài khoản" minlength="3" required>
+<input id="password" type="password" placeholder="Mật khẩu" minlength="6" required>
+<button id="submit">Đăng nhập</button>
 </form>
-<button onclick="switchMode()">Đổi đăng nhập / đăng ký</button>
-<p class="small">Tài khoản được lưu trên máy chủ.</p>
-<p id="authStatus"></p>
+<button class="secondary" onclick="toggleMode()">Đổi đăng nhập / đăng ký</button>
+<p id="authMessage"></p>
+<small>Bản demo lưu trên trình duyệt hiện tại.</small>
 </section>
 
 <section id="app" class="hidden">
 <div class="card">
-<h3 id="welcome"></h3>
+<b id="welcome"></b>
 <button onclick="logout()">Đăng xuất</button>
 </div>
 
 <div class="card">
-<h3>🔎 Tìm bạn</h3>
-<input id="searchName" placeholder="Nhập chính xác tên tài khoản">
-<button onclick="searchUser()">Tìm kiếm</button>
-<div id="searchResult"></div>
-<div id="incoming"></div>
-</div>
-
-<div class="card">
-<h3>👥 Danh sách bạn bè</h3>
+<h3>👥 Kết bạn</h3>
+<input id="findName" placeholder="Nhập tên tài khoản bạn muốn tìm">
+<button onclick="addFriend()">Thêm bạn</button>
 <div id="friends"></div>
-<button onclick="loadFriends()">Làm mới</button>
 </div>
 
 <div class="card">
-<h3 id="chatTitle">💬 Chọn một người bạn</h3>
+<h3 id="chatTitle">💬 Tin nhắn</h3>
 <div id="messages"></div>
 <form id="sendForm">
-<input id="message" placeholder="Nhập tin nhắn..." maxlength="2000">
-<button>Gửi tin nhắn</button>
+<input id="message" placeholder="Nhập tin nhắn">
+<button>Gửi</button>
 </form>
-<p class="small">Tin nhắn được lưu trong cơ sở dữ liệu.</p>
 </div>
-
-<div class="card">
-<h3>📞 Gọi điện</h3>
-<p>Giao diện gọi điện sẽ được kết nối với hệ thống WebRTC.</p>
-<button onclick="alert('Cần hoàn thiện máy chủ gọi video để sử dụng tính năng này.')">Gọi thoại</button>
-<button onclick="alert('Cần hoàn thiện máy chủ gọi video để sử dụng tính năng này.')">Gọi video</button>
-</div>
-<p id="status"></p>
 </section>
 </main>
 
 <script>
-let registering=false;
-let me=null;
-let selected=null;
+const $=id=>document.getElementById(id);
+let registering=false, me=null, friend=null;
 
-async function api(url,options={}){
-  const response=await fetch(url,{
-    credentials:"same-origin",
-    headers:{"Content-Type":"application/json"},
-    ...options
-  });
-  const data=await response.json();
-  if(!response.ok) throw Error(data.error||"Đã xảy ra lỗi");
-  return data;
+function getData(){
+  try{return JSON.parse(localStorage.getItem("likeChatData"))||{users:{}}}
+  catch{return {users:{}}}
 }
-
-function switchMode(){
+function saveData(data){
+  localStorage.setItem("likeChatData",JSON.stringify(data));
+}
+function toggleMode(){
   registering=!registering;
-  document.getElementById("heading").textContent=
-    registering?"Đăng ký tài khoản":"Đăng nhập";
-  document.getElementById("submitBtn").textContent=
-    registering?"Đăng ký":"Đăng nhập";
-  document.getElementById("authStatus").textContent="";
+  $("title").textContent=registering?"Đăng ký":"Đăng nhập";
+  $("submit").textContent=registering?"Tạo tài khoản":"Đăng nhập";
+  $("authMessage").textContent="";
 }
-
-document.getElementById("authForm").onsubmit=async e=>{
+$("authForm").addEventListener("submit",e=>{
   e.preventDefault();
-  const username=document.getElementById("username").value.trim();
-  const password=document.getElementById("password").value;
-  try{
-    const data=await api(registering?"/api/register":"/api/login",{
-      method:"POST",
-      body:JSON.stringify({username,password})
-    });
-    me=data.user;
-    await enterApp();
-  }catch(err){
-    document.getElementById("authStatus").textContent=err.message;
-  }
-};
-
-async function enterApp(){
-  document.getElementById("login").classList.add("hidden");
-  document.getElementById("app").classList.remove("hidden");
-  document.getElementById("welcome").textContent="Xin chào, "+me.username;
-  await loadFriends();
-}
-
-async function logout(){
-  try{await api("/api/logout",{method:"POST"});}
-  finally{location.reload();}
-}
-
-async function searchUser(){
-  try{
-    const name=document.getElementById("searchName").value.trim();
-    const data=await api("/api/users/"+encodeURIComponent(name));
-    const box=document.getElementById("searchResult");
-    box.replaceChildren();
-    const p=document.createElement("p");
-    p.textContent="Tìm thấy: @"+data.user.username;
-    box.appendChild(p);
-    if(!data.friends){
-      const button=document.createElement("button");
-      button.textContent="Kết bạn";
-      button.onclick=async()=>{
-        try{
-          await api("/api/friends/request",{
-            method:"POST",
-            body:JSON.stringify({userId:data.user.id})
-          });
-          alert("Đã gửi lời mời kết bạn.");
-          await loadFriends();
-        }catch(e){alert(e.message);}
-      };
-      box.appendChild(button);
+  const name=$("username").value.trim();
+  const password=$("password").value;
+  const data=getData();
+  if(registering){
+    if(name.length<3||password.length<6){
+      $("authMessage").textContent="Tên cần ít nhất 3 ký tự, mật khẩu ít nhất 6 ký tự.";
+      return;
     }
-  }catch(e){alert(e.message);}
-}
-
-async function loadFriends(){
-  try{
-    const data=await api("/api/friends");
-    const box=document.getElementById("friends");
-    box.replaceChildren();
-    data.friends.forEach(friend=>{
-      const div=document.createElement("div");
-      div.className="user";
-      div.textContent="@"+friend.username;
-      div.onclick=()=>openChat(friend);
-      box.appendChild(div);
-    });
-
-    const incoming=document.getElementById("incoming");
-    incoming.replaceChildren();
-    data.incoming.forEach(request=>{
-      const div=document.createElement("div");
-      div.className="user";
-      div.textContent="Lời mời từ @"+request.username+" ";
-      const btn=document.createElement("button");
-      btn.textContent="Chấp nhận";
-      btn.onclick=async()=>{
-        try{
-          await api("/api/friends/accept/"+request.id,{method:"POST"});
-          await loadFriends();
-        }catch(e){alert(e.message);}
-      };
-      div.appendChild(btn);
-      incoming.appendChild(div);
-    });
-  }catch(e){
-    document.getElementById("status").textContent=e.message;
+    if(data.users[name]){
+      $("authMessage").textContent="Tên tài khoản đã tồn tại.";
+      return;
+    }
+    data.users[name]={password:password,friends:[],messages:{}};
+    saveData(data);
+  }else{
+    if(!data.users[name]||data.users[name].password!==password){
+      $("authMessage").textContent="Tên tài khoản hoặc mật khẩu sai.";
+      return;
+    }
   }
+  me=name;
+  sessionStorage.setItem("likeChatCurrentUser",me);
+  showApp();
+});
+function showApp(){
+  $("login").classList.add("hidden");
+  $("app").classList.remove("hidden");
+  $("welcome").textContent="Xin chào, "+me;
+  renderFriends();
 }
-
-async function openChat(friend){
-  selected=friend;
-  document.getElementById("chatTitle").textContent=
-    "Đang nhắn tin với @"+friend.username;
-  await loadMessages();
+function logout(){
+  sessionStorage.removeItem("likeChatCurrentUser");
+  me=null;friend=null;
+  $("app").classList.add("hidden");
+  $("login").classList.remove("hidden");
 }
-
-async function loadMessages(){
-  if(!selected)return;
-  try{
-    const data=await api("/api/messages/"+selected.id);
-    const box=document.getElementById("messages");
-    box.replaceChildren();
-    data.messages.forEach(m=>{
-      const div=document.createElement("div");
-      div.className="msg"+(m.fromId===me.id?" mine":"");
-      div.textContent=(m.fromId===me.id?"Bạn":m.fromName)+": "+m.body;
-      box.appendChild(div);
-    });
-    box.scrollTop=box.scrollHeight;
-  }catch(e){
-    document.getElementById("status").textContent=e.message;
+function addFriend(){
+  const name=$("findName").value.trim();
+  const data=getData();
+  if(!name||name===me||!data.users[name]){
+    alert("Không tìm thấy tài khoản khác.");
+    return;
   }
+  if(!data.users[me].friends.includes(name)){
+    data.users[me].friends.push(name);
+    data.users[name].friends.push(me);
+    data.users[me].messages[name]=data.users[me].messages[name]||[];
+    data.users[name].messages[me]=data.users[name].messages[me]||[];
+    saveData(data);
+  }
+  renderFriends();
 }
-
-document.getElementById("sendForm").onsubmit=async e=>{
+function renderFriends(){
+  const box=$("friends");box.replaceChildren();
+  const data=getData();
+  (data.users[me]?.friends||[]).forEach(name=>{
+    const el=document.createElement("div");
+    el.className="user";
+    el.textContent="👤 "+name;
+    el.onclick=()=>openChat(name);
+    box.appendChild(el);
+  });
+}
+function openChat(name){
+  friend=name;
+  $("chatTitle").textContent="💬 Chat với "+name;
+  renderMessages();
+}
+function renderMessages(){
+  const box=$("messages");box.replaceChildren();
+  if(!friend)return;
+  const data=getData();
+  const msgs=data.users[me].messages[friend]||[];
+  msgs.forEach(m=>{
+    const el=document.createElement("div");
+    el.className="msg"+(m.from===me?" mine":"");
+    el.textContent=m.from+": "+m.text;
+    box.appendChild(el);
+  });
+  box.scrollTop=box.scrollHeight;
+}
+$("sendForm").addEventListener("submit",e=>{
   e.preventDefault();
-  if(!selected)return alert("Hãy chọn một người bạn trước.");
-  const input=document.getElementById("message");
-  const body=input.value.trim();
-  if(!body)return;
-  try{
-    await api("/api/messages",{
-      method:"POST",
-      body:JSON.stringify({toId:selected.id,body})
-    });
-    input.value="";
-    await loadMessages();
-  }catch(e){alert(e.message);}
-};
-
-async function restoreLogin(){
-  try{
-    const data=await api("/api/me");
-    me=data.user;
-    await enterApp();
-  }catch(e){
-    // Chưa đăng nhập: hiển thị màn hình đăng nhập.
-  }
+  if(!friend){alert("Hãy chọn một người bạn trước.");return}
+  const text=$("message").value.trim();
+  if(!text)return;
+  const data=getData();
+  const msg={from:me,text:text};
+  data.users[me].messages[friend].push(msg);
+  data.users[friend].messages[me].push(msg);
+  saveData(data);
+  $("message").value="";
+  renderMessages();
+});
+const previous=sessionStorage.getItem("likeChatCurrentUser");
+if(previous&&getData().users[previous]){
+  me=previous;showApp();
 }
-restoreLogin();
 </script>
 </body>
 </html>
